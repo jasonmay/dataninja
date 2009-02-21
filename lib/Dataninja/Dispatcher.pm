@@ -12,10 +12,9 @@ on qr{/stats (?: / (\w+) (?: / (\w+) (?: / (\w+) )? )? )? }x => run {
     show 'stats';
 };
 
-on qr{/chat} => run {
-    my $p = 'ezfseccx';
-    show 'chat';
-};
+#on qr{/chat} => run {
+#    show 'chat';
+#};
 
 1;
 
