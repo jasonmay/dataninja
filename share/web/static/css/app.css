@@ -1,0 +1,11 @@
+table.stats tr th {
+    background-color: #ccf;
+}
+
+table.stats tr td {
+    font-family: sans-serif;
+}
+
+table.stats tr.stripe {
+    background-color: #eee;
+}
