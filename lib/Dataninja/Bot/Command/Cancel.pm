@@ -2,7 +2,6 @@
 use strict;
 use warnings;
 package Dataninja::Bot::Command::Cancel;
-use Time::ParseDate;
 use DateTime;
 use Dataninja::Model::Reminder;
 
