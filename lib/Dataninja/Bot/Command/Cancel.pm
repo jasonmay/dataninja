@@ -5,7 +5,6 @@ package Dataninja::Bot::Command::Cancel;
 use Time::ParseDate;
 use DateTime;
 use Dataninja::Model::Reminder;
-use DDS;
 
 =head1 DESCRIPTION
 
@@ -23,8 +22,6 @@ sub run {
     $reminders->limit(column => 'id', value => $requested_id);
 
     my $reminder = $reminders->first;
-
-    warn DDS::Dump($reminder);
 
     if (defined $reminder) {
         return "that reminder wasn't for you!" if $args->{who} ne $reminder->maker;

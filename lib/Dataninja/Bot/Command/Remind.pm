@@ -12,11 +12,11 @@ Reminds a user to blah blah TODO
 
 =cut
 
-sub pattern { qr/^(?:dataninja:\s+|#)remind\s+(\S+)\s+(.+)\s+(?:in|at|on)\s+(.+)/ }
+sub pattern { qr/^(?:dataninja:\s+|#)remind\s+(\S+)\s+(.+)\s+(in|at|on)\s+(.+)/ }
 
 sub run {
     my $args = shift;
-    my ($nick, $desc, $time) = ($1, $2, $3);
+    my ($nick, $desc, $prep, $time) = ($1, $2, $3, $4);
     my %numbers = (
         one       => 1,
         two       => 2,
@@ -54,6 +54,9 @@ sub run {
         $time =~ s/\bseveral\b/8/ge;
         $time =~ s/\ban?\b/1/ge;
     }
+
+    $time .= ' from now' if ($prep eq 'in');
+
     $nick = $args->{'who'} if $nick eq 'me';
     my $reminder = Dataninja::Model::Reminder->new;
 

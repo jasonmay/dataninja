@@ -3,7 +3,6 @@ use strict;
 use warnings;
 package Dataninja::Bot::Interface;
 use DateTime;
-use DDS; 
 use Jifty::Everything;
 use Module::Refresh;
 use base 'Bot::BasicBot';
@@ -55,7 +54,6 @@ CODE
         }
     }
     closedir CMD;
-#    Dump \@Rules;
     
 }
 

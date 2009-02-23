@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use Lexical::Persistence;
-use Data::Dump::Streamer;
+#use Data::Dump::Streamer;
 use Safe;
 
 my $lp = Lexical::Persistence->new;

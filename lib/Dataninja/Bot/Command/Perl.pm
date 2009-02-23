@@ -9,6 +9,7 @@ sub pattern { qr|^#perl\s+(.+)$| }
 sub run {
     my $code = $1;
     return undef unless $code;
+    return '!*#@$(#($)$^)^^$*^@%(@#$';
     open OUT, "> $ENV{HOME}/.fifo.out";
     print OUT "$code\n";
     close OUT;
