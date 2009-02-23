@@ -60,7 +60,7 @@ sub run {
     $nick = $args->{'who'} if $nick eq 'me';
     my $reminder = Dataninja::Model::Reminder->new;
 
-    my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York');
+    my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York', prefer_future => 1);
     my $when_to_remind = $parser->parse_datetime($time);
     $when_to_remind->set_time_zone('UTC');
 
