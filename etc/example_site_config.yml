@@ -1,0 +1,12 @@
+--- 
+framework:
+  Database:
+    CheckSchema: 1
+    Driver: Pg
+    Host: localhost
+    Password: 'dbpass'
+    User: 'dbuser'
+application:
+  nick: dataninja
+  twitteruser: twitterme
+  twitterpass: twitteryou
