@@ -1,8 +1,8 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use Time::ParseDate;
 use DateTime;
+use DateTime::Format::Natural;
 package Dataninja::Bot::Command::Remind;
 use base 'Dataninja::Bot::Command';
 
@@ -57,10 +57,13 @@ sub run {
     $nick = $args->{'who'} if $nick eq 'me';
     my $reminder = Dataninja::Model::Reminder->new;
 
-    my $when = Time::ParseDate::parsedate($time, PREFER_FUTURE => 1);
-    return "it's too late for that :(" if $when < time();
+    my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York');
+    my $when_to_remind = $parser->parse_datetime($time);
+    $when_to_remind->set_time_zone('UTC');
 
-    my $dt = DateTime->from_epoch(epoch => $when);
+    if (!$parser->success) {
+        return "huh?";
+    }
 
     my ($ok, $error) = $reminder->create(
             remindee    => $nick,
@@ -68,12 +71,16 @@ sub run {
             channel     => $args->{'channel'},
             network     => $args->{'network'},
             maker       => $args->{'who'},
-            moment      => $dt
+            moment      => $when_to_remind
             );
 
     return $error unless $ok;
-    $dt->set_time_zone('America/New_York');
-    return sprintf('will remind at: %s %s %s [id: %s]', $dt->ymd, $dt->hms, $dt->time_zone->name, $reminder->id);
+    $when_to_remind->set_time_zone('America/New_York');
+    return sprintf('will remind at: %s %s %s [id: %s]',
+        $when_to_remind->ymd,
+        $when_to_remind->hms,
+        $when_to_remind->time_zone->name,
+        $reminder->id);
 }
 
 sub usage { "#remind <nick|me> <description> (in|at) <when>" }
