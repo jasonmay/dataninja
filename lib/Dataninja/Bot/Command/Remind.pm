@@ -68,6 +68,9 @@ sub run {
         return "huh?";
     }
 
+    return "must authenticate yourself as Doc Brown to do that"
+        if DateTime->compare($when_to_remind->clone(time_zone => 'America/New_York'), DateTime->now) < 0;
+
     my ($ok, $error) = $reminder->create(
             remindee    => $nick,
             description => $desc,
