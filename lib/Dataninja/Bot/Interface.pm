@@ -5,7 +5,8 @@ package Dataninja::Bot::Interface;
 use DateTime;
 use Jifty::Everything;
 use Module::Refresh;
-use base 'Bot::BasicBot';
+use Moose;
+extends 'Bot::BasicBot';
 
 BEGIN { Jifty->new; }
 
