@@ -8,7 +8,7 @@ use base 'Dataninja::Bot::Command';
 
 =head1 DESCRIPTION
 
-Reminds a user to blah blah TODO
+Checks jobs on Craigslist
 
 =cut
 
@@ -35,6 +35,6 @@ return join q{, } =>
     (@jobs[0 .. ($#jobs > 4 ? 4 : $#jobs)]);
 }
 
-sub usage { "#remind <nick|me> <description> (in|at) <when>" }
+sub usage { "#jobs" }
 
 1;
