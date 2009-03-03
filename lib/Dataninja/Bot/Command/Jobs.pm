@@ -36,6 +36,5 @@ return join q{, } =>
 }
 
 sub usage { "#remind <nick|me> <description> (in|at) <when>" }
-sub current_user_can { 1 }
 
 1;
