@@ -65,7 +65,7 @@ sub run {
     $when_to_remind->set_time_zone('UTC');
 
     if (!$parser->success) {
-        return "huh? see http://search.cpan.org/~schubiger/DateTime-Format-Natural/lib/DateTime/Format/Natural/Lang/EN.pm";
+        return "huh? see http://tinyurl.com/dtfn-examples";
     }
 
     return "must authenticate yourself as Doc Brown to do that"
