@@ -22,7 +22,7 @@ my $craigslist = scraper {
 my $query = Jifty->config->app("clquery");
 my $job_data = $craigslist->scrape(URI->new("http://york.craigslist.org/search/jjj?query=$query"));
 
-my @jobs = @{$job_data->{titles}};
+my @jobs = @{$job_data->{titles} || []};
 
 return join q{, } =>
     map {
