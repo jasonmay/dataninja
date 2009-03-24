@@ -1,15 +1,23 @@
 #!/usr/bin/env perl
-use strict;
-use warnings;
 package Dataninja::Bot::Interface;
+use Moose;
 use DateTime;
 use Jifty::Everything;
 use Module::Refresh;
-use base 'Bot::BasicBot';
+use Module::Pluggable
+    search_path => 'Dataninja::Bot::Plugin',
+    sub_name    => 'plugins';
+
+extends 'Bot::BasicBot';
 
 BEGIN { Jifty->new; }
 
-our @Rules;
+has rules => (
+    is => 'rw',
+    isa => 'ArrayRef',
+    default => sub { [] }
+);
+
 my $assigned_network;
 
 =head1 METHODS
@@ -20,43 +28,6 @@ Loads all the commands for the bot to use on IRC.
 
 =cut
 
-sub load_modules {
-    my $self = shift;
-
-    # construct the commands here
-    my $base    = 'lib/Dataninja/Bot/Command/';
-    my $pm_base = 'Dataninja::Bot::Command';
-
-    opendir CMD, $base;
-    for (readdir CMD) {
-        next if $_ eq '.' or $_ eq '..'; 
-        next unless -f "$base/$_";
-        next unless (my $module_base = $_) =~ s/\.pm$//;
-        my $module = "${pm_base}::${module_base}";
-#        warn $_;
-
-        {
-            my $dispatch;
-            my $code = << "CODE";
-                require $module;
-
-                \$dispatch->{'name'}     = lc \$module_base;
-                \$dispatch->{'code'}     = ${module}->can('run');
-                \$dispatch->{'usage'}    = ${module}->can('usage');
-                \$dispatch->{'help'}     = ${module}->can('help');
-                \$dispatch->{'pattern'}  = ${module}->can('pattern');
-
-                push \@Rules, \$dispatch;
-CODE
-        
-            eval $code;
-            die $@ if $@;
-        }
-    }
-    closedir CMD;
-    
-}
-
 =head2 init
 
 Overridden method for loading the modules.
@@ -64,7 +35,7 @@ Overridden method for loading the modules.
 =cut
 
 sub init {
-    load_modules();
+    my $self = shift;
     return 1;
 }
 
@@ -125,7 +96,6 @@ sub record_and_say {
     );
 
     $self->say(%args);
-
 }
 
 sub _said {
@@ -143,23 +113,15 @@ sub _said {
         moment  => DateTime->now,
     );
 
-    foreach my $rule (@Rules) {
-        next unless $rule->{pattern};
-        
-        if ($args->{'body'} =~ $rule->{pattern}->()) {
-            if ($rule->{code}) {
-                warn "$rule->{name} was selected from $args->{body}";
-                my ($response, $new_rules) = $rule->{code}->($args, \@Rules);
-                @Rules = @$new_rules if $new_rules; # update rules if modified
-                return $response;
-            }
-            else {
-                return ":(\n";
-            }
-        }
+    foreach my $plugin ($self->plugins) {
+        warn $plugin;
+        (my $plugin_dir = $plugin) =~ s{::}{/}g;
+
+        require "lib/$plugin_dir.pm";
+        my $plugin_obj = $plugin->new;
+        return $plugin_obj->run;
     }
-    warn "misc";
-    return undef;
+    return ":(\n";
 }
 
 =head2 said [HASHREF]
@@ -170,7 +132,7 @@ want to respond.
 
 =cut
 
-sub said { 
+sub said {
     my $self = shift;
     my $args = shift;
     my $message = Dataninja::Model::Message->new;
