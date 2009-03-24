@@ -1,10 +1,6 @@
 package Dataninja::Bot::Plugin::Foobar;
-use Moose;
+use Moose::Role;
 
-
-
-__PACKAGE__->meta->make_immutable;
-no Moose;
+sub beeep { "catch all!" }
 
 1;
-

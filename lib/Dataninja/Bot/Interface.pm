@@ -8,17 +8,28 @@ use Module::Pluggable
     search_path => 'Dataninja::Bot::Plugin',
     sub_name    => 'plugins';
 
-extends 'Bot::BasicBot';
+extends 'Bot::BasicBot', 'Moose::Object';
+#with 'MooseX::Alien';
 
 BEGIN { Jifty->new; }
 
 has rules => (
     is => 'rw',
     isa => 'ArrayRef',
-    default => sub { [] }
+    default => sub { [] },
 );
 
-my $assigned_network;
+has dispatcher => (
+    is => 'rw',
+    isa => 'ArrayRef',
+    default => sub { [] },
+);
+
+has assigned_network => (
+    is => 'rw',
+    isa => 'Str',
+    default => '',
+);
 
 =head1 METHODS
 
@@ -46,31 +57,15 @@ Overridden to specify a network as a string for the param.
 =cut
 
 sub new {
-    my $self = shift;
-    $assigned_network = shift || 'dev';
-    my %networks = (
-        cplug => {
-            server   => 'irc.cplug.net',
-            channels => ['#hpm', '#cprb', '#cplug'],
-        },
-        efnet => {
-            server   => 'irc.efnet.net',
-            channels => ['#netmonster'],
-        },
-        freenode => {
-            server   => 'irc.freenode.net',
-            channels => ['#interhack', '#lanc-lug'],
-        },
-        dev => {
-            server   => 'localhost',
-            channels => ['#dataninja'],
-        }
-    );
+    my $class = shift;
+    my $assigned_network = $_[0];
+
+    my %networks = %{Jifty->config->app("networks")};
     my %network_lookup = map { ($_ => 1) } keys(%networks);
 
     die "Unidentified network" unless $network_lookup{$assigned_network};
 
-    $self->SUPER::new(
+    my %args = (
         server => $networks{$assigned_network}->{'server'},
         port   => "6667",
         channels => $networks{$assigned_network}->{'channels'},
@@ -80,7 +75,50 @@ sub new {
         username  => Jifty->config->app("nick"),
         name      => "IRC Bot",
     );
-}
+
+    my $obj = $class->SUPER::new(%args);
+    return $class->meta->new_object(
+        __INSTANCE__ => $obj,
+        %args,
+    );
+};
+
+#sub new {
+#    my $self = shift;
+#    $assigned_network = shift || 'dev';
+#    my %networks = (
+#        cplug => {
+#            server   => 'irc.cplug.net',
+#            channels => ['#hpm', '#cprb', '#cplug'],
+#        },
+#        efnet => {
+#            server   => 'irc.efnet.net',
+#            channels => ['#netmonster'],
+#        },
+#        freenode => {
+#            server   => 'irc.freenode.net',
+#            channels => ['#interhack', '#lanc-lug'],
+#        },
+#        dev => {
+#            server   => 'localhost',
+#            channels => ['#dataninja'],
+#        }
+#    );
+#    my %network_lookup = map { ($_ => 1) } keys(%networks);
+#
+#    die "Unidentified network" unless $network_lookup{$assigned_network};
+#
+#    $self->SUPER::new(
+#        server => $networks{$assigned_network}->{'server'},
+#        port   => "6667",
+#        channels => $networks{$assigned_network}->{'channels'},
+#
+#        nick      => Jifty->config->app("nick"),
+#        alt_nicks => [Jifty->config->app("nick") . '2'],
+#        username  => Jifty->config->app("nick"),
+#        name      => "IRC Bot",
+#    );
+#}
 
 sub record_and_say {
     my $self = shift;
@@ -91,7 +129,7 @@ sub record_and_say {
         nick    => lc Jifty->config->app("nick"),
         message => $args{'body'},
         channel => $args{'channel'},
-        network => $assigned_network,
+        network => $self->assigned_network,
         moment  => DateTime->now,
     );
 
@@ -103,7 +141,7 @@ sub _said {
     my $args = shift;
     warn sprintf('< %s> %s', $args->{'who'}, $args->{'body'});
 
-    $args->{'network'} = $assigned_network;
+    $args->{'network'} = $self->assigned_network;
     my $message = Dataninja::Model::Message->new;
     $message->create(
         nick    => lc $args->{'who'},
@@ -143,7 +181,7 @@ sub said {
         message => $said,
         channel => $args->{'channel'},
         moment  => DateTime->now,
-        network => $assigned_network
+        network => $self->assigned_network
     ) if defined($said);
 
     substr($said, 512) = q{} if $said && length($said) > 512;
@@ -172,7 +210,7 @@ sub tick {
     my $self = shift;
 # {{{
     my $reminders = Dataninja::Model::ReminderCollection->new;
-    $reminders->limit(column => 'network',  value => $assigned_network);
+    $reminders->limit(column => 'network',  value => $self->assigned_network);
     $reminders->limit(column => 'reminded', value => 0);
     $reminders->limit(column => 'canceled', value => 0);
     $reminders->limit(
@@ -201,7 +239,7 @@ sub tick {
 
 # {{{
     my $interjections = Dataninja::Model::InterjectionCollection->new;
-    $interjections->limit(column => 'network',  value => $assigned_network);
+    $interjections->limit(column => 'network',  value => $self->assigned_network);
     $interjections->limit(column => 'interjected', value => 0);
 
     $interjections->rows_per_page(1);
