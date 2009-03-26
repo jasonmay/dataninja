@@ -4,9 +4,11 @@ use Moose;
 use DateTime;
 use Jifty::Everything;
 use Module::Refresh;
-use Module::Pluggable
-    search_path => 'Dataninja::Bot::Plugin',
-    sub_name    => 'plugins';
+use Path::Dispatcher;
+#use Module::Pluggable
+#    search_path => 'Dataninja::Bot::Plugin',
+#    sub_name    => 'plugins';
+use Dataninja::Bot::Dispatcher;
 
 extends 'Bot::BasicBot', 'Moose::Object';
 #with 'MooseX::Alien';
@@ -21,8 +23,8 @@ has rules => (
 
 has dispatcher => (
     is => 'rw',
-    isa => 'ArrayRef',
-    default => sub { [] },
+    isa => 'Path::Dispatcher',
+    default => sub { Path::Dispatcher->new },
 );
 
 has assigned_network => (
@@ -145,21 +147,16 @@ sub _said {
     my $message = Dataninja::Model::Message->new;
     $message->create(
         nick    => lc $args->{'who'},
-        message => $args->{'raw_body'},
+        message => $args->{'body'},
         channel => $args->{'channel'},
         network => $args->{'network'},
         moment  => DateTime->now,
     );
 
-    foreach my $plugin ($self->plugins) {
-        warn $plugin;
-        (my $plugin_dir = $plugin) =~ s{::}{/}g;
-
-        require "lib/$plugin_dir.pm";
-        my $plugin_obj = $plugin->new;
-        return $plugin_obj->run;
-    }
-    return ":(\n";
+    my $dispatcher = Dataninja::Bot::Dispatcher->new;
+    my $dispatch = $dispatcher->dispatch($args->{'body'});
+    return ":(\n" unless $dispatch->has_matches;
+    return $dispatch->run;
 }
 
 =head2 said [HASHREF]

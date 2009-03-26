@@ -1,6 +1,12 @@
 package Dataninja::Bot::Plugin::Foobar;
-use Moose::Role;
+use Path::Dispatcher::Declarative -base;
 
-sub beeep { "catch all!" }
+on qr/^foo/ => sub {
+    return "food";
+};
+
+on qr/^bar/ => sub {
+    return "bears";
+};
 
 1;
