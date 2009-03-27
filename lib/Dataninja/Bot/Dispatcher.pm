@@ -2,9 +2,10 @@ package Dataninja::Bot::Dispatcher;
 use Moose;
 use Module::Pluggable
     search_path => 'Dataninja::Bot::Plugin',
+    except      => 'Dataninja::Bot::Plugin::Base',
     sub_name    => 'plugins',
     require     => 1;
-extends 'Path::Dispatcher';
+extends 'Dataninja::Bot::Plugin::Base';
 
 has 'prefix' => (
     is       => 'ro',
@@ -14,12 +15,18 @@ has 'prefix' => (
 
 sub BUILD {
     my $self = shift;
-
     my $under = Path::Dispatcher::Rule::Under->new(
         predicate => $self->prefix,
         rules => [
             map {
-                Path::Dispatcher::Rule::Dispatch->new(dispatcher => $_->dispatcher);
+                my $dispatcher = $_->new(
+                    nick    => $self->nick,
+                    channel => $self->channel,
+                    network => $self->network,
+                    moment  => $self->moment,
+                    message => $self->message,
+                );
+                Path::Dispatcher::Rule::Dispatch->new(dispatcher => $dispatcher)
             } $self->plugins
         ],
     );

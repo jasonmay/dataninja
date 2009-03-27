@@ -1,12 +1,18 @@
 package Dataninja::Bot::Plugin::Foobar;
-use Path::Dispatcher::Declarative -base;
+use Moose;
+use Path::Dispatcher::Builder;
+extends 'Dataninja::Bot::Plugin::Base';
 
-on qr/foo/ => sub {
-    return "food";
-};
+sub BUILD {
+    my $self = shift;
+    my $builder = Path::Dispatcher::Builder->new(dispatcher => $self);
+    $builder->on(qr/foo/ => sub {
+        return $self->nick;
+    });
 
-on qr/bar/ => sub {
-    return "bears";
-};
+    $builder->on(qr/bar/ => sub {
+        return $self->channel;
+    });
+}
 
 1;

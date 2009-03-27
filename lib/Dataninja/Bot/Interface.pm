@@ -5,10 +5,8 @@ use DateTime;
 use Jifty::Everything;
 use Module::Refresh;
 use Path::Dispatcher;
-#use Module::Pluggable
-#    search_path => 'Dataninja::Bot::Plugin',
-#    sub_name    => 'plugins';
 use Dataninja::Bot::Dispatcher;
+use DDS;
 
 extends 'Bot::BasicBot', 'Moose::Object';
 #with 'MooseX::Alien';
@@ -78,49 +76,14 @@ sub new {
         name      => "IRC Bot",
     );
 
-    my $obj = $class->SUPER::new(%args);
-    return $class->meta->new_object(
-        __INSTANCE__ => $obj,
+    my $super = $class->SUPER::new(%args);
+    my $obj = $class->meta->new_object(
+        __INSTANCE__ => $super,
         %args,
     );
+    $obj->assigned_network($assigned_network);
+    return $obj;
 };
-
-#sub new {
-#    my $self = shift;
-#    $assigned_network = shift || 'dev';
-#    my %networks = (
-#        cplug => {
-#            server   => 'irc.cplug.net',
-#            channels => ['#hpm', '#cprb', '#cplug'],
-#        },
-#        efnet => {
-#            server   => 'irc.efnet.net',
-#            channels => ['#netmonster'],
-#        },
-#        freenode => {
-#            server   => 'irc.freenode.net',
-#            channels => ['#interhack', '#lanc-lug'],
-#        },
-#        dev => {
-#            server   => 'localhost',
-#            channels => ['#dataninja'],
-#        }
-#    );
-#    my %network_lookup = map { ($_ => 1) } keys(%networks);
-#
-#    die "Unidentified network" unless $network_lookup{$assigned_network};
-#
-#    $self->SUPER::new(
-#        server => $networks{$assigned_network}->{'server'},
-#        port   => "6667",
-#        channels => $networks{$assigned_network}->{'channels'},
-#
-#        nick      => Jifty->config->app("nick"),
-#        alt_nicks => [Jifty->config->app("nick") . '2'],
-#        username  => Jifty->config->app("nick"),
-#        name      => "IRC Bot",
-#    );
-#}
 
 sub record_and_say {
     my $self = shift;
@@ -157,7 +120,14 @@ sub _said {
         prefix => 1,
         regex => qr{^(dataninja: |#)},
     );
-    my $dispatcher = Dataninja::Bot::Dispatcher->new(prefix => $prefix_rule);
+    my $dispatcher = Dataninja::Bot::Dispatcher->new(
+        prefix  => $prefix_rule,
+        nick    => lc $args->{'who'},
+        message => $args->{'body'},
+        channel => $args->{'channel'},
+        network => $args->{'network'},
+        moment  => DateTime->now,
+    );
     my $dispatch = $dispatcher->dispatch($args->{'body'});
     return ":(\n" unless $dispatch->has_matches;
     return $dispatch->run;
