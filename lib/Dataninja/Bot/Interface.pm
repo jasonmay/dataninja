@@ -81,6 +81,8 @@ sub new {
         __INSTANCE__ => $super,
         %args,
     );
+
+    # BUILD-esque code goes here
     $obj->assigned_network($assigned_network);
     return $obj;
 };
