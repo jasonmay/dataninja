@@ -1,11 +1,11 @@
 package Dataninja::Bot::Plugin::Foobar;
 use Path::Dispatcher::Declarative -base;
 
-on qr/^foo/ => sub {
+on qr/foo/ => sub {
     return "food";
 };
 
-on qr/^bar/ => sub {
+on qr/bar/ => sub {
     return "bears";
 };
 

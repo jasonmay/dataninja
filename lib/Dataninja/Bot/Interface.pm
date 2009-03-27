@@ -153,7 +153,11 @@ sub _said {
         moment  => DateTime->now,
     );
 
-    my $dispatcher = Dataninja::Bot::Dispatcher->new;
+    my $prefix_rule = Path::Dispatcher::Rule::Regex->new(
+        prefix => 1,
+        regex => qr{^(dataninja: |#)},
+    );
+    my $dispatcher = Dataninja::Bot::Dispatcher->new(prefix => $prefix_rule);
     my $dispatch = $dispatcher->dispatch($args->{'body'});
     return ":(\n" unless $dispatch->has_matches;
     return $dispatch->run;
