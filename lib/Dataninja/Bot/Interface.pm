@@ -132,7 +132,8 @@ sub _said {
     );
     my $dispatch = $dispatcher->dispatch($args->{'body'});
     return ":(\n" unless $dispatch->has_matches;
-    return $dispatch->run;
+    my $match = ($dispatch->matches)[0];
+    return $dispatch->run(defined $match->result ? $match->result->[0] : undef);
 }
 
 =head2 said [HASHREF]

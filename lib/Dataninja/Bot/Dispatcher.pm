@@ -17,6 +17,7 @@ sub BUILD {
     my $self = shift;
     my $under = Path::Dispatcher::Rule::Under->new(
         predicate => $self->prefix,
+        prefix    => 1,
         rules => [
             map {
                 my $dispatcher = $_->new(
@@ -26,7 +27,9 @@ sub BUILD {
                     moment  => $self->moment,
                     message => $self->message,
                 );
-                Path::Dispatcher::Rule::Dispatch->new(dispatcher => $dispatcher)
+                Path::Dispatcher::Rule::Dispatch->new(
+                    dispatcher => $dispatcher,
+                )
             } $self->plugins
         ],
     );

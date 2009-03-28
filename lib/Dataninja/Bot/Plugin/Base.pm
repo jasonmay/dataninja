@@ -1,6 +1,5 @@
 package Dataninja::Bot::Plugin::Base;
 use Moose;
-use Path::Dispatcher::Builder;
 extends 'Path::Dispatcher';
 
 # information of the caller
@@ -34,12 +33,6 @@ has message => (
     required => 1,
 );
 
-has builder => (
-    is => 'ro',
-    isa => 'Path::Dispatcher::Builder',
-    default => sub { Path::Dispatcher::Builder->new(dispatcher => shift) },
-);
-
 sub BUILD {
     my $self = shift;
     $self->command_setup;
@@ -49,7 +42,13 @@ sub command {
     my $self = shift;
     my $command = shift;
     my $code = shift;
-    $self->builder->on(qr/^$command/ => $code);
+    $self->add_rule(
+        Path::Dispatcher::Rule::Regex->new(
+            regex => qr/^$command(?:\s+)?(.+)?$/,
+            block => $code,
+            prefix => 1,
+        )
+    );
 }
 
 sub command_setup {
@@ -62,4 +61,3 @@ __PACKAGE__->meta->make_immutable;
 no Moose;
 
 1;
-
