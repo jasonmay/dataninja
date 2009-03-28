@@ -7,10 +7,7 @@ sub get_latest_tweet {
     my $name = shift;
 
     my $text = eval {
-        my $twitter = Net::Twitter->new(
-            username => Jifty->config->app("twitteruser"),
-            password => Jifty->config->app("twitterpass"),
-        );
+        my $twitter = Net::Twitter->new;
         my $responses = $twitter->user_timeline({id => $name});
         $responses->[0]{text};
     };
