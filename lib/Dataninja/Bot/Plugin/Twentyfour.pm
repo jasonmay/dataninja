@@ -1,12 +1,8 @@
-#!/usr/bin/env perl
-use strict;
-use warnings;
-package Dataninja::Bot::Command::Twentyfour;
-use base 'Dataninja::Bot::Command';
+package Dataninja::Bot::Plugin::Twentyfour;
+use Moose;
 use List::Permutor;
 use List::Util qw/shuffle/;
-
-sub pattern { qr|^#24\b$| }
+extends 'Dataninja::Bot::Plugin::Base';
 
 sub do_op {
     my $op = shift;
@@ -44,19 +40,32 @@ sub twenty_four {
             }
         }
     }
-    
+
     0 # :(
 }
 
-sub run {
-    my $n = 0; 
-    my @nums;
-    do {
-        @nums = ();
-        push @nums, int(rand 24)+1 for (1 .. 4);
-        return "fail" if ++$n > 1000;
-    } until (twenty_four @nums);
-    return join(' ', shuffle @nums) . "\n";
-}
+around 'command_setup' => sub {
+    my $orig = shift;
+    my $self = shift;
+
+    $self->command(
+        24 => sub {
+            my $n = 0;
+            my @nums;
+            do {
+                @nums = ();
+                push @nums, int(rand 24)+1 for (1 .. 4);
+                return "fail" if ++$n > 1000;
+            } until (twenty_four @nums);
+            return join(' ', shuffle @nums) . "\n";
+        }
+    );
+};
+
+
+
+__PACKAGE__->meta->make_immutable;
+no Moose;
 
 1;
+
