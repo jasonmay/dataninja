@@ -44,9 +44,8 @@ sub command {
     my $code = shift;
     $self->add_rule(
         Path::Dispatcher::Rule::Regex->new(
-            regex => qr/^$command(?:\s+)?(.+)?$/,
+            regex => qr/^$command(?:\s+(.+))?$/,
             block => $code,
-            prefix => 1,
         )
     );
 }
