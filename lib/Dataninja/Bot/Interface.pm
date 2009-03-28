@@ -6,10 +6,9 @@ use Jifty::Everything;
 use Module::Refresh;
 use Path::Dispatcher;
 use Dataninja::Bot::Dispatcher;
-use DDS;
+use List::Util qw/first/;
 
 extends 'Bot::BasicBot', 'Moose::Object';
-#with 'MooseX::Alien';
 
 BEGIN { Jifty->new; }
 
@@ -68,7 +67,11 @@ sub new {
     my %args = (
         server => $networks{$assigned_network}->{'server'},
         port   => "6667",
-        channels => $networks{$assigned_network}->{'channels'},
+        channels => [
+            map {
+                $_->{'name'}
+            } @{$networks{$assigned_network}->{'channels'}}
+        ],
 
         nick      => Jifty->config->app("nick"),
         alt_nicks => [Jifty->config->app("nick") . '2'],
@@ -118,9 +121,19 @@ sub _said {
         moment  => DateTime->now,
     );
 
+    my $bot_nick = Jifty->config->app('nick');
+    my $network_config = Jifty->config->app("networks")->{$args->{'network'}};
+    my $channel_config =
+        first { $_->{'name'} eq $args->{'channel'} }
+        @{$network_config->{'channels'}};
+
+    my $set_prefix = exists $channel_config->{'prefix'}
+        ? $channel_config->{'prefix'}
+        : $network_config->{'prefix'};
+
     my $prefix_rule = Path::Dispatcher::Rule::Regex->new(
         prefix => 1,
-        regex => qr{^(dataninja: |#)},
+        regex => qr{^($bot_nick: |$set_prefix)},
     );
     my $dispatcher = Dataninja::Bot::Dispatcher->new(
         prefix  => $prefix_rule,
@@ -148,6 +161,10 @@ sub said {
     my $self = shift;
     my $args = shift;
     my $message = Dataninja::Model::Message->new;
+
+    # B:BB strips the address if we are addressed
+    $args->{body} = "$args->{address}: $args->{body}"
+        if $args->{address} && $args->{address} ne 'msg';
 
     my $said = $self->_said($args, @_);
     $message->create(

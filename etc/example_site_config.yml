@@ -8,6 +8,11 @@ framework:
     User: 'dbuser'
 application:
   nick: dataninja
+    dev:
+      prefix: '#'
+      server: 'localhost'
+      channels:
+        - '#dataninja'
   twitteruser: twitterme
   twitterpass: twitteryou
   clquery: 'programmer'
