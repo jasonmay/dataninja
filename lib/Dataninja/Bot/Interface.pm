@@ -144,7 +144,7 @@ sub _said {
         moment  => DateTime->now,
     );
     my $dispatch = $dispatcher->dispatch($args->{'body'});
-    return ":(\n" unless $dispatch->has_matches;
+    return undef unless $dispatch->has_matches;
     my $match = ($dispatch->matches)[0];
     return $dispatch->run(defined $match->result ? $match->result->[0] : undef);
 }
