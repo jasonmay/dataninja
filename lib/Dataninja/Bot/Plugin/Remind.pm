@@ -59,7 +59,8 @@ around 'command_setup' => sub {
             my $reminder = Dataninja::Model::Reminder->new;
 
             my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York', prefer_future => 1);
-            my $when_to_remind = $parser->parse_datetime($time);
+            my $when_to_remind = eval { $parser->parse_datetime($time) };
+            return $@ if $@;
             $when_to_remind->set_time_zone('UTC');
 
             if (!$parser->success) {
