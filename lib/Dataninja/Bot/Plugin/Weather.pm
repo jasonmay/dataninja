@@ -65,6 +65,9 @@ around 'command_setup' => sub {
             }
             return weather_output(get_weather($place), $place);
         }
+        else {
+            return "invalid area";
+        }
     };
 
     $self->command(weather => $weather_code);
