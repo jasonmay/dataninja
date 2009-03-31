@@ -13,11 +13,9 @@ sub get_latest_timestamp_of {
     $messages->limit(column => 'nick', value => $nick);
     $messages->order_by(column => 'moment', order => 'desc');
     $messages->rows_per_page(1);
-    return "haven't seen anyone who goes by that nick"
-        if $messages->count == 0;
     my $message = $messages->next;
-    return $message->moment if $message->can('moment');
-    return "nope";
+    return $message->moment if $message && $message->can('moment');
+    return undef;
 }
 
 around 'command_setup' => sub {
@@ -31,6 +29,8 @@ around 'command_setup' => sub {
             return "seen who?" unless $nick;
 
             my $latest_moment = $self->get_latest_timestamp_of($nick);
+            return "haven't seen anyone who goes by that nick"
+                unless defined $latest_moment;
             my $messages      = Dataninja::Model::MessageCollection->new;
             $messages->limit(column => 'moment', value => $latest_moment);
             $messages->limit(column => 'nick',   value => $nick);
