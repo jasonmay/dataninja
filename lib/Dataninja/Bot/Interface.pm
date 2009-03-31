@@ -8,7 +8,8 @@ use Path::Dispatcher;
 use Dataninja::Bot::Dispatcher;
 use List::Util qw/first/;
 
-extends 'Bot::BasicBot', 'Moose::Object';
+extends 'Bot::BasicBot';
+with 'MooseX::Alien';
 
 BEGIN { Jifty->new; }
 
@@ -55,7 +56,8 @@ Overridden to specify a network as a string for the param.
 
 =cut
 
-sub new {
+around 'new' => sub {
+    my $orig = shift;
     my $class = shift;
     my $assigned_network = $_[0];
 
@@ -79,15 +81,9 @@ sub new {
         name      => "IRC Bot",
     );
 
-    my $super = $class->SUPER::new(%args);
-    my $obj = $class->meta->new_object(
-        __INSTANCE__ => $super,
-        %args,
-    );
-
-    # BUILD-esque code goes here
-    $obj->assigned_network($assigned_network);
-    return $obj;
+    my $self = $class->$orig(%args);
+    $self->assigned_network($assigned_network);
+    return $self;
 };
 
 sub record_and_say {
