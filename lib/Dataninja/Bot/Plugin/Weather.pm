@@ -33,11 +33,11 @@ around 'command_setup' => sub {
 
     my $weather_code = sub {
         my $command_args = shift;
-        my $place = crunch $command_args;
+        my $nick_being_called = (my $place) = crunch $command_args;
         my ($weather_data, $get_weather);
 
         my $areas = Dataninja::Model::AreaCollection->new;
-        $areas->limit(column => 'nick', value => ($place || $self->nick));
+        $areas->limit(column => 'nick', value => ($nick_being_called || $self->nick));
         if ($areas->count > 0) {
             my $area = $areas->next;
             my $new_place = $area->location;
