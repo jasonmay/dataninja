@@ -50,7 +50,7 @@ around 'command_setup' => sub {
 
         if ($get_weather = get_weather($place)) {
             my $areas = Dataninja::Model::AreaCollection->new;
-            $areas->limit(column => 'nick', value => $place);
+            $areas->limit(column => 'nick', value => $self->nick);
             if ($areas->count > 0) {
                 my $nick_area = $areas->next;
                 $nick_area->set_location($place);
