@@ -33,7 +33,8 @@ around 'command_setup' => sub {
 
     my $weather_code = sub {
         my $command_args = shift;
-        my $nick_being_called = (my $place) = crunch $command_args;
+        my $place;
+        my $nick_being_called = $place = crunch $command_args;
         my ($weather_data, $get_weather);
 
         my $areas = Dataninja::Model::AreaCollection->new;
