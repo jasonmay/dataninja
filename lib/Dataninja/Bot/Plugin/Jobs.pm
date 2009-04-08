@@ -10,12 +10,17 @@ around 'command_setup' => sub {
 
     $self->command(
         jobs => sub {
+            my $command_args = shift;
+            my ($place, $query) = ($command_args =~ /^\W* (\w+) \s+ (.+)/x);
+
             my $craigslist = scraper {
                 process 'blockquote>p>a', 'titles[]' => 'TEXT';
             };
 
-            my $query = Jifty->config->app("clquery");
-            my $job_data = $craigslist->scrape(URI->new("http://york.craigslist.org/search/jjj?query=$query"));
+#            my $query = Jifty->config->app("clquery");
+            my $job_data = eval { $craigslist->scrape(URI->new("http://$place.craigslist.org/search/jjj?query=$query")) };
+            return "not a craigsilst subdomain" if $@ && $@ =~ /500/;
+            return $@ if $@;
 
             my @jobs = @{defined $job_data->{titles} ? $job_data->{titles} : []};
 
