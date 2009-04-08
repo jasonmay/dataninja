@@ -12,7 +12,7 @@ around 'command_setup' => sub {
         jobs => sub {
             my $command_args = shift;
             my ($place, $query) = ($command_args =~ /^\W* (\w+) \s+ (.+)/x);
-            return "invalid args" unless $place and $query;
+            return "usage: jobs <area> <description>" unless $place and $query;
 
             my $craigslist = scraper {
                 process 'blockquote>p>a', 'titles[]' => 'TEXT';
