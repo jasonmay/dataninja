@@ -59,7 +59,7 @@ Overridden to specify a network as a string for the param.
 around 'new' => sub {
     my $orig = shift;
     my $class = shift;
-    my $assigned_network = $_[0];
+    my $assigned_network = $_[0] || 'dev';
 
     my %networks = %{Jifty->config->app("networks")};
     my %network_lookup = map { ($_ => 1) } keys(%networks);
