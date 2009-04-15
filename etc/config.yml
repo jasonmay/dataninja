@@ -1,48 +1,6 @@
---- 
-framework: 
-  AdminMode: 0
-  ApplicationClass: Dataninja
-  ApplicationName: Dataninja
-  ApplicationUUID: 101C99DC-8F36-11DC-95FC-EBC3ABBED839
-  ConfigFileVersion: 2
-  Database: 
-    CheckSchema: 1
-    Database: dataninja
-    RecordBaseClass: Jifty::DBI::Record::Cachable
-    Version: 0.0.14
-  DevelMode: 1
-  L10N: 
-    PoDir: share/po
-  LogLevel: INFO
-  Mailer: Sendmail
-  MailerArgs: []
+---
+  Main:
+    database:
+      name: dataninja
+      host: localhost
 
-  Plugins: 
-    - Authentication::Password: {} 
-    - LetMe: {} 
-    - SkeletonApp: {} 
-    - REST: {} 
-    - Halo: {} 
-    - ErrorTemplates: {} 
-    - OnlineDocs: {} 
-    - CompressedCSSandJS: {} 
-    - AdminUI: {} 
-  PubSub: 
-    Backend: Memcached
-    Enable: ~
-  SkipAccessControl: 0
-  TemplateClass: Dataninja::View
-  Web: 
-    BaseURL: http://localhost
-    DataDir: var/mason
-    Globals: []
-
-    MasonConfig: 
-      autoflush: 0
-      default_escape_flags: h
-      error_format: text
-      error_mode: fatal
-    Port: 8888
-    ServeStaticFiles: 1
-    StaticRoot: share/web/static
-    TemplateRoot: share/web/templates
