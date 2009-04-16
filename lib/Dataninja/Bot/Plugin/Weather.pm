@@ -38,7 +38,7 @@ around 'command_setup' => sub {
         my ($weather_data, $get_weather);
 
         my $area =
-            $self->schema->resultset('Area')
+            $self->rs('Area')
             ->search( {nick => ($nick_being_called || $self->nick)} )->single;
         if (defined $area) {
             my $new_place = $area->location;
@@ -50,14 +50,14 @@ around 'command_setup' => sub {
         }
 
         if ($get_weather = get_weather($place)) {
-            my $nick_area = $self->schema->resultset('Area')->search(
+            my $nick_area = $self-rs('Area')->search(
                 {nick => $self->nick}
             )->single;
             if (defined $nick_area) {
                 $nick_area->update({location => $place});
             }
             else {
-                $self->schema->resultset('Area')
+                $self->rs('Area')
                     ->create({ nick => $self->nick, location => $place, });
             }
             return weather_output(get_weather($place), $place);
