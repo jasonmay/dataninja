@@ -101,14 +101,13 @@ sub record_and_say {
     my $self = shift;
     my %args = @_;
 
-    my $message = Dataninja::Model::Message->new;
-    $message->create(
+    $self->schema->resultset('Message')->create({
         nick    => lc $self->config->site->{nick},
         message => $args{body},
         channel => $args{channel},
         network => $self->assigned_network,
         moment  => DateTime->now,
-    );
+    });
 
     $self->say(%args);
 }
@@ -127,12 +126,14 @@ sub _said {
         moment  => DateTime->now,
     });
 
-    my $bot_nick = $self->config->{'nick'};
-    my $network_config = $self->config->{'networks'}->{$args->{'network'}};
+    my $bot_nick = $self->config->site->{'nick'};
+    my $network_config = $self->config->site->{'networks'}->{$args->{'network'}};
+
     my $channel_config =
         first { $_->{'name'} eq $args->{'channel'} }
         @{$network_config->{'channels'}};
 
+    use DDS; Dump $network_config;
     my $set_prefix = exists $channel_config->{'prefix'}
         ? $channel_config->{'prefix'}
         : $network_config->{'prefix'};
@@ -153,7 +154,9 @@ sub _said {
         channel => $args->{'channel'},
         network => $args->{'network'},
         moment  => DateTime->now,
+        schema  => $self->schema,
     );
+    warn $args->{body};
     my $dispatch = $dispatcher->dispatch($args->{'body'});
     return undef unless $dispatch->has_matches;
     my $match = ($dispatch->matches)[0];
@@ -177,10 +180,9 @@ sub said {
     $args->{body} = "$args->{address}: $args->{body}"
         if $args->{address} && $args->{address} ne 'msg';
 
-    warn $self->schema;
     my $said = $self->_said($args, @_);
     $self->schema->resultset('Message')->create({
-        nick    => lc $self->config->{'Site'}->{'nick'},
+        nick    => lc $self->config->site->{'nick'},
         message => $said,
         channel => $args->{channel},
         moment  => DateTime->now,

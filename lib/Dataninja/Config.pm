@@ -43,7 +43,6 @@ sub BUILD {
     Hash::Merge::set_behavior('RIGHT_PRECEDENT');
 
     my $result = merge($default_config, $site_config);
-    Dump $result;
     $result    = merge($result        , $secret_config);
 
     $self->main($result->{Main});

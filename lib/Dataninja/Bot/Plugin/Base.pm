@@ -33,6 +33,12 @@ has message => (
     required => 1,
 );
 
+has schema => (
+    is => 'rw',
+    isa => 'Dataninja::Schema',
+    required => 1,
+);
+
 sub BUILD {
     my $self = shift;
     $self->command_setup;

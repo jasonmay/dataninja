@@ -13,6 +13,12 @@ has 'prefix' => (
     required => 1,
 );
 
+has 'schema' => (
+    is       => 'ro',
+    isa      => 'Dataninja::Schema',
+    required => 1,
+);
+
 sub BUILD {
     my $self = shift;
     my $under = Path::Dispatcher::Rule::Under->new(
@@ -26,6 +32,7 @@ sub BUILD {
                     network => $self->network,
                     moment  => $self->moment,
                     message => $self->message,
+                    schema => $self->schema,
                 );
                 Path::Dispatcher::Rule::Dispatch->new(
                     dispatcher => $dispatcher,

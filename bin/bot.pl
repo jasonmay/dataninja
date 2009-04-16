@@ -18,5 +18,5 @@ my $schema = Dataninja::Schema->connect(
 
 my $bot = Dataninja::Bot::Interface->new($config, $network, $schema);
 $bot->_plugin_app_ns(['Dataninja::Bot::Plugin']);
-$bot->load_plugin('Foobar');
+#$bot->load_plugin('Foobar');
 $bot->run;
