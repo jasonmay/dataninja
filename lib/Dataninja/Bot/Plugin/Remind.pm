@@ -56,7 +56,7 @@ around 'command_setup' => sub {
 #    $time .= ' from now' if ($prep eq 'in');
 
             $nick = $self->nick if $nick eq 'me';
-            my $reminder = Dataninja::Model::Reminder->new;
+            my $reminder = $self->rs('Reminder');
 
             my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York', prefer_future => 1);
             my $when_to_remind = eval { $parser->parse_datetime($time) };
@@ -70,22 +70,21 @@ around 'command_setup' => sub {
             return "must authenticate yourself as Doc Brown to do that"
             if DateTime->compare($when_to_remind->clone(time_zone => 'America/New_York'), DateTime->now) < 0;
 
-            my ($ok, $error) = $reminder->create(
+            my $reminder_row = $reminder->create({
                 remindee    => $nick,
                 description => $desc,
                 channel     => $self->channel,
                 network     => $self->network,
                 maker       => $self->nick,
                 moment      => $when_to_remind
-            );
+            });
 
-            return $error unless $ok;
             $when_to_remind->set_time_zone('America/New_York');
             return sprintf('will remind at: %s %s %s [id: %s]',
                 $when_to_remind->ymd,
                 $when_to_remind->hms,
                 $when_to_remind->time_zone->name,
-                $reminder->id);
+                $reminder_row->id);
     });
 # }}}
 
@@ -93,16 +92,14 @@ around 'command_setup' => sub {
             my $requested_id = shift;
             return "invalid ID" if $requested_id =~ /\D/;
 
-            my $reminders = Dataninja::Model::ReminderCollection->new;
-            $reminders->limit(column => 'id', value => $requested_id);
-
-            my $reminder = $reminders->first;
+            my $reminder
+                = $self->rs('Reminder')->search({id => $requested_id})->single;
 
             if (defined $reminder) {
                 return "that reminder wasn't for you!" if $self->nick ne $reminder->maker;
                 return "you don't need to worry about that"
                 if $reminder->reminded or $reminder->canceled;
-                $reminder->set_canceled(1);
+                $reminder->update({canceled => 1});
                 return "canceled";
             }
 
