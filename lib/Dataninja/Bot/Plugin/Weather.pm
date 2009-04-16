@@ -37,10 +37,10 @@ around 'command_setup' => sub {
         my $nick_being_called = $place = crunch $command_args;
         my ($weather_data, $get_weather);
 
-        my $areas = Dataninja::Model::AreaCollection->new;
-        $areas->limit(column => 'nick', value => ($nick_being_called || $self->nick));
-        if ($areas->count > 0) {
-            my $area = $areas->next;
+        my $area =
+            $self->schema->resultset('Area')
+            ->search( {nick => ($nick_being_called || $self->nick)} )->single;
+        if (defined $area) {
             my $new_place = $area->location;
             my $get_weather = get_weather($new_place);
             return weather_output($get_weather, $new_place);
@@ -50,19 +50,15 @@ around 'command_setup' => sub {
         }
 
         if ($get_weather = get_weather($place)) {
-            my $areas = Dataninja::Model::AreaCollection->new;
-            $areas->limit(column => 'nick', value => $self->nick);
-            if ($areas->count > 0) {
-                my $nick_area = $areas->next;
-                $nick_area->set_location($place);
+            my $nick_area = $self->schema->resultset('Area')->search(
+                {nick => $self->nick}
+            )->single;
+            if (defined $nick_area) {
+                $nick_area->update({location => $place});
             }
             else {
-                my $new_area = Dataninja::Model::Area->new;
-                my ($ok, $error) = $new_area->create(
-                    nick => $self->nick,
-                    location => $place,
-                );
-                return $error unless $ok;
+                $self->schema->resultset('Area')
+                    ->create({ nick => $self->nick, location => $place, });
             }
             return weather_output(get_weather($place), $place);
         }
