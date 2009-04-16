@@ -1,19 +1,14 @@
 --- 
-  framework:
-    Database:
-      CheckSchema: 1
-      Driver: Pg
-      Host: localhost
-      Password: 'dbpass'
-      User: 'dbuser'
-  application:
-    nick: dataninja
-      dev:
-        prefix: '#'
-        server: 'localhost'
-        channels:
-          - '#dataninja'
-    twitteruser: twitterme
-    twitterpass: twitteryou
-    clquery: 'programmer'
-
+Site:
+  nick: dataninja
+  networks:
+    dev:
+      server: localhost
+      prefix: '!'
+      channels:
+        - name: '#dataninja'
+    freenode:
+      server: 'irc.freenode.net'
+      channels:
+        - name: '#dataninja'
+          prefix: '@'
