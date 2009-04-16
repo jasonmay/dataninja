@@ -211,56 +211,46 @@ mentioned to its corresponding remindee.
 
 =cut
 
-#sub tick {
-#    my $self = shift;
-## {{{
-#    my $reminders = Dataninja::Model::ReminderCollection->new;
-#    $reminders->limit(column => 'network',  value => $self->assigned_network);
-#    $reminders->limit(column => 'reminded', value => 0);
-#    $reminders->limit(column => 'canceled', value => 0);
-#    $reminders->limit(
-#        column => 'moment',
-#        operator => '<',
-#        value => DateTime->now,
-#    );
-#
-#
-#    $reminders->rows_per_page(1);
-#    
-#    my $reminder = $reminders->next;
-#    if ($reminder) {
-#        $self->record_and_say(
-#            channel => $reminder->channel,
-#            body => sprintf(
-#                '%s: %s',
-#                $reminder->remindee,
-#                $reminder->description
-#            )
-#        );
-#
-#        $reminder->set_reminded(1);
-#    }
-# }}}
+sub tick {
+    my $self = shift;
+    my $reminder = $self->schema->resultset('Reminder')->search(
+        {
+            network  => $self->assigned_network,
+            reminded => 0,
+            canceled => 0,
+            moment => {'<' => DateTime->now }
+        }
+    )->single;
 
-# {{{
-#    my $interjections = Dataninja::Model::InterjectionCollection->new;
-#    $interjections->limit(column => 'network',  value => $self->assigned_network);
-#    $interjections->limit(column => 'interjected', value => 0);
-#
-#    $interjections->rows_per_page(1);
-#
-#    my $interjection = $interjections->next;
-#    if ($interjection) {
-#        $self->record_and_say(
-#            channel => $interjection->channel,
-#            body => $interjection->message
-#        );
-#
-#
-#        $interjection->set_interjected(1);
-#    }
-## }}}
-#    return 5;
-#}
+    if ($reminder) {
+        $self->record_and_say(
+            channel => $reminder->channel,
+            body => sprintf(
+                '%s: %s',
+                $reminder->remindee,
+                $reminder->description
+            )
+        );
+
+        $reminder->update({reminded => 1});
+    }
+
+    my $interjection = $self->schema->resultset('Interjection')->search(
+        {
+            network     => $self->assigned_network,
+            interjected => 0,
+        }
+    )->single;
+    if ($interjection) {
+        $self->record_and_say(
+            channel => $interjection->channel,
+            body    => $interjection->message
+        );
+
+
+        $interjection->update({interjected => 1});
+    }
+    return 5;
+}
 
 1;
