@@ -133,7 +133,6 @@ sub _said {
         first { $_->{'name'} eq $args->{'channel'} }
         @{$network_config->{'channels'}};
 
-    use DDS; Dump $network_config;
     my $set_prefix = exists $channel_config->{'prefix'}
         ? $channel_config->{'prefix'}
         : $network_config->{'prefix'};
