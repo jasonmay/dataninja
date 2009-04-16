@@ -9,13 +9,15 @@ sub get_latest_timestamp_of {
     my $self = shift;
     my $nick = shift;
 
-    my $messages = Dataninja::Model::MessageCollection->new;
-    $messages->limit(column => 'nick', value => $nick);
-    $messages->order_by(column => 'moment', order => 'desc');
-    $messages->rows_per_page(1);
-    my $message = $messages->next;
-    return $message->moment if $message && $message->can('moment');
-    return undef;
+    return $self->rs('Message')->search(
+        {
+            nick => $nick,
+        },
+        {
+            order_by => 'moment desc',
+            rows     => 1,
+        }
+    )->single->moment;
 }
 
 around 'command_setup' => sub {
@@ -31,17 +33,19 @@ around 'command_setup' => sub {
             my $latest_moment = $self->get_latest_timestamp_of($nick);
             return "haven't seen anyone who goes by that nick"
                 unless defined $latest_moment;
-            my $messages      = Dataninja::Model::MessageCollection->new;
-            $messages->limit(column => 'moment', value => $latest_moment);
-            $messages->limit(column => 'nick',   value => $nick);
-            my $message = $messages->next;
+            my $message = $self->rs('Message')->search(
+                {
+                    moment => $latest_moment,
+                    nick   => $nick,
+                }
+            )->single->message;
 
             return
                 sprintf(
                     "%s: <%s> %s",
                     $latest_moment,
                     $nick,
-                    $message->message
+                    $message
                 );
         }
     );
