@@ -61,6 +61,14 @@ sub command_setup {
     my $code = shift;
 }
 
+# sugar for returning DBIC resultsets
+sub rs {
+    my $self = shift;
+    my $schema_class = shift;
+
+    return $self->schema->resultset($schema_class);
+}
+
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
