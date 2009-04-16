@@ -13,23 +13,26 @@ around 'command_setup' => sub {
     my $self = shift;
 
     $self->command(
-        last => sub {
+        'last' => sub {
             my $command_args = shift;
-            my $messages = Dataninja::Model::MessageCollection->new;
-            $messages->limit(column => 'network', value => $self->network);
-            $messages->limit(column => 'channel', value => $self->channel);
-            $messages->order_by(column => 'moment', order => 'desc');
 
-            my $num = defined $1 ? $1 : 25;
-            $num = 200 if $num > 200;
-            $num = 10 if $num < 10;
-            $messages->rows_per_page($num);
+            my $rows = defined $command_args ? $command_args : 25;
+            $rows = 200 if $rows > 200;
+            $rows = 10 if $rows < 10;
 
-            return "Last $num lines: " . nopaste(
+            my @messages = $self->rs('Message')->search(
+                {
+                    network => $self->network,
+                    channel => $self->channel,
+                },
+                { rows => $rows, order_by => 'moment desc'}
+            );
+
+            return "Last $rows lines: " . nopaste(
                 join qq{\n} =>
                 map {
-                    _line($_->moment, $_->nick->name, $_->message)
-                } reverse @$messages
+                    _line($_->moment, $_->nick, $_->message)
+                } reverse @messages
             );
         });
 };
