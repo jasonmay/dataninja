@@ -50,7 +50,7 @@ around 'command_setup' => sub {
         }
 
         if ($get_weather = get_weather($place)) {
-            my $nick_area = $self-rs('Area')->search(
+            my $nick_area = $self->rs('Area')->search(
                 {nick => $self->nick}
             )->single;
             if (defined $nick_area) {
