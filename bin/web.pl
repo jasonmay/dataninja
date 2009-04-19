@@ -96,7 +96,7 @@ sub channel_html {
                 attr {
                     rel  => 'stylesheet',
                     href => '/css/main.css',
-                    type => '/text/css',
+                    type => 'text/css',
                 }
             }
         }
@@ -133,7 +133,7 @@ my $index_code = html {
             attr {
                 rel  => 'stylesheet',
                 href => '/css/main.css',
-                type => '/text/css',
+                type => 'text/css',
             }
         }
     }
