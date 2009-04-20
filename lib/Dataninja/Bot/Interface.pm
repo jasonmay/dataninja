@@ -2,19 +2,12 @@
 package Dataninja::Bot::Interface;
 use Moose;
 use DateTime;
-use Module::Refresh;
 use Path::Dispatcher;
 use Dataninja::Bot::Dispatcher;
 use List::Util qw/first/;
 
 extends 'Bot::BasicBot';
 with 'MooseX::Alien';
-
-has rules => (
-    is => 'rw',
-    isa => 'ArrayRef',
-    default => sub { [] },
-);
 
 has dispatcher => (
     is => 'rw',
