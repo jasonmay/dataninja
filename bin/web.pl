@@ -138,6 +138,7 @@ my $index_code = html {
         }
     }
     body {
+        h1 { "Dataninja stats" }
         ul {
             for my $network (keys %channels) {
                 my_mkdir "$network";
