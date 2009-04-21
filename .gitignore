@@ -1,3 +1,6 @@
 dataninja
 etc/site_config.yml
 etc/secret_config.yml
+.DS_Store
+doc/site
+!doc/site/css/main.css
