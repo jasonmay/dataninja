@@ -9,7 +9,7 @@ sub get_latest_timestamp_of {
     my $self = shift;
     my $nick = shift;
 
-    return $self->rs('Message')->search(
+    my $row = $self->rs('Message')->search(
         {
             nick => $nick,
         },
@@ -17,7 +17,9 @@ sub get_latest_timestamp_of {
             order_by => 'moment desc',
             rows     => 1,
         }
-    )->single->moment;
+    )->single;
+
+    return defined $row ? $row->moment : undef;
 }
 
 around 'command_setup' => sub {
