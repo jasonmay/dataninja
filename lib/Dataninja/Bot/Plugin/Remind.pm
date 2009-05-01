@@ -2,13 +2,13 @@ package Dataninja::Bot::Plugin::Remind;
 use Moose;
 use DateTime;
 use DateTime::Format::Natural;
+use DateTime::Format::Pg;
 extends 'Dataninja::Bot::Plugin::Base';
 
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;
 
-    # remind {{{
     $self->command(remind => sub {
             my $command_args = shift;
             my ($nick, $desc, $time) =
@@ -53,19 +53,23 @@ around 'command_setup' => sub {
                 $time =~ s/\ban?\b/1/ge;
             }
 
-#    $time .= ' from now' if ($prep eq 'in');
-
             $nick = $self->nick if $nick eq 'me';
             my $reminder = $self->rs('Reminder');
 
             my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York', prefer_future => 1);
             my $when_to_remind = eval { $parser->parse_datetime($time) };
             return $@ if $@;
-            $when_to_remind->set_time_zone('UTC');
 
             if (!$parser->success) {
-                return "huh? see http://tinyurl.com/dtfn-examples";
+                $when_to_remind = eval {
+                    DateTime::Format::Pg->parse_datetime($time);
+                };
+                return $@ if $@;
+                return "huh? see http://tinyurl.com/dtfn-examples"
+                    unless defined $when_to_remind;
             }
+
+            $when_to_remind->set_time_zone('UTC');
 
             return "must authenticate yourself as Doc Brown to do that"
             if DateTime->compare($when_to_remind->clone(time_zone => 'America/New_York'), DateTime->now) < 0;
@@ -86,7 +90,6 @@ around 'command_setup' => sub {
                 $when_to_remind->time_zone->name,
                 $reminder_row->id);
     });
-# }}}
 
     $self->command(cancel => sub {
             my $requested_id = shift;
