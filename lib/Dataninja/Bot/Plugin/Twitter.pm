@@ -2,6 +2,7 @@ package Dataninja::Bot::Plugin::Twitter;
 use Moose;
 extends 'Dataninja::Bot::Plugin::Base';
 use Net::Twitter;
+use String::Util 'crunch';
 
 sub get_latest_tweet {
     my $name = shift;
@@ -21,7 +22,8 @@ around 'command_setup' => sub {
 
     $self->command(twitter => sub {
         my $command_args = shift;
-        return "tweet: " . get_latest_tweet($command_args);
+        my $name = crunch($command_args) || $self->nick;
+        return "tweet: " . get_latest_tweet($name);
     });
 };
 # }}}
