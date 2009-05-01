@@ -9,29 +9,23 @@ around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;
 
-    my $englishify = sub {
-        my $command_args = shift;
-        my $result = REST::Google::Translate->new(
-            q => $command_args,
-            langpair => 'es|en',
-        );
-        return $result->responseData->translatedText;
+    my $create_translator = sub {
+        my $langpair = shift;
+        return sub {
+            my $command_args = shift;
+            my $result = REST::Google::Translate->new(
+                q => $command_args,
+                langpair => $langpair,
+            );
+            return $result->responseData->translatedText;
+        };
     };
 
-    my $spanishify = sub {
-        my $command_args = shift;
-        my $result = REST::Google::Translate->new(
-            q => $command_args,
-            langpair => 'en|es',
-        );
-        return $result->responseData->translatedText;
-    };
+    $self->command(en => $create_translator->('es|en'));
+    $self->command(es => $create_translator->('en|es'));
 
-    $self->command(en => $englishify);
-    $self->command(es => $spanishify);
-
-    $self->command(englishify => $englishify);
-    $self->command(spanishify => $spanishify);
+    $self->command(englishify => $create_translator->('es|en'));
+    $self->command(spanishify => $create_translator->('en|es'));
 };
 
 
