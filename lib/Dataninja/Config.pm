@@ -2,7 +2,50 @@ package Dataninja::Config;
 use Moose;
 use YAML 'LoadFile';
 use Hash::Merge qw/merge/;
-use DDS;
+
+=head1 DESCRIPTION
+
+Dataninja::Config - Dataninja configuration through YAML files
+
+This is the class you use to grab information from config files, such as
+the channels that dataninja connects to, Dataninja's nick, database
+information, that list goes on.
+
+There are three attributes: there are three configurations:  default,
+site, and secret. In the end, the configurations are merged (secret having the
+most precendence, and default having the least).
+
+=head1 ATTRIBUTES
+
+=head2 default_config
+
+(Str) File for the default configuration for Dataninja (for things such
+as database name and host). If no file is specified, it defaults
+to etc/config.yml.
+
+=head2 site_config
+
+(Str) File for site-specific information. This includes things like IRC
+networks, channels, command prefixes, and any  custom data you like.
+The file defaults to etc/site_config.yml. See etc/example_site_config.yml
+for details.
+
+=head2 secret_config
+
+(Str) File for storing secret information such as passwords. This file defaults
+to etc/secret_config.
+
+=head2 main
+
+(HashRef) The object that has all the configuation information for the main 
+configuration, such as database information.
+
+=head2 site
+
+(HashRef) The object that has all the site-specific configuation information,
+such as external applicaiton credentials, channels, the nick of the bot, etc.
+
+=cut
 
 has default_config => (
     is  => 'rw',
@@ -24,13 +67,13 @@ has secret_config => (
 
 has main => (
     is  => 'rw',
-    isa => 'Any',
+    isa => 'HashRef',
     default => sub { +{} },
 );
 
 has site => (
     is  => 'rw',
-    isa => 'Any',
+    isa => 'HashRef',
     default => sub { +{} },
 );
 

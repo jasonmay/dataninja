@@ -9,6 +9,32 @@ use List::Util qw/first/;
 extends 'Bot::BasicBot';
 with 'MooseX::Alien';
 
+=head1 DESCRIPTION
+
+Dataninja::Bot::Interface is an extension of Bot::BasicBot. This is the core
+interface needed to run Dataninja.
+
+=head1 ATTRIBUTES
+
+=head2 dispatcher
+
+(Path::Dispatcher) The object that Dataninja uses to parse the IRC users' input.
+
+=head2 assigned_network
+
+(Str) The network on which the Dataninja process resides.
+
+=head2 config
+
+(Dataninja::Config) The configuration structure loaded from YAML file(s).
+
+=head2 schema
+
+(Dataninja::Schema) The interface that Dataninja uses to interact with the
+database.
+
+=cut
+
 has dispatcher => (
     is => 'rw',
     isa => 'Path::Dispatcher',
@@ -89,6 +115,13 @@ around 'new' => sub {
     $self->schema($schema);
     return $self;
 };
+
+=head2 record_and_say
+
+A wrapper around 'say' that logs the IRC message to the database as well as
+talk to the IRC channel.
+
+=cut
 
 sub record_and_say {
     my $self = shift;
@@ -187,7 +220,7 @@ sub said {
 
 =head2 run
 
-One two three four! El oh el!
+The method to run the Dataninja bot.
 
 =cut
 

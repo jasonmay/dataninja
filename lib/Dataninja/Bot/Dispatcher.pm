@@ -7,6 +7,30 @@ use Module::Pluggable
     require     => 1;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Dispatcher - Class for building Dataninja's dispatcher
+
+=head1 DESCRIPTION
+
+This class constructs Dataninja's dispatcher from all the plugins in
+L<Dataninja::Bot::Plugin>.
+
+=head1 ATTRIBUTES
+
+=head2 prefix
+
+(L<Path::Dispatcher::PrefixRule>) Predicate for the dispatcher for handling the
+initially symbolic prefix in front of commands, such as C<<!>>, C<<@>>,
+or C<<#>>.
+
+=head2 schema
+
+(L<Dataninja::Schema>) This is just a copy of the database schema for plugin
+access.
+
+=cut
+
 has 'prefix' => (
     is       => 'ro',
     isa      => 'Path::Dispatcher::PrefixRule',
