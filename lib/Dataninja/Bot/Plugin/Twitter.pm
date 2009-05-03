@@ -23,7 +23,11 @@ around 'command_setup' => sub {
     $self->command(twitter => sub {
         my $command_args = shift;
         my $name = crunch($command_args) || $self->nick;
-        return "tweet: " . get_latest_tweet($name);
+        my $tweet = get_latest_tweet($name);
+        return "tweet: $tweet" if $tweet;
+
+        # at this point, no tweeple exist by that name
+        return "that name is not owned by any tweeple";
     });
 };
 # }}}
