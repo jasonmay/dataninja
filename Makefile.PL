@@ -1,0 +1,40 @@
+use inc::Module::Install;
+
+name           'Dataninja';
+license        'perl';
+author         'Jason May <jason.a.may@gmail.com>';
+all_from       'lib/Dataninja.pm';
+perl_version   '5.8.8';
+
+build_requires 'Test::More';
+requires 'App::Nopaste';
+requires 'Chart::Clicker';
+requires 'Chart::Clicker::Renderer::Bar';
+requires 'DBI';
+requires 'DateTime::Duration';
+requires 'DateTime::Format::Duration';
+requires 'DateTime::Format::Human::Duration';
+requires 'DateTime::Format::Natural';
+requires 'DateTime::Format::Pg';
+requires 'DateTime';
+requires 'Hash::Merge';
+requires 'List::MoreUtils';
+requires 'List::Permutor';
+requires 'List::Util';
+requires 'Module::Pluggable';
+requires 'Moose';
+requires 'MooseX::Alien';
+requires 'Net::Hiveminder';
+requires 'Net::Twitter';
+requires 'Path::Dispatcher';
+requires 'REST::Google::Translate';
+requires 'String::Util';
+requires 'String::Util';
+requires 'URI';
+requires 'WWW::Google::Calculator';
+requires 'Weather::Underground';
+requires 'Web::Scraper';
+requires 'YAML';
+
+auto_install;
+WriteAll;
