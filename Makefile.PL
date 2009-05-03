@@ -10,7 +10,7 @@ build_requires 'Test::More';
 requires 'App::Nopaste';
 requires 'Chart::Clicker';
 requires 'Chart::Clicker::Renderer::Bar';
-requires 'DBI';
+requires 'DBD::Pg';
 requires 'DateTime::Duration';
 requires 'DateTime::Format::Duration';
 requires 'DateTime::Format::Human::Duration';
