@@ -29,7 +29,6 @@ requires 'Net::Twitter';
 requires 'Path::Dispatcher';
 requires 'REST::Google::Translate';
 requires 'String::Util';
-requires 'String::Util';
 requires 'URI';
 requires 'WWW::Google::Calculator';
 requires 'Weather::Underground';
