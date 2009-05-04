@@ -3,6 +3,17 @@ use Moose;
 use DateTime::Format::Natural;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Daysuntil - displays days until whatever time you
+provide
+
+=head1 COMMANDS
+
+=item * daysuntil B<day>
+
+=cut
+
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;

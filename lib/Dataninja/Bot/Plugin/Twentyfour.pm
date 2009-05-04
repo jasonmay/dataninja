@@ -4,6 +4,19 @@ use List::Permutor;
 use List::Util qw/shuffle/;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Twentyfour - I<Math 24> programmed into the bot
+
+=head1 COMMANDS
+
+=item 24
+
+The bot gives you four numbers in which some way you can add, subtract,
+mulitiply and/or divide to make 24. For boredom purposes. :)
+
+=cut
+
 sub do_op {
     my $op = shift;
     return sub { $_[0] + $_[1] } if $op eq '+';

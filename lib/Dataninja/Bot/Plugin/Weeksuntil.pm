@@ -4,6 +4,17 @@ use DateTime::Format::Natural;
 use DateTime::Format::Duration;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Weeksuntil - displays weeks until whatever time you
+provide
+
+=head1 COMMANDS
+
+=item * weeksuntil B<day>
+
+=cut
+
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;

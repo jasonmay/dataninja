@@ -5,6 +5,30 @@ extends 'Dataninja::Bot::Plugin::Base';
 
 REST::Google::Translate->http_referer('http://www.google.com');
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Translating - translation tools
+
+=head1 COMMANDS
+
+=item * spanishify B<message>
+
+The bot translates your message from English to Spanish.
+
+=item * es B<message>
+
+This is an alias for spanishify.
+
+=item * englishify B<message>
+
+The bot translates your message from Spanish to English.
+
+=item * en B<message>
+
+This is an alias for englishify.
+
+=cut
+
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;

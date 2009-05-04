@@ -2,6 +2,17 @@ package Dataninja::Bot::Plugin::Colors;
 use Moose;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Colors - display list of colors corresponding to ASCII
+values
+
+=head1 COMMANDS
+
+=item * colors
+
+=cut
+
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;

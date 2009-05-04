@@ -4,6 +4,41 @@ use Weather::Underground;
 use String::Util qw/crunch/;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Weather - get current weather information from Weather Underground
+
+=head1 COMMANDS
+
+=item * weather B<[nick|location]>
+
+The way you use this command is like so:
+
+ < jasonmay> !weather
+ < macbookDN> you have no location set!
+ < jasonmay> !weather 17313
+ < dataninja> weather for "17313" - temp: 53.1F (11.7C). humidity: 100%. 
+              wind: 0.0mph. conditions: Light Rain.
+ < jasonmay> !weather
+ < dataninja> weather for "17313" - temp: 53.1F (11.7C). humidity: 100%. 
+              wind: 0.0mph. conditions: Light Rain.
+ < otherguy> !weather 90210
+ < dataninja> weather for "90210" - temp: 65.3F (18.5C). humidity: 68%. 
+              wind: 0.0mph. conditions: Clear.
+ < otherguy> !weather
+ < dataninja> weather for "90210" - temp: 65.3F (18.5C). humidity: 68%. 
+              wind: 0.0mph. conditions: Clear.
+ < otherguy> !weather jasonmay
+ < dataninja> weather for "17313" - temp: 53.1F (11.7C). humidity: 100%. 
+              wind: 0.0mph. conditions: Light Rain.
+
+
+=item * w
+
+This is an alias for B<weather>.
+
+=cut
+
 sub get_weather  {
     my $place = shift;
     my $weather_data = Weather::Underground->new(place => $place)
@@ -41,7 +76,9 @@ around 'command_setup' => sub {
             $self->rs('Area')
             ->search({
                 nick => ($nick_being_called || $self->message_data->nick)
-            })->single;
+            },
+            {rows => 1},
+        )->single;
         if (defined $area) {
             my $new_place = $area->location;
             my $get_weather = get_weather($new_place);
@@ -53,7 +90,8 @@ around 'command_setup' => sub {
 
         if ($get_weather = get_weather($place)) {
             my $nick_area = $self->rs('Area')->search(
-                {nick => $self->message_data->nick}
+                {nick => $self->message_data->nick},
+                {rows => 1},
             )->single;
             if (defined $nick_area) {
                 $nick_area->update({location => $place});

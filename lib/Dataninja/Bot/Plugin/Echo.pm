@@ -2,6 +2,16 @@ package Dataninja::Bot::Plugin::Echo;
 use Moose;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Plugin::Echo - the bot merely echos what you put, for random utility
+
+=head1 COMMANDS
+
+=item * echo B<message>
+
+=cut
+
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;

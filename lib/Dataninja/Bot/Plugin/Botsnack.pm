@@ -2,6 +2,18 @@ package Dataninja::Bot::Plugin::Botsnack;
 use Moose;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Botsnack - bot gets a snack for making you happy :)
+
+=head1 COMMANDS
+
+=item * botsnack
+
+You give the bot a botsnack, and he responds with gratitude.
+
+=cut
+
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;

@@ -4,6 +4,17 @@ use URI;
 use Web::Scraper;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Plugin::Jobs - you supply craigslist subdomain and search query,
+the bot responds with results
+
+=head1 COMMANDS
+
+=item * jobs B<[area]> B<[query]>
+
+=cut
+
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;

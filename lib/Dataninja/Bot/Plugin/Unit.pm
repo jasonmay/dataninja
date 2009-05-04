@@ -3,6 +3,24 @@ use Moose;
 use WWW::Google::Calculator;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Unit - the bot can do unit conversion for you
+
+=head1 COMMANDS
+
+=item * unit B<conversion>
+
+The bot talks to Google Calculator to do the unit conversion for you. You also
+have access to result history, particularly the last ten results (C<$0> to
+C<$9>).
+
+=item * u
+
+This is an alias for B<unit>.
+
+=cut
+
 my @history;
 around 'command_setup' => sub {
     my $orig = shift;

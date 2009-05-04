@@ -3,6 +3,18 @@ use Moose;
 use Net::Hiveminder;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Task - add task to your hiveminder that pertains to dataninja
+
+=head1 COMMANDS
+
+=item * task B<description>
+
+This command adds the task, strips any priority manipulation and slaps on the tag B<irc_dataninja>.
+
+=cut
+
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;

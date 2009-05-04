@@ -4,6 +4,20 @@ extends 'Dataninja::Bot::Plugin::Base';
 use Net::Twitter;
 use String::Util 'crunch';
 
+=head1 NAME
+
+Daataninja::Bot::Plugin::Twitter - get the latest tweet of yourself or someone
+else
+
+=head1 COMMANDS
+
+=item twitter B<[tweeter]>
+
+Get the latest tweet by B<tweeter>. If you don't specify a tweeter, it defaults
+to your nick.
+
+=cut
+
 sub get_latest_tweet {
     my $name = shift;
 

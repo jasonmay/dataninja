@@ -3,6 +3,18 @@ use App::Nopaste 'nopaste';
 use Moose;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Last - you tell the bot show many of the last N messages you wan to see
+
+=head1 COMMANDS
+
+=item * last B<#>
+
+The bot nopastes the last B<#> lines and shows it to you.
+
+=cut
+
 sub _line {
     my ($timestamp, $nick, $message) = @_;
     return sprintf("%s <%s> %s", $timestamp, $nick, $message);

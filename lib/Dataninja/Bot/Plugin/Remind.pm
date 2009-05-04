@@ -5,6 +5,27 @@ use DateTime::Format::Natural;
 use DateTime::Format::Pg;
 extends 'Dataninja::Bot::Plugin::Base';
 
+=head1 NAME
+
+Dataninja::Bot::Plugin::Remind - you can make and cancel reminders
+
+=head1 COMMANDS
+
+=item * remind
+
+When you make a reminder, the bot tells you when it will fire and give you an ID for manipulation/deltion. The bot will say something when the time arrives.
+
+  21:49:04 < jasonmay> !remind me The Office is on > 20 seconds from now
+  21:49:04 < dataninja> will remind at: 2009-05-03 21:49:24 America/New_York [id: 651]
+  21:49:24 < dataninja> jasonmay: The Office is on
+
+
+=item * cancel B<ID>
+
+Cancel the reminder by supplying the ID.
+
+=cut
+
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;
@@ -16,33 +37,15 @@ around 'command_setup' => sub {
             return "format: remind NICK (message) > when"
                 unless defined $nick and defined $desc and defined $time;
             my %numbers = (
-                one       => 1,
-                two       => 2,
-                three     => 3,
-                four      => 4,
-                five      => 5,
-                six       => 6,
-                seven     => 7,
-                eight     => 8,
-                nine      => 9,
-                ten       => 10,
-                eleven    => 11,
-                twelve    => 12,
-                thirteen  => 13,
-                fourteen  => 14,
-                fifteen   => 15,
-                sixteen   => 16,
-                seventeen => 17,
-                eighteen  => 18,
-                nineteen  => 19,
-                twenty    => 20,
-                thirty    => 30,
-                fourty    => 40,
-                fifty     => 50,
-                sixty     => 60,
-                seventy   => 70,
-                eighty    => 80,
-                ninty     => 90,
+                one       => 1,   two        => 2,   three      => 3,
+                four      => 4,   five       => 5,   six        => 6,
+                seven     => 7,   eight      => 8,   nine       => 9,
+                ten       => 10,  eleven     => 11,  twelve    => 12,
+                thirteen  => 13,  fourteen   => 14,  fifteen   => 15,
+                sixteen   => 16,  seventeen  => 17,  eighteen  => 18,
+                nineteen  => 19,  twenty     => 20,  thirty    => 30,
+                fourty    => 40,  fifty      => 50,  sixty     => 60,
+                seventy   => 70,  eighty     => 80,  ninty     => 90,
                 ninety    => 90,
             );
 
@@ -96,7 +99,10 @@ around 'command_setup' => sub {
             return "invalid ID" if $requested_id =~ /\D/;
 
             my $reminder
-                = $self->rs('Reminder')->search({id => $requested_id})->single;
+                = $self->rs('Reminder')->search(
+                    {id => $requested_id},
+                    {rows => 1},
+                )->single;
 
             if (defined $reminder) {
                 return "that reminder wasn't for you!" if $self->message_data->nick ne $reminder->maker;
