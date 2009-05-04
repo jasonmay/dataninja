@@ -53,7 +53,7 @@ around 'command_setup' => sub {
                 $time =~ s/\ban?\b/1/ge;
             }
 
-            $nick = $self->nick if $nick eq 'me';
+            $nick = $self->message_data->nick if $nick eq 'me';
             my $reminder = $self->rs('Reminder');
 
             my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York', prefer_future => 1);
@@ -77,9 +77,9 @@ around 'command_setup' => sub {
             my $reminder_row = $reminder->create({
                 remindee    => $nick,
                 description => $desc,
-                channel     => $self->channel,
-                network     => $self->network,
-                maker       => $self->nick,
+                channel     => $self->message_data->channel,
+                network     => $self->message_data->network,
+                maker       => $self->message_data->nick,
                 moment      => $when_to_remind
             });
 
@@ -99,7 +99,7 @@ around 'command_setup' => sub {
                 = $self->rs('Reminder')->search({id => $requested_id})->single;
 
             if (defined $reminder) {
-                return "that reminder wasn't for you!" if $self->nick ne $reminder->maker;
+                return "that reminder wasn't for you!" if $self->message_data->nick ne $reminder->maker;
                 return "you don't need to worry about that"
                 if $reminder->reminded or $reminder->canceled;
                 $reminder->update({canceled => 1});

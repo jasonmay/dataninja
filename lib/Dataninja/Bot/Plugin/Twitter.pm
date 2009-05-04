@@ -22,7 +22,7 @@ around 'command_setup' => sub {
 
     $self->command(twitter => sub {
         my $command_args = shift;
-        my $name = crunch($command_args) || $self->nick;
+        my $name = crunch($command_args) || $self->message_data->nick;
         my $tweet = get_latest_tweet($name);
         return "tweet: $tweet" if $tweet;
 

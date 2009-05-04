@@ -1,37 +1,45 @@
 package Dataninja::Bot::Plugin::Base;
 use Moose;
+use DBIx::Class::Row;
 extends 'Path::Dispatcher';
 
+
 # information of the caller
-has nick => (
-    is => 'ro',
-    isa => 'Str',
+has message_data => (
+    is       => 'ro',
+    isa      => 'DBIx::Class::Row',
     required => 1,
 );
 
-has channel => (
-    is => 'ro',
-    isa => 'Str',
-    required => 1,
-);
-
-has network => (
-    is => 'ro',
-    isa => 'Str',
-    required => 1,
-);
-
-has moment => (
-    is => 'ro',
-    isa => 'DateTime',
-    required => 1,
-);
-
-has message => (
-    is => 'ro',
-    isa => 'Str',
-    required => 1,
-);
+#has nick => (
+#    is => 'ro',
+#    isa => 'Str',
+#    required => 1,
+#);
+#
+#has channel => (
+#    is => 'ro',
+#    isa => 'Str',
+#    required => 1,
+#);
+#
+#has network => (
+#    is => 'ro',
+#    isa => 'Str',
+#    required => 1,
+#);
+#
+#has moment => (
+#    is => 'ro',
+#    isa => 'DateTime',
+#    required => 1,
+#);
+#
+#has message => (
+#    is => 'ro',
+#    isa => 'Str',
+#    required => 1,
+#);
 
 has schema => (
     is => 'rw',

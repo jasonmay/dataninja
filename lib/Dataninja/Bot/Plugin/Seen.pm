@@ -3,7 +3,7 @@ use Moose;
 extends 'Dataninja::Bot::Plugin::Base';
 use DateTime::Format::Pg;
 use DateTime::Duration;
-use DateTime::Format::Duration;
+use DateTime::Format::Human::Duration;
 
 sub get_latest_timestamp_of {
     my $self = shift;
@@ -32,7 +32,10 @@ around 'command_setup' => sub {
             my $nick         = lc $command_args;
             return "seen who?" unless $nick;
 
-            my $latest_moment = $self->get_latest_timestamp_of($nick);
+            my $latest_moment = DateTime::Format::Human::Duration->new->format_duration_between(
+                DateTime::Format::Pg->parse_datetime($self->get_latest_timestamp_of($nick)),
+                DateTime->now
+            );
             return "haven't seen anyone who goes by that nick"
                 unless defined $latest_moment;
             my $message = $self->rs('Message')->search(

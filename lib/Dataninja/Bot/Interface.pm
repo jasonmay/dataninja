@@ -144,7 +144,7 @@ sub _said {
     warn sprintf('< %s> %s', $args->{'who'}, $args->{'body'});
 
     $args->{'network'} = $self->assigned_network;
-    $self->schema->resultset('Message')->create({
+    my $message_data = $self->schema->resultset('Message')->create({
         nick    => lc $args->{'who'},
         message => $args->{'body'},
         channel => $args->{'channel'},
@@ -173,13 +173,14 @@ sub _said {
     }
 
     my $dispatcher = Dataninja::Bot::Dispatcher->new(
-        prefix  => $prefix_rule,
-        nick    => lc $args->{'who'},
-        message => $args->{'body'},
-        channel => $args->{'channel'},
-        network => $args->{'network'},
-        moment  => DateTime->now,
-        schema  => $self->schema,
+        prefix    => $prefix_rule,
+        message_data => $message_data,
+#        nick    => lc $args->{'who'},
+#        message => $args->{'body'},
+#        channel => $args->{'channel'},
+#        network => $args->{'network'},
+#        moment  => DateTime->now,
+        schema   => $self->schema,
     );
     warn $args->{body};
     my $dispatch = $dispatcher->dispatch($args->{'body'});

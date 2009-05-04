@@ -22,8 +22,8 @@ around 'command_setup' => sub {
 
             my @messages = $self->rs('Message')->search(
                 {
-                    network => $self->network,
-                    channel => $self->channel,
+                    network => $self->message_data->network,
+                    channel => $self->message_data->channel,
                 },
                 { rows => $rows, order_by => 'moment desc'}
             );
