@@ -2,7 +2,7 @@ package Dataninja::Bot::Plugin::Jobs;
 use Moose;
 use URI;
 use Web::Scraper;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

@@ -1,7 +1,7 @@
 package Dataninja::Bot::Plugin::Daysuntil;
 use Moose;
 use DateTime::Format::Natural;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

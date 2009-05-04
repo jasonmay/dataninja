@@ -2,7 +2,7 @@ package Dataninja::Bot::Plugin::Weeksuntil;
 use Moose;
 use DateTime::Format::Natural;
 use DateTime::Format::Duration;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

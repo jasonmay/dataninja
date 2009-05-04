@@ -1,6 +1,6 @@
 package Dataninja::Bot::Plugin::Twitter;
 use Moose;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 use Net::Twitter;
 use String::Util 'crunch';
 

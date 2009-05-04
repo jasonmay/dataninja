@@ -2,10 +2,9 @@ package Dataninja::Bot::Dispatcher;
 use Moose;
 use Module::Pluggable
     search_path => 'Dataninja::Bot::Plugin',
-    except      => 'Dataninja::Bot::Plugin::Base',
     sub_name    => 'plugins',
     require     => 1;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

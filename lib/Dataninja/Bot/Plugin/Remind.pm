@@ -3,7 +3,7 @@ use Moose;
 use DateTime;
 use DateTime::Format::Natural;
 use DateTime::Format::Pg;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

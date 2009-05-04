@@ -1,7 +1,7 @@
 package Dataninja::Bot::Plugin::Last;
 use App::Nopaste 'nopaste';
 use Moose;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

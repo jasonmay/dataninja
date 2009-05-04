@@ -2,7 +2,7 @@ package Dataninja::Bot::Plugin::Twentyfour;
 use Moose;
 use List::Permutor;
 use List::Util qw/shuffle/;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

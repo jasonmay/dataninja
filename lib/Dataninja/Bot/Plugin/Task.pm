@@ -1,7 +1,7 @@
 package Dataninja::Bot::Plugin::Task;
 use Moose;
 use Net::Hiveminder;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

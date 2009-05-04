@@ -1,7 +1,7 @@
 package Dataninja::Bot::Plugin::Translating;
 use Moose;
 use REST::Google::Translate;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 REST::Google::Translate->http_referer('http://www.google.com');
 

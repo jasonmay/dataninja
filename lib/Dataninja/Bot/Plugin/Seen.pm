@@ -1,6 +1,6 @@
 package Dataninja::Bot::Plugin::Seen;
 use Moose;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 use DateTime::Format::Pg;
 use DateTime::Duration;
 use DateTime::Format::Human::Duration;

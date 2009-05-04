@@ -1,7 +1,7 @@
 package Dataninja::Bot::Plugin::Unit;
 use Moose;
 use WWW::Google::Calculator;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

@@ -1,6 +1,6 @@
 package Dataninja::Bot::Plugin::Botsnack;
 use Moose;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

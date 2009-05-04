@@ -7,18 +7,15 @@ use Dataninja::Schema;
 use DBD::Mock;
 use DateTime;
 use lib 'lib';
+use DBIx::Class::Row;
 
 my @schema_classes = qw/Area Interjection Message Nick Person Reminder/;
 plan tests => 4 + @schema_classes;
 
-use_ok 'Dataninja::Bot::Plugin::Base';
+use_ok 'Dataninja::Bot::Plugin';
 
-my $plugin = Dataninja::Bot::Plugin::Base->new(
-    network => '',
-    nick => '',
-    channel => '',
-    message => '',
-    moment => DateTime->now,
+my $plugin = Dataninja::Bot::Plugin->new(
+    message_data => DBIx::Class::Row->new,
     schema => Dataninja::Schema->connect('dbd:Mock:'),
 );
 

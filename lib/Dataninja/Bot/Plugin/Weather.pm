@@ -2,7 +2,7 @@ package Dataninja::Bot::Plugin::Weather;
 use Moose;
 use Weather::Underground;
 use String::Util qw/crunch/;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 

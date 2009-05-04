@@ -1,6 +1,6 @@
 package Dataninja::Bot::Plugin::CalcRelay;
 use Moose;
-extends 'Dataninja::Bot::Plugin::Base';
+extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 
