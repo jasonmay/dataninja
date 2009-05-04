@@ -245,7 +245,8 @@ sub tick {
             reminded => 0,
             canceled => 0,
             moment => {'<' => DateTime->now }
-        }
+        },
+        { rows => 1 },
     )->single;
 
     if ($reminder) {
@@ -265,7 +266,8 @@ sub tick {
         {
             network     => $self->assigned_network,
             interjected => 0,
-        }
+        },
+        { rows => 1 },
     )->single;
     if ($interjection) {
         $self->record_and_say(
