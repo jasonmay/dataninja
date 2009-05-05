@@ -1,6 +1,6 @@
 package Dataninja::Config;
 use Moose;
-use YAML 'LoadFile';
+use YAML::XS 'LoadFile';
 use Hash::Merge qw/merge/;
 
 =head1 DESCRIPTION
@@ -50,19 +50,19 @@ such as external applicaiton credentials, channels, the nick of the bot, etc.
 has default_config => (
     is  => 'rw',
     isa => 'Str',
-    default => 'etc/config.yml',
+    default => "$ENV{HOME}/.dataninja/config.yml",
 );
 
 has site_config => (
     is  => 'rw',
     isa => 'Str',
-    default => 'etc/site_config.yml',
+    default =>  "$ENV{HOME}/.dataninja/site_config.yml",
 );
 
 has secret_config => (
     is  => 'rw',
     isa => 'Str',
-    default => 'etc/secret_config.yml',
+    default => "$ENV{HOME}/.dataninja/secret_config.yml",
 );
 
 has main => (

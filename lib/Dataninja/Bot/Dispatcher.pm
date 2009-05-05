@@ -51,11 +51,6 @@ sub BUILD {
             map {
                 my $dispatcher = $_->new(
                     message_data => $self->message_data,
-#                    nick      => $self->nick,
-#                    channel => $self->channel,
-#                    network => $self->network,
-#                    moment  => $self->moment,
-#                    message => $self->message,
                     schema   => $self->schema,
                 );
                 Path::Dispatcher::Rule::Dispatch->new(

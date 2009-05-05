@@ -33,7 +33,9 @@ requires 'URI';
 requires 'WWW::Google::Calculator';
 requires 'Weather::Underground';
 requires 'Web::Scraper';
-requires 'YAML';
+requires 'YAML::XS';
+
+install_script('bin/dataninja.pl');
 
 auto_install;
 WriteAll;

@@ -1,17 +1,17 @@
 #!/usr/bin/env perl
-package Dataninja::Bot::Interface;
+package Dataninja::Bot;
 use Moose;
 use DateTime;
 use Path::Dispatcher;
 use Dataninja::Bot::Dispatcher;
 use List::Util qw/first/;
+use MooseX::NonMoose;
 
 extends 'Bot::BasicBot';
-with 'MooseX::Alien';
 
 =head1 DESCRIPTION
 
-Dataninja::Bot::Interface is an extension of Bot::BasicBot. This is the core
+Dataninja::Bot is an extension of Bot::BasicBot. This is the core
 interface needed to run Dataninja.
 
 =head1 ATTRIBUTES
