@@ -18,7 +18,17 @@ sub check_for_config {
         chomp(my $input = <>);
         if (length $input == 0 or lc $input =~ /y(es)?/) {
             mkdir $dataninja_dir unless -d $dataninja_dir;
-            print "Directory made.\n";
+
+            print "I will now build a default configuration for you. "
+                . "Please edit the database password in your "
+                . "secret.yml.\n";
+
+            print "A schema.psql file will be supplied to you in ~/.dataninja "
+                . "as well.\nPlease load the schema into your PostgreSQL "
+                . "database.\n";
+
+            print "You may do all of the following now and then press enter "
+                . "when you are finished.";
 
             DumpFile(
                 "$dataninja_dir/config.yml",
@@ -66,6 +76,55 @@ sub check_for_config {
                     }
                 }
             );
+
+            # heredocs were spazzing out!
+            open my $fh, '>', "$dataninja_dir/schema.psql";
+            print $fh join("\n" =>
+                "CREATE TABLE areas (",
+                "    id serial NOT NULL,",
+                "    location text,",
+                "    nick text,",
+                "    network text",
+                ");",
+                "",
+                "CREATE TABLE messages (",
+                "    id serial NOT NULL,",
+                "    nick text NOT NULL,",
+                "    message text NOT NULL,",
+                "    moment timestamp with time zone NOT NULL,",
+                "    channel text NOT NULL,",
+                "    network text NOT NULL",
+                ");",
+                "",
+                "CREATE TABLE interjections (",
+                "    id serial NOT NULL,",
+                "    message text NOT NULL,",
+                "    interjected boolean DEFAULT false,",
+                "    channel text,",
+                "    network text",
+                ");",
+                "",
+                "CREATE TABLE nicks (",
+                "    id serial NOT NULL,",
+                "    name text NOT NULL,",
+                "    network text NOT NULL",
+                ");",
+                "",
+                "CREATE TABLE reminders (",
+                "    id serial NOT NULL,",
+                "    moment timestamp with time zone NOT NULL,",
+                "    description text,",
+                "    remindee text,",
+                "    channel text,",
+                "    network text,",
+                "    reminded boolean DEFAULT false,",
+                "    canceled boolean DEFAULT false,",
+                "    maker text",
+                ");",
+            );
+            close $fh;
+
+            <>; # let the user press enter
         }
     }
 }
