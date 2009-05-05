@@ -8,7 +8,11 @@ Dataninja::Plugin::Echo - the bot merely echos what you put, for random utility
 
 =head1 COMMANDS
 
+=over
+
 =item * echo B<message>
+
+=back
 
 =cut
 

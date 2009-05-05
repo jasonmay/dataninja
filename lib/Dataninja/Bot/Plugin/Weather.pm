@@ -10,6 +10,8 @@ Dataninja::Bot::Plugin::Weather - get current weather information from Weather U
 
 =head1 COMMANDS
 
+=over
+
 =item * weather B<[nick|location]>
 
 The way you use this command is like so:
@@ -36,6 +38,8 @@ The way you use this command is like so:
 =item * w
 
 This is an alias for B<weather>.
+
+=back
 
 =cut
 

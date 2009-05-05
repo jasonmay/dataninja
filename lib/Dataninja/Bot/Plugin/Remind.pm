@@ -11,6 +11,8 @@ Dataninja::Bot::Plugin::Remind - you can make and cancel reminders
 
 =head1 COMMANDS
 
+=over
+
 =item * remind
 
 When you make a reminder, the bot tells you when it will fire and give you an ID for manipulation/deltion. The bot will say something when the time arrives.
@@ -23,6 +25,8 @@ When you make a reminder, the bot tells you when it will fire and give you an ID
 =item * cancel B<ID>
 
 Cancel the reminder by supplying the ID.
+
+=back
 
 =cut
 

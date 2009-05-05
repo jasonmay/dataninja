@@ -11,7 +11,11 @@ provide
 
 =head1 COMMANDS
 
+=over
+
 =item * weeksuntil B<day>
+
+=back
 
 =cut
 

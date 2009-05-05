@@ -9,9 +9,13 @@ Dataninja::Bot::Plugin::Task - add task to your hiveminder that pertains to data
 
 =head1 COMMANDS
 
+=over
+
 =item * task B<description>
 
 This command adds the task, strips any priority manipulation and slaps on the tag B<irc_dataninja>.
+
+=back
 
 =cut
 

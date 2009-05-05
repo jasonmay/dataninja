@@ -96,4 +96,16 @@ To run the bot (the network is optional, and results to 'dev'):
 
     dataninja.pl [network]
 
-The network information is supplied in your config. This is in ~/.dataninja/ (which dataninja supplies for you when you run C<dataninja.pl> for the first time.).
+The network information is supplied in your config. This is in ~/.dataninja/
+(which dataninja supplies for you when you run C<dataninja.pl> for the first
+time.).
+
+=head1 AUTHOR
+
+Jason May C<< <jason.a.may@gmail.com> >>
+
+=head1 LICENSE
+
+You may distribute this code under the same terms as Perl itself.
+
+=cut

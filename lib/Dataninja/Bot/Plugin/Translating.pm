@@ -11,6 +11,8 @@ Dataninja::Bot::Plugin::Translating - translation tools
 
 =head1 COMMANDS
 
+=over
+
 =item * spanishify B<message>
 
 The bot translates your message from English to Spanish.
@@ -26,6 +28,8 @@ The bot translates your message from Spanish to English.
 =item * en B<message>
 
 This is an alias for englishify.
+
+=back
 
 =cut
 

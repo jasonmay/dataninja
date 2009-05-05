@@ -11,10 +11,14 @@ else
 
 =head1 COMMANDS
 
-=item twitter B<[tweeter]>
+=over
+
+=item * twitter B<[tweeter]>
 
 Get the latest tweet by B<tweeter>. If you don't specify a tweeter, it defaults
 to your nick.
+
+=back
 
 =cut
 

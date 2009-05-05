@@ -9,9 +9,13 @@ Dataninja::Bot::Plugin::Last - you tell the bot show many of the last N messages
 
 =head1 COMMANDS
 
+=over
+
 =item * last B<#>
 
 The bot nopastes the last B<#> lines and shows it to you.
+
+=back
 
 =cut
 

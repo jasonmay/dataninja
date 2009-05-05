@@ -8,9 +8,13 @@ Dataninja::Bot::Plugin::Botsnack - bot gets a snack for making you happy :)
 
 =head1 COMMANDS
 
+=over
+
 =item * botsnack
 
 You give the bot a botsnack, and he responds with gratitude.
+
+=back
 
 =cut
 

@@ -11,7 +11,11 @@ Dataninja::Bot::Plugin::Seen - the bot tells you when someone was last seen
 
 =head1 COMMANDS
 
+=over
+
 =item * seen B<nick>
+
+=back
 
 =cut
 

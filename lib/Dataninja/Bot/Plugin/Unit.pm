@@ -9,6 +9,8 @@ Dataninja::Bot::Plugin::Unit - the bot can do unit conversion for you
 
 =head1 COMMANDS
 
+=over
+
 =item * unit B<conversion>
 
 The bot talks to Google Calculator to do the unit conversion for you. You also
@@ -18,6 +20,8 @@ C<$9>).
 =item * u
 
 This is an alias for B<unit>.
+
+=back
 
 =cut
 

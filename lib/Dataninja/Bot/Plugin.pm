@@ -108,6 +108,8 @@ __END__
 
 =head1 CURRENT PLUGINS
 
+=over
+
 =item * Botsnack
 
 =item * CalcRelay
@@ -140,3 +142,4 @@ __END__
 
 =item * Weeksuntil
 
+=back

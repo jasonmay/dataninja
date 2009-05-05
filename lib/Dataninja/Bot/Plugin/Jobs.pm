@@ -11,7 +11,11 @@ the bot responds with results
 
 =head1 COMMANDS
 
+=over
+
 =item * jobs B<[area]> B<[query]>
+
+=back
 
 =cut
 

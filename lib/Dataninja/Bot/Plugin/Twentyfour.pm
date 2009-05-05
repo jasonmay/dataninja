@@ -10,10 +10,14 @@ Dataninja::Bot::Plugin::Twentyfour - I<Math 24> programmed into the bot
 
 =head1 COMMANDS
 
-=item 24
+=over
+
+=item * 24
 
 The bot gives you four numbers in which some way you can add, subtract,
 mulitiply and/or divide to make 24. For boredom purposes. :)
+
+=back
 
 =cut
 

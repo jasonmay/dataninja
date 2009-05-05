@@ -9,7 +9,11 @@ values
 
 =head1 COMMANDS
 
+=over
+
 =item * colors
+
+=back
 
 =cut
 

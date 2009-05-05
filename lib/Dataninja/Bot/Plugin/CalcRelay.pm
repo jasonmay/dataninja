@@ -8,7 +8,11 @@ Dataninja::Bot::Plugin::CalcRelay - don't ask
 
 =head1 COMMANDS
 
+=over
+
 =item * c B<calculation>
+
+=back
 
 =cut
 

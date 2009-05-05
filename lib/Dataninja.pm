@@ -25,6 +25,8 @@ http://github.com/jasonmay/dataninja.git
 
 =head1 SEE ALSO
 
+=over
+
 =item * L<Dataninja::Bot>
 
 =item * L<Dataninja::Config>
@@ -35,12 +37,22 @@ http://github.com/jasonmay/dataninja.git
 
 =item * L<Dataninja::Bot::Dispatcher>
 
+=back
+
 =head1 CONTRIBUTORS
+
+Thanks guys!
+
+=over
 
 =item * Shawn Moore (Sartak)
 
 =item * Jesse Luehrs (doy)
 
--head1 LICENSE
+=back
+
+=head1 LICENSE
 
 You may distribute this code under the same terms as Perl itself.
+
+=cut
