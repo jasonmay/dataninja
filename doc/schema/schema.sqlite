@@ -1,0 +1,41 @@
+CREATE TABLE areas (
+    id integer primary key autoincrement,
+    location text,
+    nick text,
+    network text
+);
+
+CREATE TABLE messages (
+    id integer primary key autoincrement,
+    nick text NOT NULL,
+    message text NOT NULL,
+    moment timestamp with time zone NOT NULL,
+    channel text NOT NULL,
+    network text NOT NULL
+);
+
+CREATE TABLE interjections (
+    id integer primary key autoincrement,
+    message text NOT NULL,
+    interjected integer default 0,
+    channel text,
+    network text
+);
+
+CREATE TABLE nicks (
+    id integer primary key autoincrement,
+    name text NOT NULL,
+    network text NOT NULL
+);
+
+CREATE TABLE reminders (
+    id integer primary key autoincrement,
+    moment timestamp with time zone NOT NULL,
+    description text,
+    remindee text,
+    channel text,
+    network text,
+    reminded integer default 0,
+    canceled integer default 0,
+    maker text
+);
