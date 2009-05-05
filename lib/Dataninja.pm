@@ -18,6 +18,11 @@ given commands (provided by plugins). Some examples are: getting the last X
 amount of messages, when a person was last seen, and even graphs! However,
 at this point graphs are still in the works.
 
+It is not very extendable at the moment, but work is being done to change that.
+If you are interested in adding plugins, you will have to (for now) download
+the source and add plugins to lib/Dataninja/Bot/Plugins/ and use
+C<perl -Ilib bin/dataninja.pl> to have the bot recognize your extensions.
+
 =head1 REPOSITORY
 
 The repository for Dataninja is currently hosted at
@@ -38,6 +43,10 @@ http://github.com/jasonmay/dataninja.git
 =item * L<Dataninja::Bot::Dispatcher>
 
 =back
+
+=head1 AUTHOR
+
+Jason May C<< <jason.a.may@gmail.com> >>
 
 =head1 CONTRIBUTORS
 
