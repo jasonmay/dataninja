@@ -11,6 +11,8 @@ requires 'App::Nopaste';
 requires 'Chart::Clicker';
 requires 'Chart::Clicker::Renderer::Bar';
 requires 'DBD::Pg';
+requires 'DBIx::Class';
+requires 'DBD::Mock';
 requires 'DateTime::Duration';
 requires 'DateTime::Format::Duration';
 requires 'DateTime::Format::Human::Duration';
