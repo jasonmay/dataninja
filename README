@@ -1,0 +1,15 @@
+Dataninja is a module that hosts a bot on an IRC channel to do your bidding.
+
+----------------------------------------
+
+To use Dataninja, run the following commands:
+
+perl Makefile.PL
+sudo make installdeps (if indicated to do so)
+make test (optional)
+make
+sudo make install
+
+----------------------------------------
+
+A script (dataninja.pl) will be installed for you to use.

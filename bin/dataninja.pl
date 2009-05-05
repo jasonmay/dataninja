@@ -82,12 +82,18 @@ my $schema = Dataninja::Schema->connect(
 );
 
 my $bot = Dataninja::Bot->new($config, $network, $schema);
-$bot->_plugin_app_ns(['Dataninja::Bot::Plugin']);
 $bot->run;
 
 __END__
 
-=head1 BUTTS
+=head1 NAME
 
-=head2 FARTS
+dataninja.pl - run the Dataninja bot
 
+=head1 SYNOPSIS
+
+To run the bot (the network is optional, and results to 'dev'):
+
+    dataninja.pl [network]
+
+The network information is supplied in your config. This is in ~/.dataninja/ (which dataninja supplies for you when you run C<dataninja.pl> for the first time.).
