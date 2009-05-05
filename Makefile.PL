@@ -8,6 +8,7 @@ perl_version   '5.8.8';
 
 build_requires 'Test::More';
 requires 'App::Nopaste';
+requires 'Bot::BasicBot';
 requires 'Chart::Clicker';
 requires 'Chart::Clicker::Renderer::Bar';
 requires 'DBD::Pg';
@@ -24,6 +25,7 @@ requires 'List::MoreUtils';
 requires 'List::Permutor';
 requires 'List::Util';
 requires 'Module::Pluggable';
+requires 'MooseX::NonMoose';
 requires 'Moose';
 requires 'MooseX::Alien';
 requires 'Net::Hiveminder';
