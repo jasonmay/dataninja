@@ -4,6 +4,7 @@ use Moose;
 use DateTime;
 use Path::Dispatcher;
 use Dataninja::Bot::Dispatcher;
+use Dataninja::Bot::Plugin;
 use List::Util qw/first/;
 use MooseX::NonMoose;
 
@@ -174,13 +175,10 @@ sub _said {
 
     my $dispatcher = Dataninja::Bot::Dispatcher->new(
         prefix    => $prefix_rule,
-        message_data => $message_data,
-#        nick    => lc $args->{'who'},
-#        message => $args->{'body'},
-#        channel => $args->{'channel'},
-#        network => $args->{'network'},
-#        moment  => DateTime->now,
-        schema   => $self->schema,
+        data_for_plugins => Dataninja::Bot::Plugin->new(
+            message_data => $message_data,
+            schema   => $self->schema,
+        )
     );
     warn $args->{body};
     my $dispatch = $dispatcher->dispatch($args->{'body'});

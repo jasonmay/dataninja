@@ -4,7 +4,7 @@ use Module::Pluggable
     search_path => 'Dataninja::Bot::Plugin',
     sub_name    => 'plugins',
     require     => 1;
-extends 'Dataninja::Bot::Plugin';
+extends 'Path::Dispatcher';
 
 =head1 NAME
 
@@ -20,13 +20,14 @@ L<Dataninja::Bot::Plugin>.
 =head2 prefix
 
 (L<Path::Dispatcher::PrefixRule>) Predicate for the dispatcher for handling the
-initially symbolic prefix in front of commands, such as C<<!>>, C<<@>>,
-or C<<#>>.
+initially symbolic prefix in front of commands, such as C<< ! >>, C<< @ >>,
+or C<< # >>.
 
-=head2 schema
+=head2 data_for_plugins
 
-(L<Dataninja::Schema>) This is just a copy of the database schema for plugin
-access.
+(L<Dataninja::Bot::Plugin>) This is a class that uses the plugin base to store
+the data that Dataninja needs (message data, schema, etc.) to pass into each
+plugin for rule dispatching.
 
 =cut
 
@@ -36,9 +37,9 @@ has 'prefix' => (
     required => 1,
 );
 
-has 'schema' => (
+has 'data_for_plugins' => (
     is       => 'ro',
-    isa      => 'Dataninja::Schema',
+    isa      => 'Dataninja::Bot::Plugin',
     required => 1,
 );
 
@@ -50,8 +51,8 @@ sub BUILD {
         rules => [
             map {
                 my $dispatcher = $_->new(
-                    message_data => $self->message_data,
-                    schema   => $self->schema,
+                    message_data => $self->data_for_plugins->message_data,
+                    schema   => $self->data_for_plugins->schema,
                 );
                 Path::Dispatcher::Rule::Dispatch->new(
                     dispatcher => $dispatcher,
