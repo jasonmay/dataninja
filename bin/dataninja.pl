@@ -91,7 +91,7 @@ my $config = Dataninja::Config->new;
 my $database_config = $config->main->{database};
 
 my $schema = Dataninja::Schema->connect(
-    "dbi:SQLite:dbname=$database_config->{name}",
+    "dbi:$database_config->{driver}:dbname=$database_config->{name}",
     $database_config->{user},
     $database_config->{password}
 );
