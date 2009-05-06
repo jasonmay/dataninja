@@ -3,6 +3,7 @@ use Moose;
 use DateTime;
 use DateTime::Format::Natural;
 use DateTime::Format::Pg;
+#use DateTime::Format::SQLite;
 extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
@@ -124,6 +125,40 @@ around 'command_setup' => sub {
             return "could not find a reminder with that ID";
 
     });
+
+#    $self->command(reminders => sub {
+#        my $requested_id = shift;
+#        my $message_data = shift;
+#        my $schema       = shift;
+#
+#        return "todo!";
+#    });
+
+    my $next_reminder = sub {
+        my $requested_id = shift;
+        my $message_data = shift;
+        my $schema       = shift;
+
+        
+        my $nr_row = $schema->resultset('Reminder')->search(
+            {
+                moment   => {'>' => DateTime->now},
+                channel  => $message_data->channel,
+                network  => $message_data->network,
+                remindee => lc $message_data->nick,
+                reminded => 0,
+                canceled => 0,
+            },
+            { rows => 1, order_by => 'moment' }
+        )->single;
+        return "you have no upcoming reminders" unless defined $nr_row;
+
+        return sprintf("next reminder for you: (%s) %s", $nr_row->moment, $nr_row->description);
+    };
+
+    $self->command(next_reminder => $next_reminder);
+    $self->command(nextreminder  => $next_reminder);
+    $self->command(nr            => $next_reminder);
 };
 
 __PACKAGE__->meta->make_immutable;
