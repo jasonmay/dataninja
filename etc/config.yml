@@ -1,6 +1,0 @@
----
-  Main:
-    database:
-      name: dataninja
-      host: localhost
-
