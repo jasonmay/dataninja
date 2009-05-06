@@ -17,28 +17,42 @@ extends 'Bot::BasicBot';
 Dataninja::Bot is an extension of Bot::BasicBot. This is the core
 interface needed to run Dataninja.
 
+=head1 SYNOPSIS
+
+  my $bot = Dataninja::Bot->new(
+      assigned_network => '...',
+      config           => Dataninja::Config->new(...),
+      schema           => Dataninja::Schema->new(...),
+  );
+
+  $bot->search_path(add => 'My::Own::Plugins');
+
+  $bot->run;
+
+See examples/ in the dist for examples of extending Dataninja.
+
 =head1 ATTRIBUTES
 
 =head2 dispatcher
 
-(Path::Dispatcher) The object that Dataninja uses to parse the IRC users' input.
+(L<Path::Dispatcher>) The object that Dataninja uses to parse the IRC users' input.
 
 =head2 assigned_network
 
-(Str) The network on which the Dataninja process resides.
+(C<Str>) The network on which the Dataninja process resides.
 
 =head2 config
 
-(Dataninja::Config) The configuration structure loaded from YAML file(s).
+(L<Dataninja::Config>) The configuration structure loaded from YAML file(s).
 
 =head2 schema
 
-(Dataninja::Schema) The interface that Dataninja uses to interact with the
+(L<Dataninja::Schema>) The interface that Dataninja uses to interact with the
 database.
 
 =head2 plugins
 
-(ArrayRef[Str]) The list of plugins provided by dataninja.
+(C<< ArrayRef[Str] >>) The list of plugins provided by dataninja.
 
 =cut
 
