@@ -5,6 +5,7 @@ use lib 'lib';
 use Dataninja::Bot;
 use Dataninja::Config;
 use Dataninja::Schema;
+use DBICx::Deploy;
 use YAML::XS 'DumpFile';
 
 my $network = shift;
@@ -21,14 +22,14 @@ sub check_for_config {
 
             print "I will now build a default configuration for you. "
                 . "Please edit the database password in your "
-                . "secret.yml.\n";
+                . "secret.yml if necessary.\n";
 
-            print "A schema.psql file will be supplied to you in ~/.dataninja "
-                . "as well.\nPlease load the schema into your PostgreSQL "
-                . "database.\n";
-
-            print "You may do all of the following now and then press enter "
-                . "when you are finished.";
+#            print "A schema.psql file will be supplied to you in ~/.dataninja "
+#                . "as well.\nPlease load the schema into your PostgreSQL "
+#                . "database.\n";
+#
+#            print "You may do all of the following now and then press enter "
+#                . "when you are finished.";
 
             DumpFile(
                 "$dataninja_dir/config.yml",
@@ -36,8 +37,9 @@ sub check_for_config {
                     {
                         database =>
                         {
-                            name => 'dataninja',
-                            host => 'localhost',
+                            name   => "$dataninja_dir/dataninja.sqlite",
+                            host   => 'localhost',
+                            driver => 'SQLite',
                         }
                     }
                 }
@@ -77,54 +79,8 @@ sub check_for_config {
                 }
             );
 
-            # heredocs were spazzing out!
-            open my $fh, '>', "$dataninja_dir/schema.psql";
-            print $fh join("\n" =>
-                "CREATE TABLE areas (",
-                "    id serial NOT NULL,",
-                "    location text,",
-                "    nick text,",
-                "    network text",
-                ");",
-                "",
-                "CREATE TABLE messages (",
-                "    id serial NOT NULL,",
-                "    nick text NOT NULL,",
-                "    message text NOT NULL,",
-                "    moment timestamp with time zone NOT NULL,",
-                "    channel text NOT NULL,",
-                "    network text NOT NULL",
-                ");",
-                "",
-                "CREATE TABLE interjections (",
-                "    id serial NOT NULL,",
-                "    message text NOT NULL,",
-                "    interjected boolean DEFAULT false,",
-                "    channel text,",
-                "    network text",
-                ");",
-                "",
-                "CREATE TABLE nicks (",
-                "    id serial NOT NULL,",
-                "    name text NOT NULL,",
-                "    network text NOT NULL",
-                ");",
-                "",
-                "CREATE TABLE reminders (",
-                "    id serial NOT NULL,",
-                "    moment timestamp with time zone NOT NULL,",
-                "    description text,",
-                "    remindee text,",
-                "    channel text,",
-                "    network text,",
-                "    reminded boolean DEFAULT false,",
-                "    canceled boolean DEFAULT false,",
-                "    maker text",
-                ");",
-            );
-            close $fh;
-
-            <>; # let the user press enter
+            DBICx::Deploy->deploy('Dataninja::Schema'
+                => "DBI:SQLite:$dataninja_dir/dataninja.sqlite");
         }
     }
 }
@@ -135,7 +91,7 @@ my $config = Dataninja::Config->new;
 my $database_config = $config->main->{database};
 
 my $schema = Dataninja::Schema->connect(
-    "dbi:Pg:dbname=$database_config->{name}",
+    "dbi:SQLite:dbname=$database_config->{name}",
     $database_config->{user},
     $database_config->{password}
 );

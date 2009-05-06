@@ -42,7 +42,11 @@ sub connect_with_defaults {
 
     my $config = Dataninja::Config->new(@_);
     my $schema = $class->connect(
-        'dbi:Pg:dbname=' . $config->main->{database}->{name},
+        sprintf(
+            'dbi:%s:dbname=%s',
+            $config->main->{database}->{driver},
+            $config->main->{database}->{name},
+        ),
         $config->main->{database}->{user},
         $config->main->{database}->{pass},
     );
