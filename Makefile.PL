@@ -30,7 +30,7 @@ requires 'List::Util';
 requires 'Module::Pluggable';
 requires 'MooseX::NonMoose';
 requires 'Moose';
-requires 'MooseX::Alien';
+requires 'MooseX::NonMoose' => '0.03';
 requires 'Net::Hiveminder';
 requires 'Net::Twitter';
 requires 'Path::Dispatcher';
