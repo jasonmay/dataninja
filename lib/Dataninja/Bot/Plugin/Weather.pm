@@ -102,7 +102,11 @@ around 'command_setup' => sub {
             }
             else {
                 $self->rs('Area')
-                    ->create({ nick => $self->message_data->nick, location => $place, });
+                    ->create({
+                        nick     => $self->message_data->nick,
+                        location => $place,
+                        network  => $self->message_data->network,
+                    });
             }
             return weather_output(get_weather($place), $place);
         }
