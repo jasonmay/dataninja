@@ -16,7 +16,8 @@ Dataninja::Bot::Plugin::Remind - you can make and cancel reminders
 
 =item * remind
 
-When you make a reminder, the bot tells you when it will fire and give you an ID for manipulation/deltion. The bot will say something when the time arrives.
+When you make a reminder, the bot tells you when it will fire and give you an
+ID for manipulation/deltion. The bot will say something when the time arrives.
 
   21:49:04 < jasonmay> !remind me The Office is on > 20 seconds from now
   21:49:04 < dataninja> will remind at: 2009-05-03 21:49:24 America/New_York [id: 651]
@@ -26,6 +27,16 @@ When you make a reminder, the bot tells you when it will fire and give you an ID
 =item * cancel B<ID>
 
 Cancel the reminder by supplying the ID.
+
+=item * next_reminder B<[nick|offset]>
+
+You can view the next upcoming reminder of yourself or another nick. If you
+don't supply any arguments, the offset defaults to 1 (the next reminder) and
+the nick defaults to your nick. If you supply a number, say 7, it gets the
+reminder that will fire 7 of your reminders from now. Otherwise it will
+consider it as a nick.
+
+Aliases: B<nextreminder>, B<nr>
 
 =back
 
@@ -135,25 +146,53 @@ around 'command_setup' => sub {
 #    });
 
     my $next_reminder = sub {
-        my $requested_id = shift;
+        my $command_args = shift;
         my $message_data = shift;
         my $schema       = shift;
 
-        
+        my $nick = $message_data->nick;
+        my $output_nick = 'you';
+        my $offset = 1;
+
+        if ($command_args =~ /\D/) {
+            $nick        = lc $command_args;
+            $output_nick = $command_args;
+        }
+        elsif (length $command_args > 0) {
+            $offset = $command_args;
+        }
+
         my $nr_row = $schema->resultset('Reminder')->search(
             {
                 moment   => {'>' => DateTime->now},
                 channel  => $message_data->channel,
                 network  => $message_data->network,
-                remindee => lc $message_data->nick,
+                remindee => $nick,
                 reminded => 0,
                 canceled => 0,
             },
-            { rows => 1, order_by => 'moment' }
-        )->single;
-        return "you have no upcoming reminders" unless defined $nr_row;
+            { rows => $offset, order_by => 'moment' }
+        )->slice($offset-1, $offset-1)->single;
 
-        return sprintf("next reminder for you: (%s) %s", $nr_row->moment, $nr_row->description);
+        if (!defined $nr_row) {
+            if ($offset == 1) {
+            return
+                sprintf(
+                    "%s %s no upcoming reminders",
+                    $output_nick, ($output_nick eq 'you' ? 'have' : 'has'),
+                )
+            }
+            else {
+                return "there aren't that many reminders!";
+            }
+        }
+
+        return sprintf(
+            "next reminder for %s: (%s) %s",
+            $output_nick,
+            $nr_row->moment,
+            $nr_row->description
+        );
     };
 
     $self->command(next_reminder => $next_reminder);
