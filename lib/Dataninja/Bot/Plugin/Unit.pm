@@ -39,13 +39,11 @@ around 'command_setup' => sub {
             my $modified_input = $command_args;
             $modified_input
                 =~ s/\$(\d)/(@history > $1) ? $history[$1] : \$$1/eg;
-            warn $modified_input;
 
             my $ret = $calc->calc($modified_input);
             if (defined $ret) {
                 if ($ret =~ /^.*=\s*(.*)$/) {
                     unshift @history, $1;
-                    warn join ', ' => @history;
                 }
                 return $ret;
             }
