@@ -31,7 +31,6 @@ around 'command_setup' => sub {
             (my $task = $1) =~ s/\[.+?\]//g;
             my $priorities_munged = 0;
 
-            warn "TASK: $task";
             $priorities_munged = 1 if $task =~ /!/ || $task =~ /^[+-]/;
             $task =~ y/!//d;
             $task =~ s/^[+-]*//g;

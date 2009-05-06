@@ -50,7 +50,6 @@ sub twenty_four {
 
 
                     if ($result == 24) {
-# warn "$op1 $op2 $op3";
                         return 1; 
                     }
                 }

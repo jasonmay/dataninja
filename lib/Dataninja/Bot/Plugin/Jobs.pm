@@ -49,7 +49,6 @@ around 'command_setup' => sub {
                 my @words = split ' ', $_;
                 $_ = join ' ', @words[0 .. ($#words > 4 ? 4 : $#words)];
                 chop while /[^\w\d]$/;
-#        warn $_;
                 "[$_]";
             }
             (@jobs[0 .. ($#jobs > 4 ? 4 : $#jobs)]);

@@ -96,7 +96,13 @@ my $schema = Dataninja::Schema->connect(
     $database_config->{password}
 );
 
-my $bot = Dataninja::Bot->new($config, $network, $schema);
+$network ||= 'dev';
+
+my $bot = Dataninja::Bot->new(
+    config           => $config,
+    assigned_network => $network,
+    schema           => $schema
+);
 $bot->run;
 
 __END__

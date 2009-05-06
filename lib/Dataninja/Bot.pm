@@ -103,39 +103,36 @@ Overridden to specify a network as a string for the param.
 
 =cut
 
-around 'new' => sub {
-    my $orig = shift;
+sub FOREIGNBUILDARGS {
     my $class = shift;
-    my $config = $_[0];
-    my $assigned_network = $_[1] || 'dev';
-    my $schema = $_[2];
-
-    my %networks = %{$config->site->{networks}};
+    my %args = @_;
+    my %networks = %{$args{config}->site->{networks}};
     my %network_lookup = map { ($_ => 1) } keys(%networks);
 
-    die "Unidentified network" unless $network_lookup{$assigned_network};
+    die "Unknown network: $args{assigned_network}"
+        unless exists $network_lookup{$args{assigned_network}};
 
-    my %args = (
-        server => $networks{$assigned_network}->{server},
+    my %new_args = (
+        server => $networks{$args{assigned_network}}->{server},
         port   => "6667",
         channels => [
             map {
                 $_->{name}
-            } @{$networks{$assigned_network}->{channels}}
+            } @{$networks{$args{assigned_network}}->{channels}}
         ],
 
-        nick      => $config->site->{nick},
-        alt_nicks => $config->site->{nick} . '2',
-        username  => $config->site->{nick},
+        nick      => $args{config}->site->{nick},
+        alt_nicks => $args{config}->site->{nick} . '2',
+        username  => $args{config}->site->{nick},
         name      => "IRC Bot",
     );
 
-    my $self = $class->$orig(%args);
-    $self->assigned_network($assigned_network);
-    $self->config($config);
-    $self->schema($schema);
-    return $self;
-};
+    return %new_args;
+}
+
+#around 'new' => sub {
+#    my $orig = shift;
+#};
 
 =head2 record_and_say
 
@@ -162,7 +159,7 @@ sub record_and_say {
 sub _said {
     my $self = shift;
     my $args = shift;
-    warn sprintf('< %s> %s', $args->{'who'}, $args->{'body'});
+    print STDERR sprintf('< %s> %s', $args->{'who'}, $args->{'body'}), "\n";
 
     $args->{'network'} = $self->assigned_network;
     my $message_data = $self->schema->resultset('Message')->create({
@@ -201,7 +198,6 @@ sub _said {
             schema   => $self->schema,
         )
     );
-    warn $args->{body};
     my $dispatch = $dispatcher->dispatch($args->{'body'});
     return undef unless $dispatch->has_matches;
     my $match = ($dispatch->matches)[0];
