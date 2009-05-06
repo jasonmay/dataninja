@@ -8,15 +8,16 @@ __END__
 
 =head1 NAME
 
-Dataninja - IRC bot for various little things
+Dataninja - Yet Another IRC Bot to do your bidding
 
 =head1 DESCRIPTION
 
 As implied by its name, Dataninja is a bot that is very database-oriented. He
 logs every public message and manipulates the data for your convenience when
-given commands (provided by plugins). Some examples are: getting the last X
-amount of messages, when a person was last seen, and even graphs! However,
-at this point graphs are still in the works.
+given commands (provided by plugins). What was once a bot made for the
+convenience of one person, now has an aim for extensibility. Some example
+features are: getting the last N number of messages, when a person was last
+seen, and plenty of other features.
 
 It is not very extendable at the moment, but work is being done to change that.
 If you are interested in adding plugins, you will have to (for now) download
