@@ -20,7 +20,7 @@ to improve readability.
       my $self = shift;
   
       $self->command(
-          command => sub { "sweet, thanks! :)" }
+          command => sub { "output" }
       );
   };
 
