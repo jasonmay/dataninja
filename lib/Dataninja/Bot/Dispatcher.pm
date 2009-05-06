@@ -1,9 +1,5 @@
 package Dataninja::Bot::Dispatcher;
 use Moose;
-use Module::Pluggable
-    search_path => 'Dataninja::Bot::Plugin',
-    sub_name    => 'plugins',
-    require     => 1;
 extends 'Path::Dispatcher';
 
 =head1 NAME
@@ -43,6 +39,11 @@ has 'data_for_plugins' => (
     required => 1,
 );
 
+has 'plugins' => (
+    is      => 'rw',
+    isa     => 'ArrayRef[Str]',
+);
+
 sub BUILD {
     my $self = shift;
     my $under = Path::Dispatcher::Rule::Under->new(
@@ -50,6 +51,7 @@ sub BUILD {
         prefix    => 1,
         rules => [
             map {
+                eval "require $_";
                 my $dispatcher = $_->new(
                     message_data => $self->data_for_plugins->message_data,
                     schema   => $self->data_for_plugins->schema,
@@ -57,16 +59,16 @@ sub BUILD {
                 Path::Dispatcher::Rule::Dispatch->new(
                     dispatcher => $dispatcher,
                 )
-            } $self->plugins
-        ],
-    );
+            } @{$self->plugins}
+            ],
+        );
 
-    $self->add_rule($under);
-}
+        $self->add_rule($under);
+    }
 
 
-__PACKAGE__->meta->make_immutable;
-no Moose;
+    __PACKAGE__->meta->make_immutable;
+    no Moose;
 
-1;
+    1;
 

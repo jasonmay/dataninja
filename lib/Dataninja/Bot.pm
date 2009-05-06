@@ -7,7 +7,9 @@ use Dataninja::Bot::Dispatcher;
 use Dataninja::Bot::Plugin;
 use List::Util qw/first/;
 use MooseX::NonMoose;
-
+use Module::Pluggable
+    search_path => ['Dataninja::Bot::Plugin'],
+    sub_name    => 'plugins';
 extends 'Bot::BasicBot';
 
 =head1 DESCRIPTION
@@ -33,6 +35,10 @@ interface needed to run Dataninja.
 
 (Dataninja::Schema) The interface that Dataninja uses to interact with the
 database.
+
+=head2 plugins
+
+(ArrayRef[Str]) The list of plugins provided by dataninja.
 
 =cut
 
@@ -175,6 +181,7 @@ sub _said {
 
     my $dispatcher = Dataninja::Bot::Dispatcher->new(
         prefix    => $prefix_rule,
+        plugins   => [$self->plugins],
         data_for_plugins => Dataninja::Bot::Plugin->new(
             message_data => $message_data,
             schema   => $self->schema,
