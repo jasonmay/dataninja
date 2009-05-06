@@ -78,8 +78,6 @@ around 'command_setup' => sub {
         my $nick_being_called = $place = crunch $command_args;
         my ($weather_data, $get_weather);
 
-        warn $message_data;
-        warn $schema;
         my $area =
             $schema->resultset('Area')
             ->search({
