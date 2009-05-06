@@ -52,23 +52,20 @@ sub BUILD {
         rules => [
             map {
                 eval "require $_";
-                my $dispatcher = $_->new(
-                    message_data => $self->data_for_plugins->message_data,
-                    schema   => $self->data_for_plugins->schema,
-                );
+                my $dispatcher = $_->new;
                 Path::Dispatcher::Rule::Dispatch->new(
                     dispatcher => $dispatcher,
                 )
             } @{$self->plugins}
-            ],
-        );
+        ],
+    );
 
-        $self->add_rule($under);
-    }
+    $self->add_rule($under);
+}
 
 
-    __PACKAGE__->meta->make_immutable;
-    no Moose;
+__PACKAGE__->meta->make_immutable;
+no Moose;
 
-    1;
+1;
 

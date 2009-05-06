@@ -36,6 +36,8 @@ around 'command_setup' => sub {
 
     $self->command(remind => sub {
             my $command_args = shift;
+            my $message_data = shift;
+            my $schema       = shift;
             my ($nick, $desc, $time) =
                 ($command_args =~ /(\S+)? \s+ (.+) \s+>\s+ (.+)/x);
             return "format: remind NICK (message) > when"
@@ -60,8 +62,8 @@ around 'command_setup' => sub {
                 $time =~ s/\ban?\b/1/ge;
             }
 
-            $nick = $self->message_data->nick if $nick eq 'me';
-            my $reminder = $self->rs('Reminder');
+            $nick = $message_data->nick if $nick eq 'me';
+            my $reminder = $schema->resultset('Reminder');
 
             my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York', prefer_future => 1);
             my $when_to_remind = eval { $parser->parse_datetime($time) };
@@ -84,9 +86,9 @@ around 'command_setup' => sub {
             my $reminder_row = $reminder->create({
                 remindee    => $nick,
                 description => $desc,
-                channel     => $self->message_data->channel,
-                network     => $self->message_data->network,
-                maker       => $self->message_data->nick,
+                channel     => $message_data->channel,
+                network     => $message_data->network,
+                maker       => $message_data->nick,
                 moment      => $when_to_remind
             });
 
@@ -100,16 +102,18 @@ around 'command_setup' => sub {
 
     $self->command(cancel => sub {
             my $requested_id = shift;
+            my $message_data = shift;
+            my $schema       = shift;
             return "invalid ID" if $requested_id =~ /\D/;
 
             my $reminder
-                = $self->rs('Reminder')->search(
+                = $schema->resultset('Reminder')->search(
                     {id => $requested_id},
                     {rows => 1},
                 )->single;
 
             if (defined $reminder) {
-                return "that reminder wasn't for you!" if $self->message_data->nick ne $reminder->maker;
+                return "that reminder wasn't for you!" if $message_data->nick ne $reminder->maker;
                 return "you don't need to worry about that"
                 if $reminder->reminded or $reminder->canceled;
                 $reminder->update({canceled => 1});

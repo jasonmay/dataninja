@@ -201,7 +201,11 @@ sub _said {
     my $dispatch = $dispatcher->dispatch($args->{'body'});
     return undef unless $dispatch->has_matches;
     my $match = ($dispatch->matches)[0];
-    return $dispatch->run(defined $match->result ? $match->result->[0] : undef);
+    return $dispatch->run(
+        defined $match->result ? $match->result->[0] : '',
+        $message_data,
+        $self->schema,
+    );
 }
 
 =head2 said [HASHREF]

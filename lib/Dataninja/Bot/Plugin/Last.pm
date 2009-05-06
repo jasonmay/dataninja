@@ -31,15 +31,17 @@ around 'command_setup' => sub {
     $self->command(
         'last' => sub {
             my $command_args = shift;
+            my $message_data = shift;
+            my $schema       = shift;
 
             my $rows = defined $command_args ? $command_args : 25;
             $rows = 200 if $rows > 200;
             $rows = 10 if $rows < 10;
 
-            my @messages = $self->rs('Message')->search(
+            my @messages = $schema->resultset('Message')->search(
                 {
-                    network => $self->message_data->network,
-                    channel => $self->message_data->channel,
+                    network => $message_data->network,
+                    channel => $message_data->channel,
                 },
                 { rows => $rows, order_by => 'moment desc'}
             );

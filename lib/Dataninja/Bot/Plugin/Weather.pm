@@ -72,14 +72,18 @@ around 'command_setup' => sub {
 
     my $weather_code = sub {
         my $command_args = shift;
+        my $message_data = shift;
+        my $schema       = shift;
         my $place;
         my $nick_being_called = $place = crunch $command_args;
         my ($weather_data, $get_weather);
 
+        warn $message_data;
+        warn $schema;
         my $area =
-            $self->rs('Area')
+            $schema->resultset('Area')
             ->search({
-                nick => ($nick_being_called || $self->message_data->nick)
+                nick => ($nick_being_called || $message_data->nick)
             },
             {rows => 1},
         )->single;
@@ -93,19 +97,19 @@ around 'command_setup' => sub {
         }
 
         if ($get_weather = get_weather($place)) {
-            my $nick_area = $self->rs('Area')->search(
-                {nick => $self->message_data->nick},
+            my $nick_area = $schema->resultset('Area')->search(
+                {nick => $message_data->nick},
                 {rows => 1},
             )->single;
             if (defined $nick_area) {
                 $nick_area->update({location => $place});
             }
             else {
-                $self->rs('Area')
+                $schema->resultset('Area')
                     ->create({
-                        nick     => $self->message_data->nick,
+                        nick     => $message_data->nick,
                         location => $place,
-                        network  => $self->message_data->network,
+                        network  => $message_data->network,
                     });
             }
             return weather_output(get_weather($place), $place);
