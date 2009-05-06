@@ -1,0 +1,5 @@
+---
+Main:
+  database:
+    host: localhost
+    name: botbot

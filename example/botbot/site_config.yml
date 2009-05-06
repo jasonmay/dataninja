@@ -1,0 +1,9 @@
+---
+Site:
+  networks:
+    dev:
+      server: localhost
+      prefix: '!'
+      channels:
+      - name: '#botbot'
+  nick: botbot
