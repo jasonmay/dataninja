@@ -129,10 +129,6 @@ sub FOREIGNBUILDARGS {
     return %new_args;
 }
 
-#around 'new' => sub {
-#    my $orig = shift;
-#};
-
 =head2 record_and_say
 
 A wrapper around 'say' that logs the IRC message to the database as well as
@@ -218,7 +214,6 @@ want to respond.
 sub said {
     my $self = shift;
     my $args = shift;
-#    my $message = Dataninja::Model::Message->new;
 
     # B:BB strips the address if we are addressed
     $args->{body} = "$args->{address}: $args->{body}"
@@ -257,7 +252,7 @@ mentioned to its corresponding remindee.
 
 sub tick {
     my $self = shift;
-    my $reminder = $self->schema->resultset('Reminder')->search(
+    my $reminder = $self->schema->resultset('Reminder')->find(
         {
             network  => $self->assigned_network,
             reminded => 0,
@@ -265,7 +260,7 @@ sub tick {
             moment => {'<' => DateTime->now }
         },
         { rows => 1 },
-    )->single;
+    );
 
     if ($reminder) {
         $self->record_and_say(
@@ -280,13 +275,13 @@ sub tick {
         $reminder->update({reminded => 1});
     }
 
-    my $interjection = $self->schema->resultset('Interjection')->search(
+    my $interjection = $self->schema->resultset('Interjection')->find(
         {
             network     => $self->assigned_network,
             interjected => 0,
         },
         { rows => 1 },
-    )->single;
+    );
     if ($interjection) {
         $self->record_and_say(
             channel => $interjection->channel,

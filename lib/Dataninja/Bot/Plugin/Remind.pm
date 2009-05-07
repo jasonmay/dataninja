@@ -119,14 +119,11 @@ around 'command_setup' => sub {
             my $schema       = shift;
             return "invalid ID" if $requested_id =~ /\D/;
 
-            my $reminder
-                = $schema->resultset('Reminder')->search(
-                    {id => $requested_id},
-                    {rows => 1},
-                )->single;
+            my $reminder = $schema->resultset('Reminder')->find($requested_id);
 
             if (defined $reminder) {
-                return "that reminder wasn't for you!" if $message_data->nick ne $reminder->maker;
+                return "that reminder wasn't for you!"
+                    if $message_data->nick ne $reminder->maker;
                 return "you don't need to worry about that"
                 if $reminder->reminded or $reminder->canceled;
                 $reminder->update({canceled => 1});

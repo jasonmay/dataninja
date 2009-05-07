@@ -80,11 +80,11 @@ around 'command_setup' => sub {
 
         my $area =
             $schema->resultset('Area')
-            ->search({
+            ->find({
                 nick => ($nick_being_called || $message_data->nick)
             },
             {rows => 1},
-        )->single;
+        );
         if (defined $area) {
             my $new_place = $area->location;
             my $get_weather = get_weather($new_place);
@@ -95,10 +95,10 @@ around 'command_setup' => sub {
         }
 
         if ($get_weather = get_weather($place)) {
-            my $nick_area = $schema->resultset('Area')->search(
+            my $nick_area = $schema->resultset('Area')->find(
                 {nick => $message_data->nick},
                 {rows => 1},
-            )->single;
+            );
             if (defined $nick_area) {
                 $nick_area->update({location => $place});
             }
