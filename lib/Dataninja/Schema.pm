@@ -30,8 +30,6 @@ See L<DBIx::Class::Schema> for other methods.
 
 =item * Nick
 
-=item * Person
-
 =item * Reminder
 
 =back
