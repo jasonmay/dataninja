@@ -6,7 +6,7 @@ extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Plugin::Jobs - you supply craigslist subdomain and search query,
+Dataninja::Bot::Plugin::Jobs - you supply craigslist subdomain and search query,
 the bot responds with results
 
 =head1 COMMANDS

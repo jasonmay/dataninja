@@ -9,8 +9,6 @@ perl_version   '5.8.8';
 build_requires 'Test::More';
 requires 'App::Nopaste';
 requires 'Bot::BasicBot';
-#requires 'Chart::Clicker';
-#requires 'Chart::Clicker::Renderer::Bar';
 requires 'DBD::Mock';
 requires 'DBD::Pg';
 requires 'DBD::SQLite';

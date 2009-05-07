@@ -12,11 +12,6 @@ use Module::Pluggable
     sub_name    => 'plugins';
 extends 'Bot::BasicBot';
 
-=head1 DESCRIPTION
-
-Dataninja::Bot is an extension of Bot::BasicBot. This is the core
-interface needed to run Dataninja.
-
 =head1 SYNOPSIS
 
   my $bot = Dataninja::Bot->new(
@@ -29,13 +24,17 @@ interface needed to run Dataninja.
 
   $bot->run;
 
-See examples/ in the dist for examples of extending Dataninja.
+=head1 DESCRIPTION
+
+Dataninja::Bot - the core interface needed to run Dataninja
+
+See C<examples/> in the dist for examples of extending Dataninja.
 
 =head1 ATTRIBUTES
 
 =head2 dispatcher
 
-(L<Path::Dispatcher>) The object that Dataninja uses to parse the IRC users' input.
+(C<Path::Dispatcher>) The object that Dataninja uses to parse the IRC users' input.
 
 =head2 assigned_network
 
@@ -52,7 +51,7 @@ database.
 
 =head2 plugins
 
-(C<< ArrayRef[Str] >>) The list of plugins provided by dataninja.
+(C<ArrayRef[Str]>) The list of plugins provided by dataninja.
 
 =cut
 
@@ -210,7 +209,7 @@ sub _said {
 
 =head2 said [HASHREF]
 
-Overridden method from Bot::BasicBot that parses IRC input (public msg). The
+Overridden method from L<Bot::BasicBot> that parses IRC input (public msg). The
 appropriate response is returned. The method returns undef if the bot doesn't
 want to respond.
 

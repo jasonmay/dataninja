@@ -15,7 +15,7 @@ L<Dataninja::Bot::Plugin>.
 
 =head2 prefix
 
-(L<Path::Dispatcher::PrefixRule>) Predicate for the dispatcher for handling the
+(C<Path::Dispatcher::PrefixRule>) Predicate for the dispatcher for handling the
 initially symbolic prefix in front of commands, such as C<< ! >>, C<< @ >>,
 or C<< # >>.
 

@@ -6,14 +6,15 @@ use Dataninja::Config;
 
 =head1 NAME
 
-Dataninja::Schmea - DBIx::Class schema for the Dataninja database
+Dataninja::Schema - L<DBIx::Class> schema for the Dataninja database
 
 =head1 METHODS
 
 =head2 connect_with_defaults
 
-This method wraps around C<connect> and connects with the
-database configuration provided by Dataninja::Schema.
+This method wraps around C<connect> and connects with the database
+configuration provided by L<Dataninja::Config>. It takes in the same
+arguments L<Dataninja::Config> does.
 
 See L<DBIx::Class::Schema> for other methods.
 
@@ -50,6 +51,8 @@ sub connect_with_defaults {
         $config->main->{database}->{user},
         $config->main->{database}->{pass},
     );
+
+    return $schema;
 }
 
 __PACKAGE__->load_classes;

@@ -20,7 +20,8 @@ When you make a reminder, the bot tells you when it will fire and give you an
 ID for manipulation/deltion. The bot will say something when the time arrives.
 
   21:49:04 < jasonmay> !remind me The Office is on > 20 seconds from now
-  21:49:04 < dataninja> will remind at: 2009-05-03 21:49:24 America/New_York [id: 651]
+  21:49:04 < dataninja> will remind at: 2009-05-03 21:49:24
+                        America/New_York [id: 651]
   21:49:24 < dataninja> jasonmay: The Office is on
 
 

@@ -35,7 +35,7 @@ The way you use this command is like so:
               wind: 0.0mph. conditions: Light Rain.
 
 
-=item * w
+=item * w B<[nick|location]>
 
 This is an alias for B<weather>.
 

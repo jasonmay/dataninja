@@ -11,38 +11,39 @@ This is the class you use to grab information from config files, such as
 the channels that dataninja connects to, Dataninja's nick, database
 information, that list goes on.
 
-There are three attributes: there are three configurations:  default,
-site, and secret. In the end, the configurations are merged (secret having the
-most precendence, and default having the least).
+There are three attributes: there are three configurations:  B<default>,
+B<site>, and B<secret>. In the end, the configurations are merged (secret
+having the most precendence, and default having the least).
 
 =head1 ATTRIBUTES
 
 =head2 default_config
 
-(Str) File for the default configuration for Dataninja (for things such
+(C<Str>) File for the default configuration for Dataninja (for things such
 as database name and host). If no file is specified, it defaults
-to etc/config.yml.
+to C<~/.dataninja/config.yml>.
 
 =head2 site_config
 
-(Str) File for site-specific information. This includes things like IRC
+(C<Str>) File for site-specific information. This includes things like IRC
 networks, channels, command prefixes, and any  custom data you like.
-The file defaults to etc/site_config.yml. See etc/example_site_config.yml
+The file defaults to C<~/.dataninja/site_config.yml>. See
+C<~/.dataninja/example_site_config.yml>
 for details.
 
 =head2 secret_config
 
-(Str) File for storing secret information such as passwords. This file defaults
-to etc/secret_config.
+(C<Str>) File for storing secret information such as passwords. This file
+defaults to C<~/.dataninja/secret_config>.
 
 =head2 main
 
-(HashRef) The object that has all the configuation information for the main 
+(C<HashRef>) The object that has all the configuation information for the main 
 configuration, such as database information.
 
 =head2 site
 
-(HashRef) The object that has all the site-specific configuation information,
+(C<HashRef>) The object that has all the site-specific configuation information,
 such as external applicaiton credentials, channels, the nick of the bot, etc.
 
 =cut

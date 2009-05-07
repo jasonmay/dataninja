@@ -6,7 +6,7 @@ use String::Util 'crunch';
 
 =head1 NAME
 
-Daataninja::Bot::Plugin::Twitter - get the latest tweet of yourself or someone
+Dataninja::Bot::Plugin::Twitter - get the latest tweet of yourself or someone
 else
 
 =head1 COMMANDS

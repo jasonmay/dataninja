@@ -7,12 +7,6 @@ extends 'Path::Dispatcher';
 
 Dataninja::Bot::Plugin - base class for Dataninja plugins
 
-=head1 DESCRIPTION
-
-Dataninja plugins use Module::Pluggable as the backend.  This class contains
-the necessary data that every plugin needs. It also contains some sugar
-to improve readability.
-
 =head1 SYNOPSIS
 
   around 'command_setup' => sub {
@@ -23,6 +17,12 @@ to improve readability.
           command => sub { "output" }
       );
   };
+
+=head1 DESCRIPTION
+
+Dataninja plugins use L<Module::Pluggable> as the backend.  This class contains
+the necessary data that every plugin needs. It also contains some sugar
+to improve readability.
 
 =head1 METHODS
 

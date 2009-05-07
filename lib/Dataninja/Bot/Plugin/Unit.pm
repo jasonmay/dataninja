@@ -13,11 +13,12 @@ Dataninja::Bot::Plugin::Unit - the bot can do unit conversion for you
 
 =item * unit B<conversion>
 
-The bot talks to Google Calculator to do the unit conversion for you. You also
-have access to result history, particularly the last ten results (C<$0> to
+The bot talks to Google Calculator (using L<WWW::Google::Calculator> to do the
+unit conversion for you. You also have access to result history, particularly
+the last ten results (C<$0> to
 C<$9>).
 
-=item * u
+=item * u B<conversion>
 
 This is an alias for B<unit>.
 

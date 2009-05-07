@@ -8,7 +8,7 @@ __END__
 
 =head1 NAME
 
-Dataninja - Yet Another IRC Bot to do your bidding
+Dataninja - Extensible, DBIC-based IRC bot
 
 =head1 DESCRIPTION
 
@@ -21,7 +21,7 @@ seen, and plenty of other features.
 
 It is not very extendable at the moment, but work is being done to change that.
 If you are interested in adding plugins, you will have to (for now) download
-the source and add plugins to lib/Dataninja/Bot/Plugins/ and use
+the source and add plugins to C<lib/Dataninja/Bot/Plugins/> and use
 C<perl -Ilib bin/dataninja.pl> to have the bot recognize your extensions.
 
 =head1 REPOSITORY

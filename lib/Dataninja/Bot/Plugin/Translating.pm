@@ -7,7 +7,8 @@ REST::Google::Translate->http_referer('http://www.google.com');
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Translating - translation tools
+Dataninja::Bot::Plugin::Translating - translation tools thanks to
+L<REST::Google::Tranlsate>
 
 =head1 COMMANDS
 

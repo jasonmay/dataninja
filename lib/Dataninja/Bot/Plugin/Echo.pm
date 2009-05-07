@@ -4,7 +4,7 @@ extends 'Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Plugin::Echo - the bot merely echos what you put, for random utility
+Dataninja::Bot::Plugin::Echo - the bot merely echos what you put, for random utility
 
 =head1 COMMANDS
 
