@@ -115,10 +115,10 @@ dataninja.pl - run the Dataninja bot
 
     dataninja.pl [network]
 
-This command runs the bot. The network is optional, and defaults to 'dev'.
-The network information is supplied in your config. This is in C<~/.dataninja/>
-(which dataninja supplies for you when you run C<dataninja.pl> for the first
-time.).
+This command runs the bot. The network is optional, and defaults to 'dev'.  The
+network information is supplied in your config. This is in C<~/.dataninja/>.
+Dataninja supplies these configurations for you when you run C<dataninja.pl>
+for the first time.
 
 =head1 AUTHOR
 
