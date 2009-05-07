@@ -52,6 +52,7 @@ sub BUILD {
         rules => [
             map {
                 eval "require $_";
+                die $@ if $@;
                 my $dispatcher = $_->new;
                 Path::Dispatcher::Rule::Dispatch->new(
                     dispatcher => $dispatcher,
