@@ -15,7 +15,7 @@ information, that list goes on.
 
 There are three attributes: there are three configurations:  B<default>,
 B<site>, and B<secret>. In the end, the configurations are merged (secret
-having the most precendence, and default having the least).
+having the most precedence, and default having the least).
 
 =head1 ATTRIBUTES
 
