@@ -3,9 +3,11 @@ use Moose;
 use YAML::XS 'LoadFile';
 use Hash::Merge qw/merge/;
 
-=head1 DESCRIPTION
+=head1 NAME
 
 Dataninja::Config - Dataninja configuration through YAML files
+
+=head1 DESCRIPTION
 
 This is the class you use to grab information from config files, such as
 the channels that dataninja connects to, Dataninja's nick, database
