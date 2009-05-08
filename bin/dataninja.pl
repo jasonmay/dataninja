@@ -109,7 +109,7 @@ __END__
 
 =head1 NAME
 
-dataninja.pl - run the Dataninja bot
+dataninja.pl - run the App::Dataninja bot
 
 =head1 SYNOPSIS
 
