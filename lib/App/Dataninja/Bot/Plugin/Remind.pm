@@ -1,14 +1,14 @@
-package Dataninja::Bot::Plugin::Remind;
+package App::Dataninja::Bot::Plugin::Remind;
 use Moose;
 use DateTime;
 use DateTime::Format::Natural;
 use DateTime::Format::Pg;
 #use DateTime::Format::SQLite;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Remind - you can make and cancel reminders
+App::Dataninja::Bot::Plugin::Remind - you can make and cancel reminders
 
 =head1 COMMANDS
 

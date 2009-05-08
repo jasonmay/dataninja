@@ -1,10 +1,10 @@
-package Dataninja::Bot::Plugin::Botsnack;
+package App::Dataninja::Bot::Plugin::Botsnack;
 use Moose;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Botsnack - bot gets a snack for making you happy :)
+App::Dataninja::Bot::Plugin::Botsnack - bot gets a snack for making you happy :)
 
 =head1 COMMANDS
 

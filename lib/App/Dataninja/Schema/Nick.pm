@@ -1,4 +1,4 @@
-package Dataninja::Schema::Nick;
+package App::Dataninja::Schema::Nick;
 use strict;
 use warnings;
 use base qw/DBIx::Class::Schema/;

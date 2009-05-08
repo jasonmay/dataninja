@@ -1,11 +1,11 @@
-package Dataninja::Bot::Plugin::Daysuntil;
+package App::Dataninja::Bot::Plugin::Daysuntil;
 use Moose;
 use DateTime::Format::Natural;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Daysuntil - displays days until whatever time you
+App::Dataninja::Bot::Plugin::Daysuntil - displays days until whatever time you
 provide
 
 =head1 COMMANDS

@@ -1,16 +1,16 @@
-package Dataninja::Config;
+package App::Dataninja::Config;
 use Moose;
 use YAML::XS 'LoadFile';
 use Hash::Merge qw/merge/;
 
 =head1 NAME
 
-Dataninja::Config - Dataninja configuration through YAML files
+App::Dataninja::Config - App::Dataninja configuration through YAML files
 
 =head1 DESCRIPTION
 
 This is the class you use to grab information from config files, such as
-the channels that dataninja connects to, Dataninja's nick, database
+the channels that the bot connects to, his nick, database
 information, that list goes on.
 
 There are three attributes: there are three configurations:  B<default>,
@@ -21,7 +21,7 @@ having the most precedence, and default having the least).
 
 =head2 default_config
 
-(C<Str>) File for the default configuration for Dataninja (for things such
+(C<Str>) File for the default configuration for App::Dataninja (for things such
 as database name and host). If no file is specified, it defaults
 to C<~/.dataninja/config.yml>.
 

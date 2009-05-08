@@ -1,11 +1,11 @@
-package Dataninja::Bot::Plugin;
+package App::Dataninja::Bot::Plugin;
 use Moose;
 use DBIx::Class::Row;
 extends 'Path::Dispatcher';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin - base class for Dataninja plugins
+App::Dataninja::Bot::Plugin - base class for App::Dataninja plugins
 
 =head1 SYNOPSIS
 
@@ -20,7 +20,7 @@ Dataninja::Bot::Plugin - base class for Dataninja plugins
 
 =head1 DESCRIPTION
 
-Dataninja plugins use L<Module::Pluggable> as the backend.  This class contains
+App::Dataninja plugins use L<Module::Pluggable> as the backend.  This class contains
 the necessary data that every plugin needs. It also contains some sugar
 to improve readability.
 

@@ -1,20 +1,20 @@
-package Dataninja::Schema;
+package App::Dataninja::Schema;
 use strict;
 use warnings;
 use base qw/DBIx::Class::Schema/;
-use Dataninja::Config;
+use App::Dataninja::Config;
 
 =head1 NAME
 
-Dataninja::Schema - L<DBIx::Class> schema for the Dataninja database
+App::Dataninja::Schema - L<DBIx::Class> schema for the App::Dataninja database
 
 =head1 METHODS
 
 =head2 connect_with_defaults
 
 This method wraps around C<connect> and connects with the database
-configuration provided by L<Dataninja::Config>. It takes in the same
-arguments L<Dataninja::Config> does.
+configuration provided by L<App::Dataninja::Config>. It takes in the same
+arguments L<App::Dataninja::Config> does.
 
 See L<DBIx::Class::Schema> for other methods.
 
@@ -39,7 +39,7 @@ See L<DBIx::Class::Schema> for other methods.
 sub connect_with_defaults {
     my $class = shift;
 
-    my $config = Dataninja::Config->new(@_);
+    my $config = App::Dataninja::Config->new(@_);
     my $schema = $class->connect(
         sprintf(
             'dbi:%s:dbname=%s',

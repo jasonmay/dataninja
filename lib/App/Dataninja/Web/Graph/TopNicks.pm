@@ -1,7 +1,7 @@
-package Dataninja::Web::Graph::TopNicks;
+package App::Dataninja::Web::Graph::TopNicks;
 use Moose;
 extends 'Chart::Clicker';
-use Dataninja::Schema;
+use App::Dataninja::Schema;
 use Chart::Clicker::Renderer::Bar;
 
 has nick_keys => (

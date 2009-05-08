@@ -1,4 +1,4 @@
-package Dataninja::Schema::Area;
+package App::Dataninja::Schema::Area;
 use strict;
 use warnings;
 use base qw/DBIx::Class::Schema/;

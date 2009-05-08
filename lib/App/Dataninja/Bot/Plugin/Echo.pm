@@ -1,10 +1,10 @@
-package Dataninja::Bot::Plugin::Echo;
+package App::Dataninja::Bot::Plugin::Echo;
 use Moose;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Echo - the bot merely echos what you put, for random utility
+App::Dataninja::Bot::Plugin::Echo - the bot merely echos what you put, for random utility
 
 =head1 COMMANDS
 

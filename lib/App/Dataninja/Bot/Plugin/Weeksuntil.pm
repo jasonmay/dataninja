@@ -1,12 +1,12 @@
-package Dataninja::Bot::Plugin::Weeksuntil;
+package App::Dataninja::Bot::Plugin::Weeksuntil;
 use Moose;
 use DateTime::Format::Natural;
 use DateTime::Format::Duration;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Weeksuntil - displays weeks until whatever time you
+App::Dataninja::Bot::Plugin::Weeksuntil - displays weeks until whatever time you
 provide
 
 =head1 COMMANDS

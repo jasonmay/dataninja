@@ -1,11 +1,11 @@
-package Dataninja::Bot::Plugin::Unit;
+package App::Dataninja::Bot::Plugin::Unit;
 use Moose;
 use WWW::Google::Calculator;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Unit - the bot can do unit conversion for you
+App::Dataninja::Bot::Plugin::Unit - the bot can do unit conversion for you
 
 =head1 COMMANDS
 

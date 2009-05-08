@@ -1,10 +1,10 @@
-package Dataninja::Bot::Plugin::CalcRelay;
+package App::Dataninja::Bot::Plugin::CalcRelay;
 use Moose;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::CalcRelay - don't ask
+App::Dataninja::Bot::Plugin::CalcRelay - don't ask
 
 =head1 COMMANDS
 

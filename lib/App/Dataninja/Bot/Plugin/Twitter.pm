@@ -1,12 +1,12 @@
-package Dataninja::Bot::Plugin::Twitter;
+package App::Dataninja::Bot::Plugin::Twitter;
 use Moose;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 use Net::Twitter;
 use String::Util 'crunch';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Twitter - get the latest tweet of yourself or someone
+App::Dataninja::Bot::Plugin::Twitter - get the latest tweet of yourself or someone
 else
 
 =head1 COMMANDS

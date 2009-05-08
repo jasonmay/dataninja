@@ -1,16 +1,16 @@
 package Botbot::Plugin::Fooo;
 use Moose;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Plugin::Echo - the bot merely echos what you put, for random utility
+Botbot::Plugin::Fooo - make your words more fun
 
 =head1 COMMANDS
 
 =over
 
-=item * echo B<message>
+=item * fooo B<message>
 
 =back
 

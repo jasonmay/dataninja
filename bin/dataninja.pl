@@ -2,9 +2,9 @@
 use strict;
 use warnings;
 use lib 'lib';
-use Dataninja::Bot;
-use Dataninja::Config;
-use Dataninja::Schema;
+use App::Dataninja::Bot;
+use App::Dataninja::Config;
+use App::Dataninja::Schema;
 use DBICx::Deploy;
 use YAML::XS 'DumpFile';
 
@@ -79,7 +79,7 @@ sub check_for_config {
                 }
             );
 
-            DBICx::Deploy->deploy('Dataninja::Schema'
+            DBICx::Deploy->deploy('App::Dataninja::Schema'
                 => "DBI:SQLite:$dataninja_dir/dataninja.sqlite");
         }
     }
@@ -87,10 +87,10 @@ sub check_for_config {
 
 check_for_config;
 
-my $config = Dataninja::Config->new;
+my $config = App::Dataninja::Config->new;
 my $database_config = $config->main->{database};
 
-my $schema = Dataninja::Schema->connect(
+my $schema = App::Dataninja::Schema->connect(
     "dbi:$database_config->{driver}:dbname=$database_config->{name}",
     $database_config->{user},
     $database_config->{password}
@@ -98,7 +98,7 @@ my $schema = Dataninja::Schema->connect(
 
 $network ||= 'dev';
 
-my $bot = Dataninja::Bot->new(
+my $bot = App::Dataninja::Bot->new(
     config           => $config,
     assigned_network => $network,
     schema           => $schema

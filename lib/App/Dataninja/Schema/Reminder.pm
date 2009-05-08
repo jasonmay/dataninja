@@ -1,4 +1,4 @@
-package Dataninja::Schema::Reminder;
+package App::Dataninja::Schema::Reminder;
 use strict;
 use warnings;
 use base qw/DBIx::Class::Schema/;

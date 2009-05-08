@@ -1,4 +1,4 @@
-package Dataninja::Schema::Interjection;
+package App::Dataninja::Schema::Interjection;
 use strict;
 use warnings;
 use base qw/DBIx::Class::Schema/;

@@ -1,11 +1,11 @@
-package Dataninja::Bot::Plugin::Last;
+package App::Dataninja::Bot::Plugin::Last;
 use App::Nopaste 'nopaste';
 use Moose;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Last - you tell the bot show many of the last N messages you wan to see
+App::Dataninja::Bot::Plugin::Last - you tell the bot show many of the last N messages you wan to see
 
 =head1 COMMANDS
 

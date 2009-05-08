@@ -1,12 +1,12 @@
-package Dataninja::Bot::Plugin::Weather;
+package App::Dataninja::Bot::Plugin::Weather;
 use Moose;
 use Weather::Underground;
 use String::Util qw/crunch/;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Weather - get current weather information from Weather Underground
+App::Dataninja::Bot::Plugin::Weather - get current weather information from Weather Underground
 
 =head1 COMMANDS
 

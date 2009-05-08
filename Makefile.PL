@@ -3,7 +3,7 @@ use inc::Module::Install;
 name           'Dataninja';
 license        'perl';
 author         'Jason May <jason.a.may@gmail.com>';
-all_from       'lib/Dataninja.pm';
+all_from       'lib/App/Dataninja.pm';
 perl_version   '5.8.8';
 
 build_requires 'Test::More';

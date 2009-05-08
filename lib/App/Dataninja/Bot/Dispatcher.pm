@@ -1,15 +1,15 @@
-package Dataninja::Bot::Dispatcher;
+package App::Dataninja::Bot::Dispatcher;
 use Moose;
 extends 'Path::Dispatcher';
 
 =head1 NAME
 
-Dataninja::Bot::Dispatcher - Class for building Dataninja's dispatcher
+App::Dataninja::Bot::Dispatcher - Class for building App::Dataninja's dispatcher
 
 =head1 DESCRIPTION
 
-This class constructs Dataninja's dispatcher from all the plugins in
-L<Dataninja::Bot::Plugin>.
+This class constructs App::Dataninja's dispatcher from all the plugins in
+L<App::Dataninja::Bot::Plugin>.
 
 =head1 ATTRIBUTES
 
@@ -21,8 +21,8 @@ or C<< # >>.
 
 =head2 data_for_plugins
 
-(L<Dataninja::Bot::Plugin>) This is a class that uses the plugin base to store
-the data that Dataninja needs (message data, schema, etc.) to pass into each
+(L<App::Dataninja::Bot::Plugin>) This is a class that uses the plugin base to store
+the data that App::Dataninja needs (message data, schema, etc.) to pass into each
 plugin for rule dispatching.
 
 =cut
@@ -35,7 +35,7 @@ has 'prefix' => (
 
 has 'data_for_plugins' => (
     is       => 'ro',
-    isa      => 'Dataninja::Bot::Plugin',
+    isa      => 'App::Dataninja::Bot::Plugin',
     required => 1,
 );
 

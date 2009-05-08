@@ -1,4 +1,4 @@
-package Dataninja::Schema::Message;
+package App::Dataninja::Schema::Message;
 use strict;
 use warnings;
 use base qw/DBIx::Class::Schema/;

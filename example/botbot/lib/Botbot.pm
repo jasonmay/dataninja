@@ -1,6 +1,6 @@
 package Botbot;
 use Moose;
-extends 'Dataninja::Bot';
+extends 'App::Dataninja::Bot';
 
 before 'run' => sub { print "Thanks for using Botbot!\n" };
 

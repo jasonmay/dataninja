@@ -1,23 +1,23 @@
 #!/usr/bin/env perl
-package Dataninja::Bot;
+package App::Dataninja::Bot;
 use Moose;
 use DateTime;
 use Path::Dispatcher;
-use Dataninja::Bot::Dispatcher;
-use Dataninja::Bot::Plugin;
+use App::Dataninja::Bot::Dispatcher;
+use App::Dataninja::Bot::Plugin;
 use List::Util qw/first/;
 use MooseX::NonMoose;
 use Module::Pluggable
-    search_path => ['Dataninja::Bot::Plugin'],
+    search_path => ['App::Dataninja::Bot::Plugin'],
     sub_name    => 'plugins';
 extends 'Bot::BasicBot';
 
 =head1 SYNOPSIS
 
-  my $bot = Dataninja::Bot->new(
+  my $bot = App::Dataninja::Bot->new(
       assigned_network => '...',
-      config           => Dataninja::Config->new(...),
-      schema           => Dataninja::Schema->new(...),
+      config           => App::Dataninja::Config->new(...),
+      schema           => App::Dataninja::Schema->new(...),
   );
 
   $bot->search_path(add => 'My::Own::Plugins');
@@ -26,32 +26,32 @@ extends 'Bot::BasicBot';
 
 =head1 DESCRIPTION
 
-Dataninja::Bot - the core interface needed to run Dataninja
+App::Dataninja::Bot - the core interface needed to run the IRC bot
 
-See C<examples/> in the dist for examples of extending Dataninja.
+See C<examples/> in the dist for examples of extending App::Dataninja.
 
 =head1 ATTRIBUTES
 
 =head2 dispatcher
 
-(C<Path::Dispatcher>) The object that Dataninja uses to parse the IRC users' input.
+(C<Path::Dispatcher>) The object that App::Dataninja uses to parse the IRC users' input.
 
 =head2 assigned_network
 
-(C<Str>) The network on which the Dataninja process resides.
+(C<Str>) The network on which the App::Dataninja process resides.
 
 =head2 config
 
-(L<Dataninja::Config>) The configuration structure loaded from YAML file(s).
+(L<App::Dataninja::Config>) The configuration structure loaded from YAML file(s).
 
 =head2 schema
 
-(L<Dataninja::Schema>) The interface that Dataninja uses to interact with the
+(L<App::Dataninja::Schema>) The interface that App::Dataninja uses to interact with the
 database.
 
 =head2 plugins
 
-(C<ArrayRef[Str]>) The list of plugins provided by dataninja.
+(C<ArrayRef[Str]>) The list of plugins provided by App::Dataninja.
 
 =cut
 
@@ -69,12 +69,12 @@ has assigned_network => (
 
 has config => (
     is => 'rw',
-    isa => 'Dataninja::Config',
+    isa => 'App::Dataninja::Config',
 );
 
 has schema => (
     is => 'rw',
-    isa => 'Dataninja::Schema',
+    isa => 'App::Dataninja::Schema',
 );
 
 =head1 METHODS
@@ -185,10 +185,10 @@ sub _said {
         );
     }
 
-    my $dispatcher = Dataninja::Bot::Dispatcher->new(
+    my $dispatcher = App::Dataninja::Bot::Dispatcher->new(
         prefix    => $prefix_rule,
         plugins   => [$self->plugins],
-        data_for_plugins => Dataninja::Bot::Plugin->new(
+        data_for_plugins => App::Dataninja::Bot::Plugin->new(
             message_data => $message_data,
             schema   => $self->schema,
         )
@@ -234,7 +234,7 @@ sub said {
 
 =head2 run
 
-The method to run the Dataninja bot.
+The method to run the App::Dataninja bot.
 
 =cut
 

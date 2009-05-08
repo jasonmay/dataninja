@@ -1,10 +1,10 @@
-package Dataninja::Bot::Plugin::Colors;
+package App::Dataninja::Bot::Plugin::Colors;
 use Moose;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Colors - display list of colors corresponding to ASCII
+App::Dataninja::Bot::Plugin::Colors - display list of colors corresponding to ASCII
 values
 
 =head1 COMMANDS

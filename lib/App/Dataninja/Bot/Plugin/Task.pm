@@ -1,11 +1,11 @@
-package Dataninja::Bot::Plugin::Task;
+package App::Dataninja::Bot::Plugin::Task;
 use Moose;
 use Net::Hiveminder;
-extends 'Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME
 
-Dataninja::Bot::Plugin::Task - add task to your hiveminder that pertains to dataninja
+App::Dataninja::Bot::Plugin::Task - add task to your hiveminder that pertains to App::Dataninja
 
 =head1 COMMANDS
 

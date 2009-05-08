@@ -8,8 +8,8 @@ use List::Util qw/sum/;
 
 # my stuff
 use lib 'lib';
-use Dataninja::Schema;
-use Dataninja::Config;
+use App::Dataninja::Schema;
+use App::Dataninja::Config;
 
 if (!-d 'doc/site') {
     mkdir "doc/site" or die "Unable to create doc/site: $!";
@@ -35,8 +35,8 @@ sub write_to {
     return 1;
 }
 
-my $config = Dataninja::Config->new;
-my $schema = Dataninja::Schema->connect_with_defaults;
+my $config = App::Dataninja::Config->new;
+my $schema = App::Dataninja::Schema->connect_with_defaults;
 
 
 my @networks = map { $_->network } $schema->resultset('Message')->search(
