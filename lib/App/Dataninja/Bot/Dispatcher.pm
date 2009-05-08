@@ -4,11 +4,11 @@ extends 'Path::Dispatcher';
 
 =head1 NAME
 
-App::Dataninja::Bot::Dispatcher - Class for building App::Dataninja's dispatcher
+App::Dataninja::Bot::Dispatcher - Class for building L<App::Dataninja>'s dispatcher
 
 =head1 DESCRIPTION
 
-This class constructs App::Dataninja's dispatcher from all the plugins in
+This class constructs L<App::Dataninja>'s dispatcher from all the plugins in
 L<App::Dataninja::Bot::Plugin>.
 
 =head1 ATTRIBUTES
@@ -22,7 +22,7 @@ or C<< # >>.
 =head2 data_for_plugins
 
 (L<App::Dataninja::Bot::Plugin>) This is a class that uses the plugin base to store
-the data that App::Dataninja needs (message data, schema, etc.) to pass into each
+the data that the bot needs (message data, schema, etc.) to pass into each
 plugin for rule dispatching.
 
 =cut

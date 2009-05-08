@@ -5,7 +5,7 @@ extends 'Path::Dispatcher';
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin - base class for App::Dataninja plugins
+App::Dataninja::Bot::Plugin - base class for L<App::Dataninja> plugins
 
 =head1 SYNOPSIS
 

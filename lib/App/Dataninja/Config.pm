@@ -5,7 +5,7 @@ use Hash::Merge qw/merge/;
 
 =head1 NAME
 
-App::Dataninja::Config - App::Dataninja configuration through YAML files
+App::Dataninja::Config - L<App::Dataninja> configuration through YAML files
 
 =head1 DESCRIPTION
 

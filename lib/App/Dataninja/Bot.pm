@@ -12,6 +12,10 @@ use Module::Pluggable
     sub_name    => 'plugins';
 extends 'Bot::BasicBot';
 
+=head1 NAME
+
+App::Dataninja::Bot - the core interface needed to run the IRC bot
+
 =head1 SYNOPSIS
 
   my $bot = App::Dataninja::Bot->new(
@@ -26,19 +30,17 @@ extends 'Bot::BasicBot';
 
 =head1 DESCRIPTION
 
-App::Dataninja::Bot - the core interface needed to run the IRC bot
-
-See C<examples/> in the dist for examples of extending App::Dataninja.
+See C<examples/> in the dist for examples of extending L<App::Dataninja>.
 
 =head1 ATTRIBUTES
 
 =head2 dispatcher
 
-(C<Path::Dispatcher>) The object that App::Dataninja uses to parse the IRC users' input.
+(C<Path::Dispatcher>) The object that L<App::Dataninja> uses to parse the IRC users' input.
 
 =head2 assigned_network
 
-(C<Str>) The network on which the App::Dataninja process resides.
+(C<Str>) The network on which the L<App::Dataninja> process resides.
 
 =head2 config
 
@@ -46,12 +48,12 @@ See C<examples/> in the dist for examples of extending App::Dataninja.
 
 =head2 schema
 
-(L<App::Dataninja::Schema>) The interface that App::Dataninja uses to interact with the
+(L<App::Dataninja::Schema>) The interface that L<App::Dataninja> uses to interact with the
 database.
 
 =head2 plugins
 
-(C<ArrayRef[Str]>) The list of plugins provided by App::Dataninja.
+(C<ArrayRef[Str]>) The list of plugins provided by L<App::Dataninja>.
 
 =cut
 
@@ -234,7 +236,7 @@ sub said {
 
 =head2 run
 
-The method to run the App::Dataninja bot.
+The method to run the L<App::Dataninja> bot.
 
 =cut
 
