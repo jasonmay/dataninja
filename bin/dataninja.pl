@@ -1,7 +1,6 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use lib 'lib';
 use App::Dataninja::Bot;
 use App::Dataninja::Config;
 use App::Dataninja::Schema;
