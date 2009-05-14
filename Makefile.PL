@@ -1,6 +1,6 @@
 use inc::Module::Install;
 
-name           'Dataninja';
+name           'App-Dataninja';
 license        'perl';
 author         'Jason May <jason.a.may@gmail.com>';
 all_from       'lib/App/Dataninja.pm';

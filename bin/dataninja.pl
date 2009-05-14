@@ -1,7 +1,6 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use lib 'lib';
 use App::Dataninja::Bot;
 use App::Dataninja::Config;
 use App::Dataninja::Schema;
@@ -109,7 +108,7 @@ __END__
 
 =head1 NAME
 
-dataninja.pl - run the Dataninja bot
+dataninja.pl - run the App::Dataninja bot
 
 =head1 SYNOPSIS
 

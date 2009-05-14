@@ -1,12 +1,10 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-
 use Test::More;
 use App::Dataninja::Schema;
 use DBD::Mock;
 use DateTime;
-use lib 'lib';
 use DBIx::Class::Row;
 
 my @schema_classes = qw/Area Interjection Message Nick Person Reminder/;

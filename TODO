@@ -1,0 +1,5 @@
+== TODO ==
+* Allow disabling of plugins with a single attribute
+* Time zone support for nicks
+* Recurring reminders
+* Support for "secret" channels (caution with logging, etc.)
