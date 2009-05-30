@@ -57,8 +57,6 @@ Thanks guys!
 
 =item * Shawn Moore (Sartak)
 
-=item * Jesse Luehrs (doy)
-
 =back
 
 =head1 LICENSE
