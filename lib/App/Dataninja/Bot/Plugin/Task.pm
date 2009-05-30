@@ -37,7 +37,7 @@ around 'command_setup' => sub {
             my $warnings = "";
             $warnings = " (warning: priority modification detected and stripped)"
             if $priorities_munged;
-            return "task: " . $hm->create_task("$task [irc_dataninja]")->{record_locator}
+            return "task: http://task.hm/" . $hm->create_task("$task [irc_dataninja]")->{record_locator}
             . $warnings;
         }
     );

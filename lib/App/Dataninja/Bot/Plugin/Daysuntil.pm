@@ -25,6 +25,7 @@ around 'command_setup' => sub {
     $self->command(
         daysuntil => sub {
             my $command_args = shift;
+            return "until when?" unless defined $command_args;
             my $parser = DateTime::Format::Natural->new;
             my $dt = $parser->parse_datetime($command_args);
             my $now = DateTime->now;
