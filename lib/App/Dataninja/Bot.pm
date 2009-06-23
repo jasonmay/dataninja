@@ -266,14 +266,22 @@ sub tick {
         { rows => 1 },
     );
 
-    my $driver = $self->config->main->{database}->{driver};
-    my $format_module = "DateTime::Format::$driver";
     if ($reminder) {
+        my $driver = $self->config->main->{database}->{driver};
+        my $format_module = "DateTime::Format::$driver";
+        my $made_dt = $format_module->parse_datetime($reminder->made);
+
+        # show only if reminder was made more than a month ago
+        my $set_message = DateTime->compare(
+            $made_dt->add(months => 1),
+            DateTime->now
+        ) < 0 ? sprintf("(set %s) ", $made_dt->ymd) : '';
+
         $self->record_and_say(
             channel => $reminder->channel,
             body => sprintf(
-                '(set %s) %s: %s',
-                $format_module->parse_datetime($reminder->made)->ymd,
+                '%s%s: %s',
+                $set_message,
                 $reminder->remindee,
                 $reminder->description,
             )
