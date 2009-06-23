@@ -13,6 +13,7 @@ __PACKAGE__->add_columns(
     description => {},
     remindee    => {},
     maker       => {},
+    made        => {},
     channel     => {},
     network     => {},
     reminded    => {

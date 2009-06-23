@@ -11,6 +11,8 @@ use Module::Pluggable
     search_path => ['App::Dataninja::Bot::Plugin'],
     sub_name    => 'plugins';
 extends 'Bot::BasicBot';
+use DateTime::Format::Pg;
+use DateTime::Format::SQLite;
 
 =head1 NAME
 
@@ -264,13 +266,16 @@ sub tick {
         { rows => 1 },
     );
 
+    my $driver = $self->config->main->{database}->{driver};
+    my $format_module = "DateTime::Format::$driver";
     if ($reminder) {
         $self->record_and_say(
             channel => $reminder->channel,
             body => sprintf(
-                '%s: %s',
+                '(set %s) %s: %s',
+                $format_module->parse_datetime($reminder->made)->ymd,
                 $reminder->remindee,
-                $reminder->description
+                $reminder->description,
             )
         );
 

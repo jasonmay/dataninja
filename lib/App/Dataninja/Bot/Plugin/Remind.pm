@@ -102,7 +102,8 @@ around 'command_setup' => sub {
                 channel     => $message_data->channel,
                 network     => $message_data->network,
                 maker       => $message_data->nick,
-                moment      => $when_to_remind
+                made        => DateTime->now,
+                moment      => $when_to_remind,
             });
 
             $when_to_remind->set_time_zone('America/New_York');
