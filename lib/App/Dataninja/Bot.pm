@@ -273,7 +273,7 @@ sub tick {
 
         # show only if reminder was made more than a month ago
         my $set_message = DateTime->compare(
-            $made_dt->add(months => 1),
+            $made_dt->add(days => 10),
             DateTime->now
         ) < 0 ? sprintf("(set %s) ", $made_dt->ymd) : '';
 
