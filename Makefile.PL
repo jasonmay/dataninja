@@ -32,6 +32,7 @@ requires 'Moose';
 requires 'MooseX::NonMoose' => '0.03';
 requires 'Net::Hiveminder';
 requires 'Net::Twitter';
+requires 'Number::Format';
 requires 'Path::Dispatcher';
 requires 'REST::Google::Translate';
 requires 'String::Util';
