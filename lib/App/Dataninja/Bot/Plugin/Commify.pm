@@ -12,7 +12,7 @@ App::Dataninja::Bot::Plugin::Commify - add commas to numbers
 
 =over
 
-=item * commify B<description>
+=item * commify B<number>
 
 When a user gives dataninja a number using this command, dataninja outputs
 the number with commas put in the right places.
