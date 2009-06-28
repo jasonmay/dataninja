@@ -80,13 +80,13 @@ around 'command_setup' => sub {
 
             my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York', prefer_future => 1);
             my $when_to_remind = eval { $parser->parse_datetime($time) };
-            return $@ if $@;
+            return "(eval) $@" if $@;
 
             if (!$parser->success) {
                 $when_to_remind = eval {
                     DateTime::Format::Pg->parse_datetime($time);
                 };
-                return $@ if $@;
+                return "(eval) $@" if $@;
                 return "huh? see http://tinyurl.com/dtfn-examples"
                     unless defined $when_to_remind;
             }

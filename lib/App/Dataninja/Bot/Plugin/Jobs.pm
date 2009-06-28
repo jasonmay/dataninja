@@ -38,7 +38,7 @@ around 'command_setup' => sub {
 #            my $query = Jifty->config->app("clquery");
             my $job_data = eval { $craigslist->scrape(URI->new("http://$place.craigslist.org/search/jjj/$url_query")) };
             return "not a craigsilst subdomain" if $@ && $@ =~ /500/;
-            return $@ if $@;
+            return "(eval) $@" if $@;
 
             my @jobs = @{defined $job_data->{titles} ? $job_data->{titles} : []};
 

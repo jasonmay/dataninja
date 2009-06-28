@@ -50,7 +50,7 @@ around 'command_setup' => sub {
             }
             return "huh?";
         } unless $@;
-        return $@;
+        return "(eval) $@";
     };
 
     $self->command(unit => $unit_code);

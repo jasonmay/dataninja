@@ -29,7 +29,7 @@ around 'command_setup' => sub {
         commify => sub {
             my $command_arg = shift;
             my $output =  eval { format_number $command_arg };
-            return $@ if $@;
+            return "(eval) $@" if $@;
             return $output;
         }
     );

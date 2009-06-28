@@ -29,7 +29,7 @@ around 'command_setup' => sub {
             return "please specify a timezone (Area/Location format)"
                 unless $command_args;
             my $dt = eval { DateTime->now(time_zone => $command_args) };
-            return $@ if $@;
+            return "(eval) $@" if $@;
             return sprintf("%s %s", $dt->ymd, $dt->hms);
         }
     );
