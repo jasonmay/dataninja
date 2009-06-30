@@ -35,7 +35,6 @@ sub write_to {
     return 1;
 }
 
-my $config = App::Dataninja::Config->new;
 my $schema = App::Dataninja::Schema->connect_with_defaults;
 
 
