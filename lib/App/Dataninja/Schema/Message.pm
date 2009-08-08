@@ -12,6 +12,7 @@ __PACKAGE__->add_columns(
     message       => {data_type => 'text'},
     moment        => {data_type => 'timestamp'},
     channel       => {data_type => 'varchar(64)'},
+    nick          => {data_type => 'varchar(64)'},
     stats_updated => {default_value => 0, data_type => 'integer'},
 );
 
