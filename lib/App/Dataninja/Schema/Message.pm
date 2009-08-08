@@ -7,11 +7,12 @@ __PACKAGE__->load_components(qw/PK::Auto InflateColumn Core/);
 __PACKAGE__->table('messages');
 __PACKAGE__->add_columns(
     id          => {is_auto_increment => 1, data_type => 'integer'},
-    nick    => {},
-    message => {},
-    moment  => {},
-    channel => {},
-    network => {},
+    nick          => {},
+    message       => {},
+    moment        => {},
+    channel       => {},
+    network       => {},
+    stats_updated => {default => 0, data_type => 'integer'},
 );
 
 sub parse_or_format {
