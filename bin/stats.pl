@@ -8,15 +8,9 @@ use DDS;
 my $schema = App::Dataninja::Schema->connect_with_defaults;
 my $msg_rs = $schema->resultset('Message');
 my $stats_rs = $schema->resultset('NickStats');
+my $nicks_rs = $msg_rs->search(undef, {columns => ['nick'], distinct => 1});
 
-my $nick_rs = $msg_rs->search({nick => 'jasonmay', stats_updated => 0});
-
-my $rs = $msg_rs->search(
-    {
-        nick          => 'jasonmay',
-        stats_updated => 0,
-    }
-);
+my $rs = $msg_rs->search( { stats_updated => 0 });
 
 while (my $nick_row = $rs->next) {
     my $dt = $nick_row->moment;
@@ -26,6 +20,7 @@ while (my $nick_row = $rs->next) {
     );
 
     if (!$stats_rs->search(\%stats_mapping)->count) {
+        warn "Created stats for " . $nick_row->nick;
         $stats_rs->create({%stats_mapping});
     }
     else {
