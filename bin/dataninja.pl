@@ -36,9 +36,9 @@ sub check_for_config {
                     {
                         database =>
                         {
-                            name   => "$dataninja_dir/dataninja.sqlite",
+                            name   => "dataninja",
                             host   => 'localhost',
-                            driver => 'SQLite',
+                            driver => 'Pg',
                         }
                     }
                 }
