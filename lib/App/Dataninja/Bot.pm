@@ -143,16 +143,23 @@ talk to the IRC channel.
 sub record_and_say {
     my $self = shift;
     my %args = @_;
+    $args{emotion} ||= 0;
 
     $self->schema->resultset('Message')->create({
-        nick    => lc $self->config->site->{nick},
-        message => $args{body},
-        channel => $args{channel},
-        network => $self->assigned_network,
-        moment  => DateTime->now,
-    });
+            nick    => lc $self->config->site->{nick},
+            message => $args{body},
+            channel => $args{channel},
+            network => $self->assigned_network,
+            moment  => DateTime->now,
+            emotion => $args{emotion},
+        });
 
-    $self->say(%args);
+    if ($args{emotion}) {
+        $self->emote(%args);
+    }
+    else {
+        $self->say(%args);
+    }
 }
 
 sub _said {
@@ -162,23 +169,23 @@ sub _said {
 
     $args->{'network'} = $self->assigned_network;
     my $message_data = $self->schema->resultset('Message')->create({
-        nick    => lc $args->{'who'},
-        message => $args->{'body'},
-        channel => $args->{'channel'},
-        network => $args->{'network'},
-        moment  => DateTime->now,
-    });
+            nick    => lc $args->{'who'},
+            message => $args->{'body'},
+            channel => $args->{'channel'},
+            network => $args->{'network'},
+            moment  => DateTime->now,
+        });
 
     my $bot_nick = $self->config->site->{'nick'};
     my $network_config = $self->config->site->{'networks'}->{$args->{'network'}};
 
     my $channel_config =
-        first { $_->{'name'} eq $args->{'channel'} }
-        @{$network_config->{'channels'}};
+    first { $_->{'name'} eq $args->{'channel'} }
+    @{$network_config->{'channels'}};
 
     my $set_prefix = exists $channel_config->{'prefix'}
-        ? $channel_config->{'prefix'}
-        : $network_config->{'prefix'};
+    ? $channel_config->{'prefix'}
+    : $network_config->{'prefix'};
 
     my $prefix_rule;
     {
@@ -221,16 +228,16 @@ sub said {
 
     # B:BB strips the address if we are addressed
     $args->{body} = "$args->{address}: $args->{body}"
-        if $args->{address} && $args->{address} ne 'msg';
+    if $args->{address} && $args->{address} ne 'msg';
 
     my $said = $self->_said($args, @_);
     $self->schema->resultset('Message')->create({
-        nick    => lc $self->config->site->{'nick'},
-        message => $said,
-        channel => $args->{channel},
-        moment  => DateTime->now,
-        network => $self->assigned_network,
-    }) if defined($said);
+            nick    => lc $self->config->site->{'nick'},
+            message => $said,
+            channel => $args->{channel},
+            moment  => DateTime->now,
+            network => $self->assigned_network,
+        }) if defined($said);
 
     substr($said, 512) = q{} if $said && length($said) > 512;
     return $said;
@@ -300,7 +307,8 @@ sub tick {
     if ($interjection) {
         $self->record_and_say(
             channel => $interjection->channel,
-            body    => $interjection->message
+            body    => $interjection->message,
+            emotion => $interjection->emotion,
         );
 
 

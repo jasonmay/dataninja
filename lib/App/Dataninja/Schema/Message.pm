@@ -6,12 +6,14 @@ use base qw/DBIx::Class::Schema/;
 __PACKAGE__->load_components(qw/PK::Auto InflateColumn Core/);
 __PACKAGE__->table('messages');
 __PACKAGE__->add_columns(
-    id          => {is_auto_increment => 1, data_type => 'integer'},
-    nick    => {},
-    message => {},
-    moment  => {},
-    channel => {},
-    network => {},
+    id            => {data_type => 'integer', is_auto_increment => 1},
+    network       => {data_type => 'varchar(256)'},
+    message       => {data_type => 'text'},
+    moment        => {data_type => 'timestamp'},
+    channel       => {data_type => 'varchar(64)'},
+    nick          => {data_type => 'varchar(64)'},
+    stats_updated => {data_type => 'integer', default_value => 0},
+    emotion       => {data_type => 'integer', default_value => 0},
 );
 
 sub parse_or_format {
