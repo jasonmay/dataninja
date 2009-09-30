@@ -23,6 +23,7 @@ requires 'DateTime::Format::Pg';
 requires 'DateTime::Format::SQLite';
 requires 'DateTime';
 requires 'Hash::Merge';
+requires 'Lingua::JA::Romanize::Japanese';
 requires 'List::MoreUtils';
 requires 'List::Permutor';
 requires 'List::Util';
