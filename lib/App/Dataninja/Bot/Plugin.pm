@@ -62,6 +62,8 @@ sub command_setup {
     my $code = shift;
 }
 
+sub extra_primary_dispatcher_rules { () }
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 

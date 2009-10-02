@@ -62,6 +62,12 @@ sub BUILD {
     );
 
     $self->add_rule($under);
+
+    foreach my $plugin (@{$self->plugins}) {
+        foreach my $rule ($plugin->extra_primary_dispatcher_rules) {
+            $self->add_rule($rule);
+        }
+    }
 }
 
 

@@ -202,11 +202,18 @@ sub _said {
             schema   => $self->schema,
         )
     );
+
     my $dispatch = $dispatcher->dispatch($args->{'body'});
     return undef unless $dispatch->has_matches;
     my $match = ($dispatch->matches)[0];
     return $dispatch->run(
-        defined $match->result ? $match->result->[0] : '',
+        defined $match->result
+            ? (
+                ref($match->result) eq 'ARRAY'
+                    ? $match->result->[0]
+                    : $match->result
+                )
+            : '',
         $message_data,
         $self->schema,
     );
