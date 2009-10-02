@@ -188,13 +188,11 @@ sub _said {
     : $network_config->{'prefix'};
 
     my $prefix_rule;
-    {
-        no warnings 'uninitialized';
-        $prefix_rule = Path::Dispatcher::Rule::Regex->new(
-            prefix => 1,
-            regex => qr{^($bot_nick: |$set_prefix)},
-        );
-    }
+
+    $prefix_rule = Path::Dispatcher::Rule::Regex->new(
+        prefix => 1,
+        regex => qr{^($bot_nick: |$set_prefix)},
+    );
 
     my $dispatcher = App::Dataninja::Bot::Dispatcher->new(
         prefix    => $prefix_rule,
