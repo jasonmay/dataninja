@@ -24,11 +24,14 @@ to your nick.
 
 sub get_latest_tweet {
     my $name = shift;
+    my $nth_tweet = shift || 0;
+
+    $nth_tweet = 19 if $nth_tweet > 19;
 
     my $text = eval {
         my $twitter = Net::Twitter->new;
         my $responses = $twitter->user_timeline({id => $name});
-        $responses->[0]{text};
+        $responses->[$nth_tweet]{text};
     };
 
     return $@ ? "Unable to get ${name}'s latest status." : $text;
