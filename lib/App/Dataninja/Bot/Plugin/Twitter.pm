@@ -37,6 +37,18 @@ sub get_latest_tweet {
     return $@ ? "Unable to get ${name}'s latest status." : $text;
 }
 
+sub get_status_id {
+    my $status_id = shift;
+
+    my $text = eval {
+        my $twitter = Net::Twitter->new;
+        my $response = $twitter->show_status($status_id);
+        $response->{text};
+    };
+
+    return $@ ? "Unable to get the status." : $text;
+}
+
 around 'command_setup' => sub {
     my $orig = shift;
     my $self = shift;
