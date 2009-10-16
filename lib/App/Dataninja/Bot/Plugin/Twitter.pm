@@ -68,7 +68,13 @@ around 'command_setup' => sub {
             >x;
         my $name ||= $message_data->nick;
 
-        my $tweet = get_latest_tweet($name, $nth_tweet);
+        my $tweet;
+        if (defined $tweet_id) {
+            $tweet = get_status_id($tweet_id);
+        }
+        else {
+            $tweet = get_latest_tweet($name, $nth_tweet);
+        }
         return "tweet: $tweet" if $tweet;
 
         # at this point, no tweeple exist by that name
