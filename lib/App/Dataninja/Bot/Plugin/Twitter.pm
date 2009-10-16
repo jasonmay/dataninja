@@ -42,10 +42,21 @@ around 'command_setup' => sub {
     my $self = shift;
 
     $self->command(twitter => sub {
-        my $command_args = shift;
+        my $command_args = crunch(shift);
         my $message_data = shift;
-        my $name = crunch($command_args) || $message_data->nick;
-        my $tweet = get_latest_tweet($name);
+
+        my ($name, $nth_tweet, $tweet_id, $date) =
+            $command_args =~ m<
+                ^(\w+)? \s*        # username
+                (-?\d+)?           # get the Nth tweet (0-indexex)
+                (?:
+                    (\#\d+) |      # get this particular status id
+                    (\#\{[^}]+\})  # get the tweet from this date
+                )?
+            >x;
+        my $name ||= $message_data->nick;
+
+        my $tweet = get_latest_tweet($name, $nth_tweet);
         return "tweet: $tweet" if $tweet;
 
         # at this point, no tweeple exist by that name
