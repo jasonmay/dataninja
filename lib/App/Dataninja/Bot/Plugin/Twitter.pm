@@ -25,7 +25,7 @@ to your nick.
 sub _render_tweet {
     my $tweet = shift;
 
-    return $tweet->{text};
+    return sprintf '[%s] %s', $tweet->{created_at}, $tweet->{text};
 }
 
 sub get_latest_tweet {
