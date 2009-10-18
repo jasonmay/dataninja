@@ -72,7 +72,7 @@ around 'command_setup' => sub {
                     (\#\{[^}]+\})  # get the tweet from this date
                 )?
             >x;
-        my $name ||= $message_data->nick;
+        $name ||= $message_data->nick;
 
         my $tweet;
         if (defined $tweet_id) {
