@@ -22,6 +22,12 @@ to your nick.
 
 =cut
 
+sub _render_tweet {
+    my $tweet = shift;
+
+    return $tweet->{text};
+}
+
 sub get_latest_tweet {
     my $name = shift;
     my $nth_tweet = shift || 0;
@@ -31,7 +37,7 @@ sub get_latest_tweet {
     my $text = eval {
         my $twitter = Net::Twitter->new;
         my $responses = $twitter->user_timeline({id => $name});
-        $responses->[$nth_tweet]{text};
+        _render_tweet($responses->[$nth_tweet]);
     };
 
     return $@ ? "Unable to get ${name}'s latest status." : $text;
@@ -43,7 +49,7 @@ sub get_status_id {
     my $text = eval {
         my $twitter = Net::Twitter->new;
         my $response = $twitter->show_status($status_id);
-        $response->{text};
+        _render_tweet($response);
     };
 
     return $@ ? "Unable to get the status." : $text;
