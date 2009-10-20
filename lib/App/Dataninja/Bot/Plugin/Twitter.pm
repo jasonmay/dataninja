@@ -60,7 +60,7 @@ around 'command_setup' => sub {
         my ($name, $nth_tweet, $tweet_id, $date) =
             $command_args =~ m<
                 ^(\w+)? \s*        # username
-                (-?\d+)?           # get the Nth tweet (0-indexex)
+                (?:-?(\d+))?       # get the Nth tweet (0-index)
                 (?:
                     (\#\d+) |      # get this particular status id
                     (\#\{[^}]+\})  # get the tweet from this date
