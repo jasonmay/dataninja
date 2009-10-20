@@ -3,6 +3,7 @@ use Moose;
 extends 'App::Dataninja::Bot::Plugin';
 use Net::Twitter;
 use String::Util 'crunch';
+use List::Util qw/min max/;
 
 =head1 NAME
 
@@ -32,7 +33,8 @@ sub get_latest_tweet {
     my $name = shift;
     my $nth_tweet = shift || 0;
 
-    $nth_tweet = 19 if $nth_tweet > 19;
+    # Ensure $nth_tweet is only on [0, 19]
+    $nth_tweet = min(max($nth_tweet, 0), 19);
 
     my $text = eval {
         my $twitter = Net::Twitter->new;
@@ -66,7 +68,7 @@ around 'command_setup' => sub {
         my ($name, $nth_tweet, $tweet_id, $date) =
             $command_args =~ m<
                 ^(\w+)? \s*        # username
-                (-?\d+)?           # get the Nth tweet (0-indexex)
+                (?:-?(\d+))?       # get the Nth tweet (0-index)
                 (?:
                     (\#\d+) |      # get this particular status id
                     (\#\{[^}]+\})  # get the tweet from this date
