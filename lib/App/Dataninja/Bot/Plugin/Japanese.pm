@@ -23,24 +23,6 @@ sub extra_primary_dispatcher_rules {
      )
 }
 
-
-#around 'command_setup' => sub {
-#    my $orig = shift;
-#    my $self = shift;
-#
-#    $self->add_rule(
-#        Path::Dispatcher::Rule::CodeRef->new(
-#            matcher => sub {
-#                my $decoded = Encode::decode_utf8($_);
-#                $decoded =~ /\p{Hiragana}|\p{Katakana}|\p{Han}/;
-#            },
-#            block => sub {
-#                return Lingua::JA::Romanize::Japanese->new->chars($_);
-#            },
-#        )
-#    );
-#};
-
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
