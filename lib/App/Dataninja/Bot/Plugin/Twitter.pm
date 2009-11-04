@@ -4,6 +4,7 @@ extends 'App::Dataninja::Bot::Plugin';
 use Net::Twitter;
 use String::Util 'crunch';
 use List::Util qw/min max/;
+use HTML::Entities;
 
 =head1 NAME
 
@@ -83,7 +84,7 @@ around 'command_setup' => sub {
         else {
             $tweet = get_latest_tweet($name, $nth_tweet);
         }
-        return "tweet: $tweet" if $tweet;
+        return sprintf("tweet: %s", decode_entities($tweet)) if $tweet;
 
         # at this point, no tweeple exist by that name
         return "that name is not owned by any tweeple";
