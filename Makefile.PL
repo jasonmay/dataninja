@@ -28,7 +28,6 @@ requires 'List::MoreUtils';
 requires 'List::Permutor';
 requires 'List::Util';
 requires 'Module::Pluggable';
-requires 'MooseX::NonMoose';
 requires 'Moose';
 requires 'MooseX::NonMoose' => '0.03';
 requires 'Net::Hiveminder';
