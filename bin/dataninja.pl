@@ -71,8 +71,8 @@ sub check_for_config {
                 +{
                     Main => {
                         database => {
-                            pasword => 'XXXXXXXX',
-                            user    => 'please_edit_your_config'
+                            password => 'XXXXXXXX',
+                            user     => 'please_edit_your_config'
                         }
                     }
                 }
