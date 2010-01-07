@@ -1,4 +1,4 @@
-use inc::Module::Install;
+use inc::Module::Install 0.89;
 
 name           'App-Dataninja';
 license        'perl';
@@ -45,4 +45,5 @@ requires 'YAML::XS';
 install_script('bin/dataninja.pl');
 
 auto_install;
+repository 'http://github.com/jasonmay/dataninja';
 WriteAll;
