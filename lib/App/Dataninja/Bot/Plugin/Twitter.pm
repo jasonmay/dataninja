@@ -50,8 +50,8 @@ sub get_status_id {
     my $twitter = Net::Twitter->new;
     my $response = $twitter->show_status($status_id);
 
-    return unless defined $responses;
-    return $responses;
+    return unless defined $response;
+    return $response;
 }
 
 around 'command_setup' => sub {
