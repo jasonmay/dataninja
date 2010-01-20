@@ -79,6 +79,10 @@ around 'command_setup' => sub {
         }
         else {
             $tweet = get_latest_tweet($name, $nth_tweet);
+            # As a fallback, try the name as a tweet id
+            unless (defined $tweet) {
+                $tweet = get_status_id($name);
+            }
         }
         return sprintf("tweet: %s", _render_tweet($tweet)) if $tweet;
 
