@@ -26,8 +26,8 @@ to your nick.
 
 sub _render_tweet {
     my $tweet = shift;
-
-    return sprintf '[%s] %s', $tweet->{created_at}, $tweet->{text};
+    my $text = sprintf '[%s] %s', $tweet->{created_at}, $tweet->{text};
+    return decode_entities($text);
 }
 
 sub get_latest_tweet {
@@ -37,25 +37,21 @@ sub get_latest_tweet {
     # Ensure $nth_tweet is only on [0, 19]
     $nth_tweet = min(max($nth_tweet, 0), 19);
 
-    my $text = eval {
-        my $twitter = Net::Twitter->new;
-        my $responses = $twitter->user_timeline({id => $name});
-        _render_tweet($responses->[$nth_tweet]);
-    };
+    my $twitter = Net::Twitter->new;
+    my $responses = $twitter->user_timeline({id => $name});
 
-    return $@ ? "Unable to get ${name}'s latest status." : $text;
+    return unless defined $responses;
+    return $responses->[$nth_tweet];
 }
 
 sub get_status_id {
     my $status_id = shift;
 
-    my $text = eval {
-        my $twitter = Net::Twitter->new;
-        my $response = $twitter->show_status($status_id);
-        _render_tweet($response);
-    };
+    my $twitter = Net::Twitter->new;
+    my $response = $twitter->show_status($status_id);
 
-    return $@ ? "Unable to get the status." : $text;
+    return unless defined $responses;
+    return $responses;
 }
 
 around 'command_setup' => sub {
@@ -84,7 +80,7 @@ around 'command_setup' => sub {
         else {
             $tweet = get_latest_tweet($name, $nth_tweet);
         }
-        return sprintf("tweet: %s", decode_entities($tweet)) if $tweet;
+        return sprintf("tweet: %s", _render_tweet($tweet)) if $tweet;
 
         # at this point, no tweeple exist by that name
         return "that name is not owned by any tweeple";
