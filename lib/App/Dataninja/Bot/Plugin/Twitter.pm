@@ -71,7 +71,7 @@ around 'command_setup' => sub {
                 ^(\w+)? \s*        # username
                 (?:-?(\d+))?       # get the Nth tweet (0-index)
                 (?:
-                    (\#\d+) |      # get this particular status id
+                    \#(\d+) |      # get this particular status id
                     (\#\{[^}]+\})  # get the tweet from this date
                 )?
             >x;
