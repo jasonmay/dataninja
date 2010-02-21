@@ -1,8 +1,7 @@
 package App::Dataninja::Bot::Plugin::Remind;
 use Moose;
 use DateTime;
-use DateTime::Format::Natural;
-use DateTime::Format::Pg;
+use DateTimeX::Easy;
 #use DateTime::Format::SQLite;
 extends 'App::Dataninja::Bot::Plugin';
 
@@ -78,23 +77,19 @@ around 'command_setup' => sub {
             $nick = $message_data->nick if $nick eq 'me';
             my $reminder = $schema->resultset('Reminder');
 
-            my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York', prefer_future => 1);
-            my $when_to_remind = eval { $parser->parse_datetime($time) };
+            my $when_to_remind = eval {
+                DateTimeX::Easy->new($time, time_zone => 'America/New_York');
+            };
             return "(eval) $@" if $@;
 
-            if (!$parser->success) {
-                $when_to_remind = eval {
-                    DateTime::Format::Pg->parse_datetime($time);
-                };
-                return "(eval) $@" if $@;
-                return "huh? see http://tinyurl.com/dtfn-examples"
-                    unless defined $when_to_remind;
-            }
-
+            return "huh?" unless $when_to_remind;
             $when_to_remind->set_time_zone('UTC');
 
             return "must authenticate yourself as Doc Brown to do that"
-            if DateTime->compare($when_to_remind->clone(time_zone => 'America/New_York'), DateTime->now) < 0;
+                if DateTime->compare(
+                    $when_to_remind->clone(time_zone => 'America/New_York'),
+                    DateTime->now
+                ) < 0;
 
             my $reminder_row = $reminder->create({
                 remindee    => $nick,

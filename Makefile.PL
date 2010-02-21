@@ -22,6 +22,7 @@ requires 'DateTime::Format::Natural';
 requires 'DateTime::Format::Pg';
 requires 'DateTime::Format::SQLite';
 requires 'DateTime';
+requires 'DateTimeX::Easy';
 requires 'Hash::Merge';
 requires 'Lingua::JA::Romanize::Japanese';
 requires 'List::MoreUtils';
