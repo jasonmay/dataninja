@@ -20,7 +20,6 @@ requires 'DateTime::Format::Duration';
 requires 'DateTime::Format::Human::Duration';
 requires 'DateTime::Format::Natural';
 requires 'DateTime::Format::Pg';
-requires 'DateTime::Format::SQLite';
 requires 'DateTime';
 requires 'DateTimeX::Easy';
 requires 'Hash::Merge';

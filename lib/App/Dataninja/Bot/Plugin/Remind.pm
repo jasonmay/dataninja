@@ -2,7 +2,6 @@ package App::Dataninja::Bot::Plugin::Remind;
 use Moose;
 use DateTime;
 use DateTimeX::Easy;
-#use DateTime::Format::SQLite;
 extends 'App::Dataninja::Bot::Plugin';
 
 =head1 NAME

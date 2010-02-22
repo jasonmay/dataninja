@@ -11,8 +11,6 @@ use Module::Pluggable
     search_path => ['App::Dataninja::Bot::Plugin'],
     sub_name    => 'plugins';
 extends 'Bot::BasicBot';
-use DateTime::Format::Pg;
-use DateTime::Format::SQLite;
 
 =head1 NAME
 
