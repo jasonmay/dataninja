@@ -12,7 +12,6 @@ around 'command_setup' => sub {
         rng => sub {
             my $args = shift;
             my @choices = split ' ', $args;
-            warn "test";
 
             return $choices[rand @choices];
         }
