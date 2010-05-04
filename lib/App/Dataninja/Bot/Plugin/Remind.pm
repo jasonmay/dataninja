@@ -187,10 +187,11 @@ around 'command_setup' => sub {
         }
 
         return sprintf(
-            "next reminder for %s: (%s) %s",
+            "next reminder for %s: (%s) %s [ID: %s]",
             $output_nick,
             $nr_row->moment,
-            $nr_row->description
+            $nr_row->description,
+            $nr_row->id,
         );
     };
 
