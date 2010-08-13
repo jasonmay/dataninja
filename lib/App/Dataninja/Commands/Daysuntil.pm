@@ -1,19 +1,18 @@
-package App::Dataninja::Bot::Plugin::Weeksuntil;
+package App::Dataninja::Commands::Daysuntil;
 use Moose;
 use DateTime::Format::Natural;
-use DateTime::Format::Duration;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Weeksuntil - displays weeks until whatever time you
+App::Dataninja::Commands::Daysuntil - displays days until whatever time you
 provide
 
 =head1 COMMANDS
 
 =over
 
-=item * weeksuntil B<day>
+=item * daysuntil B<day>
 
 =back
 
@@ -24,20 +23,22 @@ around 'command_setup' => sub {
     my $self = shift;
 
     $self->command(
-        weeksuntil => sub {
+        daysuntil => sub {
             my $command_args = shift;
             return "until when?" unless defined $command_args;
             my $parser = DateTime::Format::Natural->new;
             my $dt = $parser->parse_datetime($command_args);
             my $now = DateTime->now;
 
-            my $diff = $dt->subtract_datetime($now);
-            my $format_week = DateTime::Format::Duration->new(pattern => '%W');
-            return sprintf('%s weeks!', int($format_week->format_duration($diff)));
+            my $seconds_diff = $dt->epoch - $now->epoch;
+            return "it's too late for that :(" if $seconds_diff < 0;
+
+            my $days_diff = int($seconds_diff/86400);
+
+            return "$days_diff days!";
         }
     );
 };
-
 
 
 __PACKAGE__->meta->make_immutable;

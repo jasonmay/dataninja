@@ -1,6 +1,6 @@
-package App::Dataninja::Bot::Plugin::Twitter;
+package App::Dataninja::Commands::Twitter;
 use Moose;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 use Net::Twitter;
 use String::Util 'crunch';
 use List::Util qw/min max/;
@@ -8,7 +8,7 @@ use HTML::Entities;
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Twitter - get the latest tweet of yourself or someone
+App::Dataninja::Commands::Twitter - get the latest tweet of yourself or someone
 else
 
 =head1 COMMANDS
@@ -60,7 +60,7 @@ around 'command_setup' => sub {
 
     $self->command(twitter => sub {
         my $command_args = crunch(shift);
-        my $message_data = shift;
+        my $incoming = shift;
 
         my ($name, $nth_tweet, $tweet_id, $date) =
             $command_args =~ m<
@@ -71,7 +71,7 @@ around 'command_setup' => sub {
                     (\#\{[^}]+\})  # get the tweet from this date
                 )?
             >x;
-        $name ||= $message_data->nick;
+        $name ||= $incoming->sender->name;
 
         my $tweet;
         if (defined $tweet_id) {

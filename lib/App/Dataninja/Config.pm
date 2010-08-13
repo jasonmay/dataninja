@@ -53,19 +53,19 @@ such as external applicaiton credentials, channels, the nick of the bot, etc.
 has default_config => (
     is  => 'rw',
     isa => 'Str',
-    default => "$ENV{HOME}/.dataninja/config.yml",
+    default => "etc/config.yml",
 );
 
 has site_config => (
     is  => 'rw',
     isa => 'Str',
-    default =>  "$ENV{HOME}/.dataninja/site_config.yml",
+    default =>  "etc/site_config.yml",
 );
 
 has secret_config => (
     is  => 'rw',
     isa => 'Str',
-    default => "$ENV{HOME}/.dataninja/secret_config.yml",
+    default => "etc/secret_config.yml",
 );
 
 has main => (

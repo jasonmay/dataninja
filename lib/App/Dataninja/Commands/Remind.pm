@@ -1,14 +1,14 @@
-package App::Dataninja::Bot::Plugin::Remind;
+package App::Dataninja::Commands::Remind;
 use Moose;
 use DateTime;
 use DateTime::Format::Natural;
 use DateTime::Format::Pg;
 #use DateTime::Format::SQLite;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Remind - you can make and cancel reminders
+App::Dataninja::Commands::Remind - you can make and cancel reminders
 
 =head1 COMMANDS
 
@@ -49,7 +49,8 @@ around 'command_setup' => sub {
 
     $self->command(remind => sub {
             my $command_args = shift;
-            my $message_data = shift;
+            my $incoming     = shift;
+            my $profile      = shift;
             my $schema       = shift;
             my ($nick, $desc, $time) =
                 ($command_args =~ /(\S+)? \s+ (.+) \s+>\s+ (.+)/x);
@@ -75,7 +76,7 @@ around 'command_setup' => sub {
                 $time =~ s/\ban?\b/1/ge;
             }
 
-            $nick = $message_data->nick if $nick eq 'me';
+            $nick = $incoming->sender->name if $nick eq 'me';
             my $reminder = $schema->resultset('Reminder');
 
             my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York', prefer_future => 1);
@@ -99,9 +100,9 @@ around 'command_setup' => sub {
             my $reminder_row = $reminder->create({
                 remindee    => $nick,
                 description => $desc,
-                channel     => $message_data->channel,
-                network     => $message_data->network,
-                maker       => $message_data->nick,
+                channel     => $incoming->channel,
+                network     => $profile,
+                maker       => $incoming->sender->name,
                 made        => DateTime->now,
                 moment      => $when_to_remind,
             });
@@ -116,7 +117,7 @@ around 'command_setup' => sub {
 
     $self->command(cancel => sub {
             my $requested_id = shift;
-            my $message_data = shift;
+            my $incoming = shift;
             my $schema       = shift;
             return "invalid ID" if $requested_id =~ /\D/;
 
@@ -124,7 +125,7 @@ around 'command_setup' => sub {
 
             if (defined $reminder) {
                 return "that reminder wasn't for you!"
-                    if $message_data->nick ne $reminder->maker;
+                    if $incoming->sender->name ne $reminder->maker;
                 return "you don't need to worry about that"
                 if $reminder->reminded or $reminder->canceled;
                 $reminder->update({canceled => 1});
@@ -136,20 +137,13 @@ around 'command_setup' => sub {
 
     });
 
-#    $self->command(reminders => sub {
-#        my $requested_id = shift;
-#        my $message_data = shift;
-#        my $schema       = shift;
-#
-#        return "todo!";
-#    });
-
     my $next_reminder = sub {
         my $command_args = shift;
-        my $message_data = shift;
+        my $incoming = shift;
+        my $profile = shift;
         my $schema       = shift;
 
-        my $nick = $message_data->nick;
+        my $nick = $incoming->sender->name;
         my $output_nick = 'you';
         my $offset = 1;
 
@@ -164,8 +158,8 @@ around 'command_setup' => sub {
         my $nr_row = $schema->resultset('Reminder')->search(
             {
                 moment   => {'>' => DateTime->now},
-                channel  => $message_data->channel,
-                network  => $message_data->network,
+                channel  => $incoming->channel,
+                network  => $profile,
                 remindee => $nick,
                 reminded => 0,
                 canceled => 0,

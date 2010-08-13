@@ -1,16 +1,16 @@
-package App::Dataninja::Bot::Plugin::Echo;
+package App::Dataninja::Commands::CalcRelay;
 use Moose;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Echo - the bot merely echos what you put, for random utility
+App::Dataninja::Commands::CalcRelay - don't ask
 
 =head1 COMMANDS
 
 =over
 
-=item * echo B<message>
+=item * c B<calculation>
 
 =back
 
@@ -21,11 +21,11 @@ around 'command_setup' => sub {
     my $self = shift;
 
     $self->command(
-        echo => sub {
+        c => sub {
             my $command_args = shift;
-            return $command_args;
+            return "!c $command_args";
         }
-    )
+    );
 };
 
 

@@ -1,13 +1,13 @@
-package App::Dataninja::Bot::Plugin::Translating;
+package App::Dataninja::Commands::Translating;
 use Moose;
 use REST::Google::Translate;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 REST::Google::Translate->http_referer('http://www.google.com');
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Translating - translation tools thanks to
+App::Dataninja::Commands::Translating - translation tools thanks to
 L<REST::Google::Tranlsate>
 
 =head1 COMMANDS

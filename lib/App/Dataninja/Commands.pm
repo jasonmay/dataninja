@@ -1,11 +1,10 @@
-package App::Dataninja::Bot::Plugin;
+package App::Dataninja::Commands;
 use Moose;
-use DBIx::Class::Row;
 extends 'Path::Dispatcher';
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin - base class for L<App::Dataninja> plugins
+App::Dataninja::Commands - base class for L<App::Dataninja> plugins
 
 =head1 SYNOPSIS
 

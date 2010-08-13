@@ -1,8 +1,8 @@
 #!/usr/bin/env perl
-package App::Dataninja::Bot::Plugin::Rng;
+package App::Dataninja::Commands::Rng;
 use Moose;
 use namespace::autoclean;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 around 'command_setup' => sub {
     my $orig = shift;

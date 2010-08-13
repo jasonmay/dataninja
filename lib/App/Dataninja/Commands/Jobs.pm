@@ -1,12 +1,12 @@
-package App::Dataninja::Bot::Plugin::Jobs;
+package App::Dataninja::Commands::Jobs;
 use Moose;
 use URI;
 use Web::Scraper;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Jobs - you supply craigslist subdomain and search query,
+App::Dataninja::Commands::Jobs - you supply craigslist subdomain and search query,
 the bot responds with results
 
 =head1 COMMANDS

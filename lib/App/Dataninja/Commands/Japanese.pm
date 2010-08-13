@@ -1,12 +1,12 @@
-package App::Dataninja::Bot::Plugin::Japanese;
+package App::Dataninja::Commands::Japanese;
 use Moose;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 use Lingua::JA::Romanize::Japanese;
 use Encode;
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Japanese - automatically transliterate Japanese into romaji
+App::Dataninja::Commands::Japanese - automatically transliterate Japanese into romaji
 
 =cut
 

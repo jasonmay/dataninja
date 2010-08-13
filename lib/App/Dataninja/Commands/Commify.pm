@@ -1,12 +1,12 @@
-package App::Dataninja::Bot::Plugin::Commify;
+package App::Dataninja::Commands::Commify;
 use Moose;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 use Number::Format qw(:subs);
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Commify - add commas to numbers
+App::Dataninja::Commands::Commify - add commas to numbers
 
 =head1 COMMANDS
 

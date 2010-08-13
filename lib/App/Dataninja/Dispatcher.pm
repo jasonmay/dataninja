@@ -1,4 +1,4 @@
-package App::Dataninja::Bot::Dispatcher;
+package App::Dataninja::Dispatcher;
 use Moose;
 extends 'Path::Dispatcher';
 
@@ -13,12 +13,6 @@ L<App::Dataninja::Bot::Plugin>.
 
 =head1 ATTRIBUTES
 
-=head2 prefix
-
-(C<Path::Dispatcher::PrefixRule>) Predicate for the dispatcher for handling the
-initially symbolic prefix in front of commands, such as C<< ! >>, C<< @ >>,
-or C<< # >>.
-
 =head2 data_for_plugins
 
 (L<App::Dataninja::Bot::Plugin>) This is a class that uses the plugin base to store
@@ -27,32 +21,12 @@ plugin for rule dispatching.
 
 =cut
 
-has 'prefix' => (
-    is       => 'ro',
-    isa      => 'Path::Dispatcher::PrefixRule',
-    required => 1,
-);
-
-has 'data_for_plugins' => (
-    is       => 'ro',
-    isa      => 'App::Dataninja::Bot::Plugin',
-    required => 1,
-);
-
-has 'plugins' => (
-    is      => 'rw',
-    isa     => 'ArrayRef[Str]',
-);
-
 sub BUILD {
     my $self = shift;
-    my $under = Path::Dispatcher::Rule::Under->new(
-        predicate => $self->prefix,
-        prefix    => 1,
+    my $rule = Path::Dispatcher::Rule::Under->new(
         rules => [
             map {
-                eval "require $_";
-                die $@ if $@;
+                Class::MOP::load_class($_);
                 my $dispatcher = $_->new;
                 Path::Dispatcher::Rule::Dispatch->new(
                     dispatcher => $dispatcher,
@@ -61,7 +35,7 @@ sub BUILD {
         ],
     );
 
-    $self->add_rule($under);
+    $self->add_rule($rule);
 
     foreach my $plugin (@{$self->plugins}) {
         foreach my $rule ($plugin->extra_primary_dispatcher_rules) {
@@ -69,7 +43,6 @@ sub BUILD {
         }
     }
 }
-
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

@@ -1,11 +1,11 @@
-package App::Dataninja::Bot::Plugin::Time;
+package App::Dataninja::Commands::Time;
 use Moose;
 use DateTime;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Time - get the time for a certain time zone
+App::Dataninja::Commands::Time - get the time for a certain time zone
 
 =head1 COMMANDS
 

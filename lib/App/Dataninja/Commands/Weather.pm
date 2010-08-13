@@ -1,12 +1,12 @@
-package App::Dataninja::Bot::Plugin::Weather;
+package App::Dataninja::Commands::Weather;
 use Moose;
 use Weather::Underground;
 use String::Util qw/crunch/;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Weather - get current weather information from Weather Underground
+App::Dataninja::Commands::Weather - get current weather information from Weather Underground
 
 =head1 COMMANDS
 
@@ -72,7 +72,8 @@ around 'command_setup' => sub {
 
     my $weather_code = sub {
         my $command_args = shift;
-        my $message_data = shift;
+        my $incoming     = shift;
+        my $profile      = shift;
         my $schema       = shift;
         my $place;
         my $nick_being_called = $place = crunch $command_args;
@@ -81,7 +82,7 @@ around 'command_setup' => sub {
         my $area =
             $schema->resultset('Area')
             ->find({
-                nick => ($nick_being_called || $message_data->nick)
+                nick => ($nick_being_called || $incoming->sender->name)
             },
             {rows => 1},
         );
@@ -96,7 +97,7 @@ around 'command_setup' => sub {
 
         if ($get_weather = get_weather($place)) {
             my $nick_area = $schema->resultset('Area')->find(
-                {nick => $message_data->nick},
+                {nick => $incoming->sender->name},
                 {rows => 1},
             );
             if (defined $nick_area) {
@@ -105,9 +106,9 @@ around 'command_setup' => sub {
             else {
                 $schema->resultset('Area')
                     ->create({
-                        nick     => $message_data->nick,
+                        nick     => $incoming->sender->name,
                         location => $place,
-                        network  => $message_data->network,
+                        network  => $profile,
                     });
             }
             return weather_output(get_weather($place), $place);

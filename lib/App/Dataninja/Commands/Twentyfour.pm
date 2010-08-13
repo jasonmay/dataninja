@@ -1,12 +1,12 @@
-package App::Dataninja::Bot::Plugin::Twentyfour;
+package App::Dataninja::Commands::Twentyfour;
 use Moose;
 use List::Permutor;
 use List::Util qw/shuffle/;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Twentyfour - I<Math 24> programmed into the bot
+App::Dataninja::Commands::Twentyfour - I<Math 24> programmed into the bot
 
 =head1 COMMANDS
 

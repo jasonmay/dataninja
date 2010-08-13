@@ -1,11 +1,11 @@
-package App::Dataninja::Bot::Plugin::Last;
+package App::Dataninja::Commands::Last;
 use App::Nopaste 'nopaste';
 use Moose;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Last - you tell the bot show many of the last N messages you wan to see
+App::Dataninja::Commands::Last - you tell the bot show many of the last N messages you wan to see
 
 =head1 COMMANDS
 
@@ -31,7 +31,8 @@ around 'command_setup' => sub {
     $self->command(
         'last' => sub {
             my $command_args = shift;
-            my $message_data = shift;
+            my $incoming = shift;
+            my $profile = shift;
             my $schema       = shift;
 
             my $rows = defined $command_args ? $command_args : 25;
@@ -40,8 +41,8 @@ around 'command_setup' => sub {
 
             my @messages = $schema->resultset('Message')->search(
                 {
-                    network => $message_data->network,
-                    channel => $message_data->channel,
+                    network => $profile,
+                    channel => $incoming->channel,
                 },
                 { rows => $rows, order_by => 'moment desc'}
             );

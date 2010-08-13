@@ -1,13 +1,13 @@
-package App::Dataninja::Bot::Plugin::Seen;
+package App::Dataninja::Commands::Seen;
 use Moose;
-extends 'App::Dataninja::Bot::Plugin';
+extends 'App::Dataninja::Commands';
 use DateTime::Format::Pg;
 use DateTime::Duration;
 use DateTime::Format::Human::Duration;
 
 =head1 NAME
 
-App::Dataninja::Bot::Plugin::Seen - the bot tells you when someone was last seen
+App::Dataninja::Commands::Seen - the bot tells you when someone was last seen
 
 =head1 COMMANDS
 
