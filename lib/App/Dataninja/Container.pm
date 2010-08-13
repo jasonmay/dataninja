@@ -78,7 +78,14 @@ sub _build__container {
 
                             my $message = $incoming->plaintext;
 
-                            my $profile = $block->param('config')->site->{networks}{$self->profile};
+                            my $profile = $block->param('config')->site->{networks}{$block->param('profile')};
+
+                            $block->param('schema')->add_message(
+                                profile => $block->param('profile'),
+                                channel => $incoming->channel,
+                                nick    => $incoming->sender->name,
+                                message => $incoming->plaintext,
+                            );
 
                             my ($prefix, $channel_data);
                             if ($incoming->isa('IM::Engine::Incoming::IRC::Channel')) {
@@ -125,7 +132,7 @@ sub _build__container {
                     }
                 );
             },
-            dependencies => wire_names(qw[config dispatcher schema]),
+            dependencies => wire_names(qw[config dispatcher schema profile]),
         );
 
 #        service timer => (
