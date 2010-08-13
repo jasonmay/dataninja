@@ -44,7 +44,7 @@ sub tick {
         record_and_send_message(
             $block->param('schema'), $block->param('engine'),
             channel => $interjection->channel,
-            body    => $interjection->message,
+            message => $interjection->message,
             #emotion => $interjection->emotion,
         );
 

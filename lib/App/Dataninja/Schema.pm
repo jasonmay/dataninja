@@ -91,7 +91,6 @@ sub add_message {
 sub first_due_reminder {
     my $self = shift;
 
-    warn 'bad if later: ' . DateTime->now(time_zone => 'America/New_York');
     return $self->resultset('Reminder')->find(
         {
             network  => $self->profile,
