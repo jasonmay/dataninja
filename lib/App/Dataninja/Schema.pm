@@ -1,7 +1,9 @@
 package App::Dataninja::Schema;
 use strict;
 use warnings;
-use base qw/DBIx::Class::Schema/;
+use Moose;
+use MooseX::NonMoose;
+extends 'DBIx::Class::Schema';
 use App::Dataninja::Config;
 
 =head1 NAME
@@ -36,6 +38,16 @@ See L<DBIx::Class::Schema> for other methods.
 
 =cut
 
+has config => (
+    is  => 'rw',
+    isa => 'App::Dataninja::Config',
+);
+
+has profile => (
+    is  => 'rw',
+    isa => 'Str',
+);
+
 sub connect_with_defaults {
     my $class = shift;
 
@@ -51,6 +63,68 @@ sub connect_with_defaults {
     );
 
     return $schema;
+}
+
+sub add_message {
+    my $self = shift;
+    my %args = @_;
+
+    my @columns = qw/ nick message channel network moment emotion /;
+
+    for (keys %args) {
+        delete @args{ grep {!$args{$_}} @columns };
+    }
+
+    $args{emotion} ||= 0;
+    warn $args{message};
+    $self->resultset('Message')->create(
+        {
+            nick    => lc($args{nick}),
+            message => $args{message},
+            channel => lc($args{channel}),
+            network => $args{profile}, # trying to transition
+            moment  => $args{moment} || DateTime->now,
+            emotion => $args{emotion},
+        }
+    );
+}
+
+sub first_due_reminder {
+    my $self = shift;
+
+    return $self->resultset('Reminder')->find(
+        {
+            network  => $self->assigned_network,
+            reminded => 0,
+            canceled => 0,
+            moment   => {'<' => DateTime->now }
+        },
+        { rows => 1 },
+    );
+}
+
+sub first_interjection {
+    my $self = shift;
+    return $self->resultset('Interjection')->find(
+        {
+            network     => $self->assigned_network,
+            interjected => 0,
+        },
+        { rows => 1 },
+    );
+}
+
+sub log_response {
+    my $self = shift;
+    my %args = @_;
+
+    warn %args;
+    $self->add_message(
+        nick    => lc($self->config->site->{'nick'}),
+        message => $args{response},
+        channel => $args{channel},
+        profile => $self->profile,
+    );
 }
 
 __PACKAGE__->load_classes;

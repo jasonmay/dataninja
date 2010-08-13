@@ -31,13 +31,20 @@ sub _build__container {
     my $self = shift;
     weaken(my $weakself = $self);
     my $c = container 'Dataninja' => as {
+
+        service profile => $self->profile;
+
         service schema => (
             class     => 'App::Dataninja::Schema',
             lifecycle => 'Singleton',
             block     => sub {
                 my $block = shift;
-                App::Dataninja::Schema->connect('dbi:SQLite:etc/dataninja.sqlite');
+                my $schema = App::Dataninja::Schema->connect('dbi:SQLite:etc/dataninja.sqlite');
+                $schema->profile($block->param('profile'));
+                $schema->config($block->param('config'));
+                return $schema;
             },
+            dependencies => wire_names(qw[profile config]),
         );
 
         service engine => (
@@ -96,7 +103,17 @@ sub _build__container {
                                     (my $args = $request) =~ s/^\S+\s+//;
                                     warn $block->param('schema');
 
-                                    $response = $dispatch->run($args, $incoming, $weakself->profile, $block->param('schema'));
+                                    $response = $dispatch->run(
+                                        $args,
+                                        $incoming,
+                                        $weakself->profile,
+                                        $block->param('schema')
+                                    );
+
+                                    $block->param('schema')->log_response(
+                                        channel  => $incoming->channel,
+                                        response => $response,
+                                    );
                                 }
                                 else {
                                     return undef;

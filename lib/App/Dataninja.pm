@@ -1,6 +1,15 @@
 package App::Dataninja;
 
 our $VERSION = '0.03';
+use Moose;
+use IM::Engine;
+
+has engine => (
+    is       => 'ro',
+    isa      => 'IM::Engine',
+    #required => 1,
+    handles  => ['run'],
+);
 
 1;
 
