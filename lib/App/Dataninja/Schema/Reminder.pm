@@ -3,6 +3,8 @@ use strict;
 use warnings;
 use base qw/DBIx::Class::Schema/;
 
+use DateTime::Format::Pg;
+
 __PACKAGE__->load_components(qw/PK::Auto InflateColumn Core/);
 __PACKAGE__->table('reminders');
 __PACKAGE__->add_columns(

@@ -4,7 +4,9 @@ use Moose;
 use Bread::Board;
 use App::Dataninja::Dispatcher;
 use App::Dataninja::Schema;
+use App::Dataninja::Util;
 use IM::Engine;
+use AE;
 use List::Util qw(first);
 
 use Module::Pluggable
@@ -39,7 +41,18 @@ sub _build__container {
             lifecycle => 'Singleton',
             block     => sub {
                 my $block = shift;
-                my $schema = App::Dataninja::Schema->connect('dbi:SQLite:etc/dataninja.sqlite');
+
+                my $config = $block->param('config');
+                my $schema = App::Dataninja::Schema->connect(
+                    sprintf(
+                        'dbi:%s:dbname=%s',
+                        $config->main->{database}{driver},
+                        $config->main->{database}{name},
+                    ),
+                    $config->main->{database}{user},
+                    $config->main->{database}{pass},
+                );
+
                 $schema->profile($block->param('profile'));
                 $schema->config($block->param('config'));
                 return $schema;
@@ -81,7 +94,6 @@ sub _build__container {
                             my $profile = $block->param('config')->site->{networks}{$block->param('profile')};
 
                             $block->param('schema')->add_message(
-                                profile => $block->param('profile'),
                                 channel => $incoming->channel,
                                 nick    => $incoming->sender->name,
                                 message => $incoming->plaintext,
@@ -117,6 +129,8 @@ sub _build__container {
                                         $block->param('schema')
                                     );
 
+                                    substr($response, 512) = q{} if $response && length($response) > 512;
+
                                     $block->param('schema')->log_response(
                                         channel  => $incoming->channel,
                                         response => $response,
@@ -135,11 +149,20 @@ sub _build__container {
             dependencies => wire_names(qw[config dispatcher schema profile]),
         );
 
-#        service timer => (
-#            lifecycle => 'Singleton',
-#            block     => sub { warn "no" },
-#        );
-#
+        service timer => (
+            lifecycle => 'Singleton',
+            block     => sub {
+                my $block = shift;
+                weaken( my $weakblock = $block );
+                AE::timer 0, 5, sub {
+                    my $self = shift;
+
+                    App::Dataninja::Util::tick($weakblock);
+                }
+            },
+            dependencies => wire_names(qw[engine schema]),
+        );
+
         service dispatcher => (
             class     => 'Path::Dispatcher',
             lifecycle => 'Singleton',
@@ -172,6 +195,9 @@ sub _build__container {
         );
     };
 
+    $c->fetch('timer')->get; # get it started
+
+    return $c;
 }
 
 =head1 NAME

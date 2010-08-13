@@ -82,10 +82,11 @@ around 'command_setup' => sub {
         my $area =
             $schema->resultset('Area')
             ->find({
-                nick => ($nick_being_called || $incoming->sender->name)
+                nick => ($nick_being_called || lc($incoming->sender->name))
             },
             {rows => 1},
         );
+
         if (defined $area) {
             my $new_place = $area->location;
             my $get_weather = get_weather($new_place);

@@ -3,4 +3,4 @@ Main:
   database:
     driver: Pg
     host: localhost
-    name: dataninja
+    name: dataninja2

@@ -76,13 +76,12 @@ sub add_message {
     }
 
     $args{emotion} ||= 0;
-    warn $args{message};
     $self->resultset('Message')->create(
         {
             nick    => lc($args{nick}),
             message => $args{message},
             channel => lc($args{channel}),
-            network => $args{profile}, # trying to transition
+            network => $args{profile} || $self->profile, # trying to transition
             moment  => $args{moment} || DateTime->now,
             emotion => $args{emotion},
         }
@@ -92,9 +91,10 @@ sub add_message {
 sub first_due_reminder {
     my $self = shift;
 
+    warn 'bad if later: ' . DateTime->now(time_zone => 'America/New_York');
     return $self->resultset('Reminder')->find(
         {
-            network  => $self->assigned_network,
+            network  => $self->profile,
             reminded => 0,
             canceled => 0,
             moment   => {'<' => DateTime->now }
@@ -107,7 +107,7 @@ sub first_interjection {
     my $self = shift;
     return $self->resultset('Interjection')->find(
         {
-            network     => $self->assigned_network,
+            network     => $self->profile,
             interjected => 0,
         },
         { rows => 1 },
@@ -118,7 +118,6 @@ sub log_response {
     my $self = shift;
     my %args = @_;
 
-    warn %args;
     $self->add_message(
         nick    => lc($self->config->site->{'nick'}),
         message => $args{response},
