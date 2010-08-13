@@ -100,7 +100,7 @@ sub _build__container {
 
                                     return undef unless $dispatch->has_matches;
 
-                                    (my $args = $request) =~ s/^\S+\s+//;
+                                    (my $args = $request) =~ s/^\S+(?:\s+)?//;
                                     warn $block->param('schema');
 
                                     $response = $dispatch->run(
