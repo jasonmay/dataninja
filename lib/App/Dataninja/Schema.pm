@@ -48,23 +48,6 @@ has profile => (
     isa => 'Str',
 );
 
-sub connect_with_defaults {
-    my $class = shift;
-
-    my $config = App::Dataninja::Config->new(@_);
-    my $schema = $class->connect(
-        sprintf(
-            'dbi:%s:dbname=%s',
-            $config->main->{database}->{driver},
-            $config->main->{database}->{name},
-        ),
-        $config->main->{database}->{user},
-        $config->main->{database}->{pass},
-    );
-
-    return $schema;
-}
-
 sub add_message {
     my $self = shift;
     my %args = @_;
