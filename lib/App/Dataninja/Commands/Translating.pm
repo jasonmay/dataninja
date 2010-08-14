@@ -1,7 +1,6 @@
 package App::Dataninja::Commands::Translating;
-use Moose;
+use App::Dataninja::Commands::OO;
 use REST::Google::Translate;
-extends 'App::Dataninja::Commands';
 
 REST::Google::Translate->http_referer('http://www.google.com');
 
@@ -34,29 +33,20 @@ This is an alias for englishify.
 
 =cut
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
-
-    my $create_translator = sub {
-        my $langpair = shift;
-        return sub {
-            my $command_args = shift;
-            my $result = REST::Google::Translate->new(
-                q => $command_args,
-                langpair => $langpair,
-            );
-            return $result->responseData->translatedText;
-        };
+my $create_translator = sub {
+    my $langpair = shift;
+    return sub {
+        my $command_args = shift;
+        my $result = REST::Google::Translate->new(
+            q => $command_args,
+            langpair => $langpair,
+        );
+        return $result->responseData->translatedText;
     };
-
-    $self->command(en => $create_translator->('es|en'));
-    $self->command(es => $create_translator->('en|es'));
-
-    $self->command(englishify => $create_translator->('es|en'));
-    $self->command(spanishify => $create_translator->('en|es'));
 };
 
+command ['en', 'englishify'] => $create_translator->('es|en');
+command ['es', 'spanishify'] => $create_translator->('en|es');
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

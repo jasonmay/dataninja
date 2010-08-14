@@ -1,6 +1,5 @@
 package App::Dataninja::Commands::Botsnack;
-use Moose;
-extends 'App::Dataninja::Commands';
+use App::Dataninja::Commands::OO;
 
 =head1 NAME
 
@@ -18,17 +17,11 @@ You give the bot a botsnack, and he responds with gratitude.
 
 =cut
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
+warn __PACKAGE__->can('command');
 
-    $self->command(
-        botsnack => sub { "sweet, thanks! :)" }
-    );
-};
+command(botsnack => sub { "sweet, thanks! :)" });
 
 __PACKAGE__->meta->make_immutable;
-no Moose;
 
 1;
 

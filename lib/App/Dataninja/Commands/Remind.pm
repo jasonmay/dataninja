@@ -1,10 +1,8 @@
 package App::Dataninja::Commands::Remind;
-use Moose;
+use App::Dataninja::Commands::OO;
 use DateTime;
 use DateTime::Format::Natural;
 use DateTime::Format::Pg;
-#use DateTime::Format::SQLite;
-extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
@@ -43,11 +41,7 @@ Aliases: B<nextreminder>, B<nr>
 
 =cut
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
-
-    $self->command(remind => sub {
+command remind => sub {
             my $command_args = shift;
             my $incoming     = shift;
             my $profile      = shift;
@@ -113,9 +107,9 @@ around 'command_setup' => sub {
                 $when_to_remind->hms,
                 $when_to_remind->time_zone->name,
                 $reminder_row->id);
-    });
+};
 
-    $self->command(cancel => sub {
+command cancel => sub {
             my $requested_id = shift;
             my $incoming = shift;
             my $schema       = shift;
@@ -135,9 +129,9 @@ around 'command_setup' => sub {
 # catchall
             return "could not find a reminder with that ID";
 
-    });
+};
 
-    my $next_reminder = sub {
+my $next_reminder = sub {
         my $command_args = shift;
         my $incoming = shift;
         my $profile = shift;
@@ -187,12 +181,9 @@ around 'command_setup' => sub {
             $nr_row->description,
             $nr_row->id,
         );
-    };
-
-    $self->command(next_reminder => $next_reminder);
-    $self->command(nextreminder  => $next_reminder);
-    $self->command(nr            => $next_reminder);
 };
+
+command [qw/nr nextreminder next_reminder/] => $next_reminder;
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

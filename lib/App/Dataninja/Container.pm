@@ -2,7 +2,6 @@
 package App::Dataninja::Container;
 use Moose;
 use Bread::Board;
-use App::Dataninja::Dispatcher;
 use App::Dataninja::Schema;
 use App::Dataninja::Util;
 use IM::Engine;
@@ -12,6 +11,7 @@ use List::Util qw(first);
 use Module::Pluggable
     search_path => ['App::Dataninja::Commands'],
     sub_name    => 'commands',
+    except      => ['App::Dataninja::Commands::OO'],
 ;
 
 use Scalar::Util qw(weaken);
@@ -115,12 +115,10 @@ sub _build__container {
                                 if (substr($request, 0, length($prefix)) eq $prefix) {
                                     $request = substr($request, length($prefix)) or return undef;
 
-                                    my $dispatch = $dispatcher->dispatch($request);
+                                    my ($command, $args) = split ' ', $request, 2;
+                                    my $dispatch = $dispatcher->dispatch($command);
 
                                     return undef unless $dispatch->has_matches;
-
-                                    (my $args = $request) =~ s/^\S+(?:\s+)?//;
-                                    warn $block->param('schema');
 
                                     $response = $dispatch->run(
                                         $args,
@@ -173,10 +171,22 @@ sub _build__container {
                 my $dispatcher = Path::Dispatcher->new();
                 foreach my $command_class ($weakself->commands) {
                     Class::MOP::load_class($command_class);
-                    my $subdispatcher = $command_class->new();
+                    my $command_meta = $command_class->meta;
 
-                    # I *really* have to do something about this
-                    $dispatcher->add_rule($_) for $subdispatcher->rules;
+                    foreach my $method ($command_meta->get_all_methods) {
+                        next unless $method->meta->can('does_role');
+                        next unless $method->meta->does_role('App::Dataninja::Meta::Role::Command');
+
+                        my $method_name = $method->name;
+                        $method_name =~ s/^__DATANINJA__//;
+
+                        my $rule = Path::Dispatcher::Rule::Eq->new(
+                            string => lc($method->name),
+                            block  => $method->body,
+                        );
+
+                        $dispatcher->add_rule($rule);
+                    }
                 }
 
                 $dispatcher;

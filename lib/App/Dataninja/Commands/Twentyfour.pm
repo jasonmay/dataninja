@@ -1,8 +1,7 @@
 package App::Dataninja::Commands::Twentyfour;
-use Moose;
+use App::Dataninja::Commands::OO;
 use List::Permutor;
 use List::Util qw/shuffle/;
-extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
@@ -60,22 +59,15 @@ sub twenty_four {
     0 # :(
 }
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
-
-    $self->command(
-        24 => sub {
-            my $n = 0;
-            my @nums;
-            do {
-                @nums = ();
-                push @nums, int(rand 24)+1 for (1 .. 4);
-                return "fail" if ++$n > 1000;
-            } until (twenty_four @nums);
-            return join(' ', shuffle @nums) . "\n";
-        }
-    );
+command 24 => sub {
+    my $n = 0;
+    my @nums;
+    do {
+        @nums = ();
+        push @nums, int(rand 24)+1 for (1 .. 4);
+        return "fail" if ++$n > 1000;
+    } until (twenty_four @nums);
+    return join(' ', shuffle @nums) . "\n";
 };
 
 

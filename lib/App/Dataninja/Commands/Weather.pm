@@ -1,8 +1,7 @@
 package App::Dataninja::Commands::Weather;
-use Moose;
+use App::Dataninja::Commands::OO;
 use Weather::Underground;
 use String::Util qw/crunch/;
-extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
@@ -66,61 +65,53 @@ sub weather_output {
     );
 }
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
+command ['w', 'weather'] => sub {
+    my $command_args = shift;
+    my $incoming     = shift;
+    my $profile      = shift;
+    my $schema       = shift;
+    my $place;
+    my $nick_being_called = $place = crunch $command_args;
+    my ($weather_data, $get_weather);
 
-    my $weather_code = sub {
-        my $command_args = shift;
-        my $incoming     = shift;
-        my $profile      = shift;
-        my $schema       = shift;
-        my $place;
-        my $nick_being_called = $place = crunch $command_args;
-        my ($weather_data, $get_weather);
+    my $area =
+        $schema->resultset('Area')
+        ->find({
+            nick => ($nick_being_called || lc($incoming->sender->name))
+        },
+        {rows => 1},
+    );
 
-        my $area =
-            $schema->resultset('Area')
-            ->find({
-                nick => ($nick_being_called || lc($incoming->sender->name))
-            },
+    if (defined $area) {
+        my $new_place = $area->location;
+        my $get_weather = get_weather($new_place);
+        return weather_output($get_weather, $new_place);
+    }
+    elsif (!$place) {
+        return "you have no location set!";
+    }
+
+    if ($get_weather = get_weather($place)) {
+        my $nick_area = $schema->resultset('Area')->find(
+            {nick => $incoming->sender->name},
             {rows => 1},
         );
-
-        if (defined $area) {
-            my $new_place = $area->location;
-            my $get_weather = get_weather($new_place);
-            return weather_output($get_weather, $new_place);
-        }
-        elsif (!$place) {
-            return "you have no location set!";
-        }
-
-        if ($get_weather = get_weather($place)) {
-            my $nick_area = $schema->resultset('Area')->find(
-                {nick => $incoming->sender->name},
-                {rows => 1},
-            );
-            if (defined $nick_area) {
-                $nick_area->update({location => $place});
-            }
-            else {
-                $schema->resultset('Area')
-                    ->create({
-                        nick     => $incoming->sender->name,
-                        location => $place,
-                        network  => $profile,
-                    });
-            }
-            return weather_output(get_weather($place), $place);
+        if (defined $nick_area) {
+            $nick_area->update({location => $place});
         }
         else {
-            return "invalid area";
+            $schema->resultset('Area')
+                ->create({
+                    nick     => $incoming->sender->name,
+                    location => $place,
+                    network  => $profile,
+                });
         }
-    };
-
-    $self->command(weather => $weather_code);
-    $self->command(w       => $weather_code);
+        return weather_output(get_weather($place), $place);
+    }
+    else {
+        return "invalid area";
+    }
 };
 
 __PACKAGE__->meta->make_immutable;

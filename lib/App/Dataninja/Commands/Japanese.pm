@@ -1,6 +1,5 @@
 package App::Dataninja::Commands::Japanese;
-use Moose;
-extends 'App::Dataninja::Commands';
+use App::Dataninja::Commands::OO;
 use Lingua::JA::Romanize::Japanese;
 use Encode;
 

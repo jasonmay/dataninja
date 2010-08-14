@@ -1,7 +1,6 @@
 package App::Dataninja::Commands::Unit;
-use Moose;
+use App::Dataninja::Commands::OO;
 use WWW::Google::Calculator;
-extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
@@ -26,13 +25,10 @@ This is an alias for B<unit>.
 
 =cut
 
-my @history;
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
+{
+    my @history;
 
-
-    my $unit_code = sub {
+    command ['u', 'unit'] => sub {
         my $command_args = shift;
 
         my $calc = WWW::Google::Calculator->new;
@@ -52,10 +48,7 @@ around 'command_setup' => sub {
         } unless $@;
         return "(eval) $@";
     };
-
-    $self->command(unit => $unit_code);
-    $self->command(u    => $unit_code);
-};
+}
 
 
 __PACKAGE__->meta->make_immutable;

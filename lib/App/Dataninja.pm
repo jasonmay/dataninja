@@ -4,6 +4,8 @@ our $VERSION = '0.03';
 use Moose;
 use IM::Engine;
 
+use constant commands_base_class => 'App::Dataninja::Commands';
+
 has engine => (
     is       => 'ro',
     isa      => 'IM::Engine',

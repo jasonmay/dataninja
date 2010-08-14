@@ -1,6 +1,5 @@
 package App::Dataninja::Commands::Seen;
-use Moose;
-extends 'App::Dataninja::Commands';
+use App::Dataninja::Commands::OO;
 use DateTime::Format::Pg;
 use DateTime::Duration;
 use DateTime::Format::Human::Duration;
@@ -36,11 +35,7 @@ sub get_latest_timestamp_of {
     return defined $row ? $row->moment : undef;
 }
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
-
-    $self->command(
+    command
         seen => sub {
             # oops accidentally commited WIP code earlier!
             return "under construction for now :/";
@@ -68,8 +63,6 @@ around 'command_setup' => sub {
 #                    $nick,
 #                    $message
 #                );
-        }
-    );
 };
 
 

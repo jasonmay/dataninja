@@ -1,6 +1,5 @@
 package App::Dataninja::Commands::Colors;
-use Moose;
-extends 'App::Dataninja::Commands';
+use App::Dataninja::Commands::OO;
 
 =head1 NAME
 
@@ -17,18 +16,11 @@ values
 
 =cut
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
-
-    $self->command(
-        colors => sub {
-            return join q{ },
-            map {
-                "\e[0;3${_}m${_}\e[1;3${_}m${_}\e[0m"
-            } (0 .. 7);
-        }
-    );
+command colors => sub {
+    return join q{ },
+    map {
+        "\e[0;3${_}m${_}\e[1;3${_}m${_}\e[0m"
+    } (0 .. 7);
 };
 
 

@@ -1,7 +1,6 @@
 package App::Dataninja::Commands::Last;
+use App::Dataninja::Commands::OO;
 use App::Nopaste 'nopaste';
-use Moose;
-extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
@@ -24,36 +23,30 @@ sub _line {
     return sprintf("%s <%s> %s", $timestamp, $nick, $message);
 }
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
+command last => sub {
+    my $command_args = shift;
+    my $incoming = shift;
+    my $profile = shift;
+    my $schema       = shift;
 
-    $self->command(
-        'last' => sub {
-            my $command_args = shift;
-            my $incoming = shift;
-            my $profile = shift;
-            my $schema       = shift;
+    my $rows = defined $command_args ? $command_args : 25;
+    $rows = 200 if $rows > 200;
+    $rows = 10 if $rows < 10;
 
-            my $rows = defined $command_args ? $command_args : 25;
-            $rows = 200 if $rows > 200;
-            $rows = 10 if $rows < 10;
+    my @messages = $schema->resultset('Message')->search(
+        {
+            network => $profile,
+            channel => $incoming->channel,
+        },
+        { rows => $rows, order_by => 'moment desc'}
+    );
 
-            my @messages = $schema->resultset('Message')->search(
-                {
-                    network => $profile,
-                    channel => $incoming->channel,
-                },
-                { rows => $rows, order_by => 'moment desc'}
-            );
-
-            return "Last $rows lines: " . nopaste(
-                join qq{\n} =>
-                map {
-                    _line($_->moment, $_->nick, $_->message)
-                } reverse @messages
-            );
-        });
+    return "Last $rows lines: " . nopaste(
+        join qq{\n} =>
+        map {
+            _line($_->moment, $_->nick, $_->message)
+        } reverse @messages
+    );
 };
 
 __PACKAGE__->meta->make_immutable;

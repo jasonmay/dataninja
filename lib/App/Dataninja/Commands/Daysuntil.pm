@@ -1,7 +1,6 @@
 package App::Dataninja::Commands::Daysuntil;
-use Moose;
+use App::Dataninja::Commands::OO;
 use DateTime::Format::Natural;
-extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
@@ -18,26 +17,19 @@ provide
 
 =cut
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
+command daysuntil => sub {
+    my $command_args = shift;
+    return "until when?" unless defined $command_args;
+    my $parser = DateTime::Format::Natural->new;
+    my $dt = $parser->parse_datetime($command_args);
+    my $now = DateTime->now;
 
-    $self->command(
-        daysuntil => sub {
-            my $command_args = shift;
-            return "until when?" unless defined $command_args;
-            my $parser = DateTime::Format::Natural->new;
-            my $dt = $parser->parse_datetime($command_args);
-            my $now = DateTime->now;
+    my $seconds_diff = $dt->epoch - $now->epoch;
+    return "it's too late for that :(" if $seconds_diff < 0;
 
-            my $seconds_diff = $dt->epoch - $now->epoch;
-            return "it's too late for that :(" if $seconds_diff < 0;
+    my $days_diff = int($seconds_diff/86400);
 
-            my $days_diff = int($seconds_diff/86400);
-
-            return "$days_diff days!";
-        }
-    );
+    return "$days_diff days!";
 };
 
 

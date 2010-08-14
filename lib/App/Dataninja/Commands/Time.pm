@@ -1,7 +1,6 @@
 package App::Dataninja::Commands::Time;
-use Moose;
+use App::Dataninja::Commands::OO;
 use DateTime;
-extends 'App::Dataninja::Commands';
 
 =head1 NAME
 
@@ -19,20 +18,13 @@ This plugin gets the time for a certain time zonek.
 
 =cut
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
-
-    $self->command(
-        time => sub {
-            my $command_args = shift;
-            return "please specify a timezone (Area/Location format)"
-                unless $command_args;
-            my $dt = eval { DateTime->now(time_zone => $command_args) };
-            return "(eval) $@" if $@;
-            return sprintf("%s %s", $dt->ymd, $dt->hms);
-        }
-    );
+command time => sub {
+    my $command_args = shift;
+    return "please specify a timezone (Area/Location format)"
+        unless $command_args;
+    my $dt = eval { DateTime->now(time_zone => $command_args) };
+    return "(eval) $@" if $@;
+    return sprintf("%s %s", $dt->ymd, $dt->hms);
 };
 
 __PACKAGE__->meta->make_immutable;

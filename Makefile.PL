@@ -8,7 +8,7 @@ perl_version   '5.8.8';
 
 build_requires 'Test::More';
 requires 'App::Nopaste';
-requires 'Bot::BasicBot';
+requires 'IM::Engine';
 requires 'DBD::Mock';
 requires 'DBD::Pg';
 requires 'DBD::SQLite';

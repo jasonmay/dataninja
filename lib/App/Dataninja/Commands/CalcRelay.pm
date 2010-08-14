@@ -1,6 +1,5 @@
 package App::Dataninja::Commands::CalcRelay;
-use Moose;
-extends 'App::Dataninja::Commands';
+use App::Dataninja::Commands::OO;
 
 =head1 NAME
 
@@ -16,16 +15,9 @@ App::Dataninja::Commands::CalcRelay - don't ask
 
 =cut
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
-
-    $self->command(
-        c => sub {
-            my $command_args = shift;
-            return "!c $command_args";
-        }
-    );
+command c => sub {
+    my $command_args = shift;
+    return "!c $command_args";
 };
 
 

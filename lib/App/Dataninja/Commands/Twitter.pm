@@ -1,6 +1,5 @@
 package App::Dataninja::Commands::Twitter;
-use Moose;
-extends 'App::Dataninja::Commands';
+use App::Dataninja::Commands::OO;
 use Net::Twitter;
 use String::Util 'crunch';
 use List::Util qw/min max/;
@@ -54,43 +53,37 @@ sub get_status_id {
     return $response;
 }
 
-around 'command_setup' => sub {
-    my $orig = shift;
-    my $self = shift;
+command twitter => sub {
+    my $command_args = crunch(shift);
+    my $incoming = shift;
 
-    $self->command(twitter => sub {
-        my $command_args = crunch(shift);
-        my $incoming = shift;
+    my ($name, $nth_tweet, $tweet_id, $date) =
+        $command_args =~ m<
+            ^(\w+)? \s*        # username
+            (?:-?(\d+))?       # get the Nth tweet (0-index)
+            (?:
+                \#(\d+) |      # get this particular status id
+                (\#\{[^}]+\})  # get the tweet from this date
+            )?
+        >x;
+    $name ||= $incoming->sender->name;
 
-        my ($name, $nth_tweet, $tweet_id, $date) =
-            $command_args =~ m<
-                ^(\w+)? \s*        # username
-                (?:-?(\d+))?       # get the Nth tweet (0-index)
-                (?:
-                    \#(\d+) |      # get this particular status id
-                    (\#\{[^}]+\})  # get the tweet from this date
-                )?
-            >x;
-        $name ||= $incoming->sender->name;
-
-        my $tweet;
-        if (defined $tweet_id) {
-            $tweet = get_status_id($tweet_id);
+    my $tweet;
+    if (defined $tweet_id) {
+        $tweet = get_status_id($tweet_id);
+    }
+    else {
+        $tweet = get_latest_tweet($name, $nth_tweet);
+        # As a fallback, try the name as a tweet id
+        unless (defined $tweet) {
+            $tweet = get_status_id($name);
         }
-        else {
-            $tweet = get_latest_tweet($name, $nth_tweet);
-            # As a fallback, try the name as a tweet id
-            unless (defined $tweet) {
-                $tweet = get_status_id($name);
-            }
-        }
-        return sprintf("tweet: %s", _render_tweet($tweet)) if $tweet;
+    }
+    return sprintf("tweet: %s", _render_tweet($tweet)) if $tweet;
 
-        # at this point, no tweeple exist by that name
-        return "that name is not owned by any tweeple";
-    });
+    # at this point, no tweeple exist by that name
+    return "that name is not owned by any tweeple";
 };
-# }}}
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
