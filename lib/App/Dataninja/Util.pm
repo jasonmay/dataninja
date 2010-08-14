@@ -12,8 +12,6 @@ sub tick {
     my $schema = $block->param('schema');
     my $reminder = $schema->first_due_reminder;
 
-    $reminder and warn 'idgi... ' . $reminder->moment;
-
     if ($reminder) {
         my $format_module = "DateTime::Format::Pg";
         my $made_dt = $format_module->parse_datetime($reminder->made);

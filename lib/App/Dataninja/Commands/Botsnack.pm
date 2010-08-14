@@ -17,8 +17,6 @@ You give the bot a botsnack, and he responds with gratitude.
 
 =cut
 
-warn __PACKAGE__->can('command');
-
 command(botsnack => sub { "sweet, thanks! :)" });
 
 __PACKAGE__->meta->make_immutable;

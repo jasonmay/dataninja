@@ -33,7 +33,6 @@ sub command {
             package_name => $caller,
         );
 
-        warn $method->meta->can('does_role');
         $caller->meta->add_method(
             "__DATANINJA__$_" => $method,
         );
