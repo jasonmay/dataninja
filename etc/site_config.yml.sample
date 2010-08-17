@@ -1,0 +1,14 @@
+---
+Site:
+  nick: dataninja
+  networks:
+    dev:
+      channels:
+      - name: '#bot'
+      prefix: '#'
+      server: localhost
+    foo:
+      channels:
+      - name: '#dataninja'
+      prefix: '#'
+      server: irc.dataninja.net
