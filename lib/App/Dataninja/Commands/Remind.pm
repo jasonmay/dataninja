@@ -112,6 +112,7 @@ command remind => sub {
 command cancel => sub {
             my $requested_id = shift;
             my $incoming = shift;
+            my $profile = shift;
             my $schema       = shift;
             return "invalid ID" if $requested_id =~ /\D/;
 
