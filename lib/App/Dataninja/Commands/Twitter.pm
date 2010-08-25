@@ -53,7 +53,7 @@ sub get_status_id {
     return $response;
 }
 
-command twitter => sub {
+command [qw/tweet twitter/] => sub {
     my $command_args = crunch(shift);
     my $incoming = shift;
 
