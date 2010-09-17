@@ -109,7 +109,7 @@ command remind => sub {
                 $reminder_row->id);
 };
 
-command cancel => sub {
+command [qw/cancel kill/] => sub {
             my $requested_id = shift;
             my $incoming = shift;
             my $profile = shift;
