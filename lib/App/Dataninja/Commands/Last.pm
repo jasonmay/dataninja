@@ -24,16 +24,17 @@ sub _line {
 }
 
 command last => sub {
+    my $match = shift;
     my $command_args = shift;
     my $incoming = shift;
     my $profile = shift;
-    my $schema       = shift;
+    my $storage       = shift;
 
     my $rows = defined $command_args ? $command_args : 25;
     $rows = 200 if $rows > 200;
     $rows = 10 if $rows < 10;
 
-    my @messages = $schema->resultset('Message')->search(
+    my @messages = $storage->resultset('Message')->search(
         {
             network => $profile,
             channel => $incoming->channel,

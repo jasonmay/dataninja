@@ -19,6 +19,7 @@ This plugin gets the time for a certain time zonek.
 =cut
 
 command time => sub {
+    my $match = shift;
     my $command_args = shift;
     return "please specify a timezone (Area/Location format)"
         unless $command_args;

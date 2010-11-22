@@ -16,6 +16,7 @@ App::Dataninja::Commands::CalcRelay - don't ask
 =cut
 
 command c => sub {
+    my $match = shift;
     my $command_args = shift;
     return "!c $command_args";
 };

@@ -66,16 +66,17 @@ sub weather_output {
 }
 
 command ['w', 'weather'] => sub {
+    my $match = shift;
     my $command_args = shift;
     my $incoming     = shift;
     my $profile      = shift;
-    my $schema       = shift;
+    my $storage       = shift;
     my $place;
     my $nick_being_called = $place = crunch $command_args;
     my ($weather_data, $get_weather);
 
     my $area =
-        $schema->resultset('Area')
+        $storage->resultset('Area')
         ->find({
             nick => ($nick_being_called || lc($incoming->sender->name))
         },
@@ -92,7 +93,7 @@ command ['w', 'weather'] => sub {
     }
 
     if ($get_weather = get_weather($place)) {
-        my $nick_area = $schema->resultset('Area')->find(
+        my $nick_area = $storage->resultset('Area')->find(
             {nick => $incoming->sender->name},
             {rows => 1},
         );
@@ -100,7 +101,7 @@ command ['w', 'weather'] => sub {
             $nick_area->update({location => $place});
         }
         else {
-            $schema->resultset('Area')
+            $storage->resultset('Area')
                 ->create({
                     nick     => $incoming->sender->name,
                     location => $place,

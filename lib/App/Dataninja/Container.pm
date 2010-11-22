@@ -36,115 +36,16 @@ sub _build__container {
 
         service profile => $self->profile;
 
-        service schema => (
-            class     => 'App::Dataninja::Schema',
-            lifecycle => 'Singleton',
-            block     => sub {
-                my $block = shift;
-
-                my $config = $block->param('config');
-                my $schema = App::Dataninja::Schema->connect(
-                    sprintf(
-                        'dbi:%s:dbname=%s',
-                        $config->main->{database}{driver},
-                        $config->main->{database}{name},
-                    ),
-                    $config->main->{database}{user},
-                    $config->main->{database}{pass},
-                );
-
-                $schema->profile($block->param('profile'));
-                $schema->config($block->param('config'));
-                return $schema;
-            },
+        service storage => (
+            class        => 'App::Dataninja::Storage',
+            lifecycle    => 'Singleton',
             dependencies => wire_names(qw[profile config]),
         );
 
         service engine => (
-            class     => 'IM::Engine',
+            class     => 'App::Dataninja::Engine',
             lifecycle => 'Singleton',
-            block     => sub {
-                my ($block) = @_;
-
-                my $profile = $block->param('config')->site->{networks}{$self->profile};
-
-                #die do { require JSON; JSON::to_json($profile); };
-                weaken(my $weakblock = $block);
-                IM::Engine->new(
-                    interface => {
-                        protocol     => 'IRC',
-                        credentials => {
-                            server   => $profile->{server},
-                            port     => 6667,
-                            channels => [map { $_->{name} } @{$profile->{channels}}],
-                            nick     => $block->param('config')->site->{nick},
-                        },
-                        incoming_callback => sub {
-                            my $incoming = shift;
-
-                            if ($incoming->isa('IM::Engine::Incoming::IRC::Privmsg')) {
-                                return $incoming->reply('PMing me! getting frisky are we?');
-                            }
-
-                            my $config     = $weakblock->param('config');
-                            my $dispatcher = $weakblock->param('dispatcher');
-
-                            my $message = $incoming->plaintext;
-
-                            my $profile = $block->param('config')->site->{networks}{$block->param('profile')};
-
-                            $block->param('schema')->add_message(
-                                channel => $incoming->channel,
-                                nick    => $incoming->sender->name,
-                                message => $incoming->plaintext,
-                            );
-
-                            my ($prefix, $channel_data);
-                            if ($incoming->isa('IM::Engine::Incoming::IRC::Channel')) {
-                                $channel_data = first {
-                                    lc($_->{name}) eq lc($incoming->channel)
-                                } @{ $profile->{channels} };
-
-                                $prefix = $profile->{prefix}
-                                        || $channel_data->{prefix};
-                            }
-
-                            my $request = $incoming->plaintext;
-                            my $response = undef;
-                            if ($prefix) {
-                                if (substr($request, 0, length($prefix)) eq $prefix) {
-                                    $request = substr($request, length($prefix)) or return undef;
-
-                                    my ($command, $args) = split ' ', $request, 2;
-                                    my $dispatch = $dispatcher->dispatch($command);
-
-                                    return undef unless $dispatch->has_matches;
-
-                                    $response = $dispatch->run(
-                                        $args,
-                                        $incoming,
-                                        $weakself->profile,
-                                        $block->param('schema')
-                                    );
-
-                                    substr($response, 512) = q{} if $response && length($response) > 512;
-
-                                    $block->param('schema')->log_response(
-                                        channel  => $incoming->channel,
-                                        response => $response,
-                                    );
-                                }
-                                else {
-                                    return undef;
-                                }
-                            }
-
-                            return $incoming->reply($response);
-                        },
-                    }
-                );
-            },
-            dependencies => wire_names(qw[config dispatcher schema profile]),
+            dependencies => wire_names(qw[config dispatcher storage profile]),
         );
 
         service timer => (
@@ -155,10 +56,11 @@ sub _build__container {
                 AE::timer 0, 5, sub {
                     my $self = shift;
 
-                    App::Dataninja::Util::tick($weakblock);
+                    eval { App::Dataninja::Util::tick($weakblock); };
+                    warn "!!! $@" if $@;
                 }
             },
-            dependencies => wire_names(qw[engine schema]),
+            dependencies => wire_names(qw[engine storage]),
         );
 
         service dispatcher => (

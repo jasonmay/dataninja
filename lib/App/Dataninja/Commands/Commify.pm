@@ -20,6 +20,7 @@ the number with commas put in the right places.
 =cut
 
 command commify => sub {
+    my $match = shift;
     my $command_arg = shift;
     my $output =  eval { format_number $command_arg };
     return "(eval) $@" if $@;

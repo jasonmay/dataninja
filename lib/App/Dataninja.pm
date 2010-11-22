@@ -8,8 +8,8 @@ use constant commands_base_class => 'App::Dataninja::Commands';
 
 has engine => (
     is       => 'ro',
-    isa      => 'IM::Engine',
-    #required => 1,
+    isa      => 'App::Dataninja::Engine',
+    required => 1,
     handles  => ['run'],
 );
 

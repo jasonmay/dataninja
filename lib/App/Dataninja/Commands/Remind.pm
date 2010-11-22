@@ -42,12 +42,14 @@ Aliases: B<nextreminder>, B<nr>
 =cut
 
 command remind => sub {
+            my $match        = shift;
             my $command_args = shift;
             my $incoming     = shift;
             my $profile      = shift;
-            my $schema       = shift;
+            my $storage       = shift;
             my ($nick, $desc, $time) =
                 ($command_args =~ /(\S+)? \s+ (.+) \s+>\s+ (.+)/x);
+                warn $command_args;
             return "format: remind NICK (message) > when"
                 unless defined $nick and defined $desc and defined $time;
             my %numbers = (
@@ -71,7 +73,7 @@ command remind => sub {
             }
 
             $nick = $incoming->sender->name if $nick eq 'me';
-            my $reminder = $schema->resultset('Reminder');
+            my $reminder = $storage->resultset('Reminder');
 
             my $parser = DateTime::Format::Natural->new(time_zone => 'America/New_York', prefer_future => 1);
             my $when_to_remind = eval { $parser->parse_datetime($time) };
@@ -110,13 +112,14 @@ command remind => sub {
 };
 
 command [qw/cancel kill/] => sub {
+    my $match = shift;
             my $requested_id = shift;
             my $incoming = shift;
             my $profile = shift;
-            my $schema       = shift;
+            my $storage       = shift;
             return "invalid ID" if $requested_id =~ /\D/;
 
-            my $reminder = $schema->resultset('Reminder')->find($requested_id);
+            my $reminder = $storage->resultset('Reminder')->find($requested_id);
 
             if (defined $reminder) {
                 return "that reminder wasn't for you!"
@@ -136,7 +139,7 @@ my $next_reminder = sub {
         my $command_args = shift;
         my $incoming = shift;
         my $profile = shift;
-        my $schema       = shift;
+        my $storage       = shift;
 
         my $nick = $incoming->sender->name;
         my $output_nick = 'you';
@@ -150,7 +153,7 @@ my $next_reminder = sub {
             $offset = $command_args;
         }
 
-        my $nr_row = $schema->resultset('Reminder')->search(
+        my $nr_row = $storage->resultset('Reminder')->search(
             {
                 moment   => {'>' => DateTime->now},
                 channel  => $incoming->channel,

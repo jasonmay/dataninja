@@ -16,6 +16,7 @@ App::Dataninja::Commands::Echo - the bot merely echos what you put, for random u
 =cut
 
 command echo => sub {
+    my $match = shift;
         my $command_args = shift;
         return $command_args;
 };

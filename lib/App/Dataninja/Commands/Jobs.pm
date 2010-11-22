@@ -19,6 +19,7 @@ the bot responds with results
 =cut
 
 command jobs => sub {
+    my $match = shift;
     my $command_args = shift;
     my ($place, $search_query) = ($command_args =~ /^\W* (\w+) (?:\s+ (.+))?/x);
     return "usage: jobs <area> <description>" unless $place;

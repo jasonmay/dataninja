@@ -89,7 +89,8 @@ sub BUILD {
     Hash::Merge::set_behavior('RIGHT_PRECEDENT');
 
     my $result = merge($default_config, $site_config);
-    $result    = merge($result        , $secret_config);
+    $result    = merge($result        , $secret_config)
+        if $secret_config;
 
     $self->main($result->{Main});
     $self->site($result->{Site});

@@ -4,16 +4,19 @@ use strict;
 use warnings;
 use DateTime;
 use IM::Engine::Outgoing::IRC::Channel;
-use DateTime::Format::Pg;
+use Class::Load;
+#use DateTime::Format::Pg;
 
 sub tick {
     my $block = shift;
 
-    my $schema = $block->param('schema');
-    my $reminder = $schema->first_due_reminder;
+    my $storage = $block->param('storage');
+    my $reminder = $storage->first_due_reminder;
 
     if ($reminder) {
-        my $format_module = "DateTime::Format::Pg";
+        my $format_module = "DateTime::Format::SQLite";
+        Class::Load::load_class($format_module);
+        warn $reminder->made;
         my $made_dt = $format_module->parse_datetime($reminder->made);
 
         # show only if reminder was made more than a month ago
@@ -23,7 +26,7 @@ sub tick {
         ) < 0 ? sprintf("(set %s) ", $made_dt->ymd) : '';
 
         record_and_send_message(
-            $block->param('schema'), $block->param('engine'),
+            $block->param('storage'), $block->param('engine'),
             channel => $reminder->channel,
             message => sprintf(
                 '%s%s: %s',
@@ -36,11 +39,11 @@ sub tick {
         $reminder->update({reminded => 1});
     }
 
-    my $interjection = $schema->first_interjection;
+    my $interjection = $storage->first_interjection;
 
     if ($interjection) {
         record_and_send_message(
-            $block->param('schema'), $block->param('engine'),
+            $block->param('storage'), $block->param('engine'),
             channel => $interjection->channel,
             message => $interjection->message,
             #emotion => $interjection->emotion,
@@ -51,11 +54,11 @@ sub tick {
 }
 
 sub record_and_send_message {
-    my $schema = shift;
+    my $storage = shift;
     my $engine = shift;
     my %args = @_;
 
-    $schema->log_response(
+    $storage->log_response(
         channel  => $args{channel},
         response => $args{message},
     );

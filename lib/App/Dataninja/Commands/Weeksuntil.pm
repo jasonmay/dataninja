@@ -19,6 +19,7 @@ provide
 =cut
 
 command weeksuntil => sub {
+    my $match = shift;
     my $command_args = shift;
     return "until when?" unless defined $command_args;
     my $parser = DateTime::Format::Natural->new;

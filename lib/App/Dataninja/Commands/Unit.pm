@@ -29,6 +29,7 @@ This is an alias for B<unit>.
     my @history;
 
     command ['u', 'unit'] => sub {
+        my $match = shift;
         my $command_args = shift;
 
         my $calc = WWW::Google::Calculator->new;

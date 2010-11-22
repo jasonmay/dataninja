@@ -36,6 +36,7 @@ This is an alias for englishify.
 my $create_translator = sub {
     my $langpair = shift;
     return sub {
+        my $match = shift;
         my $command_args = shift;
         my $result = REST::Google::Translate->new(
             q => $command_args,

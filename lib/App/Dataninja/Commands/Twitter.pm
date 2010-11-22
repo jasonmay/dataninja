@@ -54,6 +54,7 @@ sub get_status_id {
 }
 
 command [qw/tweet twitter/] => sub {
+    my $match = shift;
     my $command_args = crunch(shift);
     my $incoming = shift;
 

@@ -19,6 +19,7 @@ This command adds the task, strips any priority manipulation and slaps on the ta
 =cut
 
 command task => sub {
+    my $match = shift;
     my $command_args = shift;
     my $hm = Net::Hiveminder->new(use_config => 1);
 
