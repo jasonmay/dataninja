@@ -5,7 +5,6 @@ use warnings;
 use DateTime;
 use IM::Engine::Outgoing::IRC::Channel;
 use Class::Load;
-#use DateTime::Format::Pg;
 
 sub tick {
     my $block = shift;
@@ -14,7 +13,7 @@ sub tick {
     my $reminder = $storage->first_due_reminder;
 
     if ($reminder) {
-        my $format_module = "DateTime::Format::SQLite";
+        my $format_module = "DateTime::Format::Pg";
         Class::Load::load_class($format_module);
         warn $reminder->made;
         my $made_dt = $format_module->parse_datetime($reminder->made);
