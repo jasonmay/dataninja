@@ -1,6 +1,7 @@
 package App::Dataninja::Engine;
 use Moose;
 use IM::Engine;
+use Encode;
 use List::Util qw(first);
 
 has im_engine => (
@@ -116,6 +117,8 @@ sub _handle_incoming {
             return undef;
         }
     }
+
+    $response = Encode::encode("iso-8859-1", Encode::decode_utf8($response));
 
     return $incoming->reply($response);
 }
