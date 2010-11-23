@@ -128,5 +128,20 @@ sub log_response {
     );
 }
 
+sub latest_message_of {
+    my $self = shift;
+    my $nick = shift;
+
+    return $self->resultset('Message')->find(
+        {
+            nick => $nick,
+        },
+        {
+            order_by => \'moment desc',
+            rows     => 1,
+        }
+    );
+}
+
 1;
 

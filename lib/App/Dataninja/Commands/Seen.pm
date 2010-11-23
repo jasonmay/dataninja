@@ -18,51 +18,31 @@ App::Dataninja::Commands::Seen - the bot tells you when someone was last seen
 
 =cut
 
-sub get_latest_timestamp_of {
-    my $self = shift;
-    my $nick = shift;
+my $dur = DateTime::Format::Human::Duration->new;
+command seen => sub {
+    my $match        = shift;
+    my $command_args = shift;
+    my ($incoming, $profile, $schema) = @_;
+    my $nick         = lc $command_args;
+    return "seen who?" unless $nick;
 
-    my $row = $self->rs('Message')->find(
-        {
-            nick => $nick,
-        },
-        {
-            order_by => 'moment desc',
-            rows     => 1,
-        }
+    return "heh, that's you!" if $nick eq lc($incoming->sender->name);
+
+    my $latest_message = $schema->latest_message_of($nick)
+        or return "haven't seen anyone who goes by '$nick'";
+
+    my $formatted_moment  = $dur->format_duration_between(
+        $latest_message->moment,
+        DateTime->now,
     );
 
-    return defined $row ? $row->moment : undef;
-}
-
-    command
-        seen => sub {
-            # oops accidentally commited WIP code earlier!
-            return "under construction for now :/";
-#            my $command_args = shift;
-#            my $nick         = lc $command_args;
-#            return "seen who?" unless $nick;
-#
-#            my $latest_moment = DateTime::Format::Human::Duration->new->format_duration_between(
-#                DateTime::Format::Pg->parse_datetime($self->get_latest_timestamp_of($nick)),
-#                DateTime->now
-#            );
-#            return "haven't seen anyone who goes by that nick"
-#                unless defined $latest_moment;
-#            my $message = $self->rs('Message')->search(
-#                {
-#                    moment => $latest_moment,
-#                    nick   => $nick,
-#                }
-#            )->single->message;
-#
-#            return
-#                sprintf(
-#                    "%s: <%s> %s",
-#                    $latest_moment,
-#                    $nick,
-#                    $message
-#                );
+    return
+        sprintf(
+            "%s ago: <%s> %s",
+            $formatted_moment,
+            $latest_message->nick,
+            $latest_message->message
+        );
 };
 
 
