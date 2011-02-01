@@ -1,6 +1,9 @@
 package App::Dataninja::Commands::Weather;
 use App::Dataninja::Commands::OO;
-use Weather::Underground;
+use URI::Escape;
+use LWP::Simple;
+use XML::Simple;
+
 use String::Util qw/crunch/;
 
 =head1 NAME
@@ -42,26 +45,31 @@ This is an alias for B<weather>.
 
 =cut
 
+
 sub get_weather  {
     my $place = shift;
-    my $weather_data = Weather::Underground->new(place => $place)
-        or return "$!";
-    return $weather_data->get_weather;
+
+    my $query = uri_escape($place);
+
+    my $xml     = get("http://api.wunderground.com/auto/wui/geo/WXCurrentObXML/index.xml?query=$query");
+    my $xmldata = XMLin($xml);
+
+    return $xmldata;
 }
 
 sub weather_output {
     my $get_weather = shift;
     my $place = shift;
-    my $target_weather = $get_weather->[0];
+    my $target_weather = $get_weather;
     return
     sprintf(
         'weather for "%s" - temp: %sF (%sC). humidity: %s%%. wind: %smph. conditions: %s.',
         $place,
-        $target_weather->{temperature_fahrenheit},
-        $target_weather->{temperature_celsius},
-        $target_weather->{humidity},
-        $target_weather->{wind_milesperhour},
-        $target_weather->{conditions}
+        $target_weather->{temp_f},
+        $target_weather->{temp_c},
+        $target_weather->{relative_humidity},
+        $target_weather->{wind_mph},
+        $target_weather->{weather}
     );
 }
 

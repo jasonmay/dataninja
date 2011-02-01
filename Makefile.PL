@@ -37,7 +37,9 @@ requires 'REST::Google::Translate';
 requires 'String::Util';
 requires 'URI';
 requires 'WWW::Google::Calculator';
-requires 'Weather::Underground';
+requires 'URI::Escape';
+requires 'LWP::Simple';
+requires 'XML::Simple';
 requires 'Web::Scraper';
 requires 'YAML::XS';
 
