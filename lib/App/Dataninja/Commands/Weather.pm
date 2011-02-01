@@ -63,7 +63,7 @@ sub weather_output {
     my $target_weather = $get_weather;
     return
     sprintf(
-        'weather for "%s" - temp: %sF (%sC). humidity: %s%%. wind: %smph. conditions: %s.',
+        'weather for "%s" - temp: %sF (%sC). humidity: %s. wind: %smph. conditions: %s.',
         $place,
         $target_weather->{temp_f},
         $target_weather->{temp_c},
