@@ -10,6 +10,7 @@ CREATE TABLE messages (
     nick text NOT NULL,
     message text NOT NULL,
     moment timestamp with time zone NOT NULL,
+    emotion integer default 0 NOT NULL,
     channel text NOT NULL,
     network text NOT NULL
 );
@@ -18,6 +19,7 @@ CREATE TABLE interjections (
     id integer primary key autoincrement,
     message text NOT NULL,
     interjected integer default 0,
+    emotion integer default 0,
     channel text,
     network text
 );
@@ -37,5 +39,6 @@ CREATE TABLE reminders (
     network text,
     reminded integer default 0,
     canceled integer default 0,
+    made timestamp with time zone NOT NULL,
     maker text
 );
