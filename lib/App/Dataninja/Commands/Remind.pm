@@ -49,7 +49,6 @@ command remind => sub {
             my $storage       = shift;
             my ($nick, $desc, $time) =
                 ($command_args =~ /(\S+)? \s+ (.+) \s+>\s+ (.+)/x);
-                warn $command_args;
             return "format: remind NICK (message) > when"
                 unless defined $nick and defined $desc and defined $time;
             my %numbers = (
