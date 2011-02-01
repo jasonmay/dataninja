@@ -9,6 +9,7 @@ perl_version   '5.8.8';
 build_requires 'Test::More';
 requires 'App::Nopaste';
 requires 'IM::Engine';
+requires 'Bread::Board';
 requires 'DBD::Mock';
 requires 'DBD::Pg';
 requires 'DBD::SQLite';
