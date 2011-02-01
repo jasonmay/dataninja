@@ -33,7 +33,7 @@ requires 'MooseX::NonMoose' => '0.03';
 requires 'Net::Hiveminder';
 requires 'Net::Twitter';
 requires 'Number::Format';
-requires 'Path::Dispatcher';
+requires 'Path::Dispatcher' => '1.00';
 requires 'REST::Google::Translate';
 requires 'String::Util';
 requires 'URI';
