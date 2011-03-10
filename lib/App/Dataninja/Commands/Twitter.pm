@@ -80,7 +80,7 @@ command [qw/tweet twitter/] => sub {
             $tweet = get_status_id($name);
         }
     }
-    return sprintf("tweet: %s", _render_tweet($tweet)) if $tweet;
+    return sprintf("@%s tweets: %s", $tweet->{user}{screen_name}, _render_tweet($tweet)) if $tweet;
 
     # at this point, no tweeple exist by that name
     return "that name is not owned by any tweeple";
