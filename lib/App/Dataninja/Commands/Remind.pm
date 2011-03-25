@@ -47,8 +47,8 @@ command remind => sub {
             my $incoming     = shift;
             my $profile      = shift;
             my $storage       = shift;
-            my ($nick, $desc, $time) =
-                ($command_args =~ /(\S+)? \s+ (.+) \s+>\s+ (.+)/x);
+            my ($nick, $desc, $same_time, $time) =
+                ($command_args =~ /(\S+)? \s+ (.+) \s+>(=?)\s+ (.+)/x);
             return "format: remind NICK (message) > when"
                 unless defined $nick and defined $desc and defined $time;
             my %numbers = (
@@ -91,6 +91,12 @@ command remind => sub {
 
             return "must authenticate yourself as Doc Brown to do that"
             if DateTime->compare($when_to_remind->clone(time_zone => 'America/New_York'), DateTime->now) < 0;
+
+            if ($same_time) {
+                my $now = DateTime->now(time_zone => 'America/New_York');
+                my $today = DateTime->today(time_zone => 'America/New_York');
+                $when_to_remind = $when_to_remind + ($now - $today);
+            }
 
             my $reminder_row = $reminder->create({
                 remindee    => $nick,
