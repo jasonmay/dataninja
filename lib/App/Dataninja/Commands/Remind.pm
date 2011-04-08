@@ -66,9 +66,9 @@ command remind => sub {
 
             foreach my $word (keys %numbers) {
                 $time =~ s/\b$word\b/$numbers{$word}/ge;
-                $time =~ s/\ba\s+few\b/3/ge;
-                $time =~ s/\bseveral\b/8/ge;
-                $time =~ s/\ban?\b/1/ge;
+                $time =~ s/\ba\s+few\b/3/g;
+                $time =~ s/\bseveral\b/8/g;
+                $time =~ s/\ban?\b/1/g;
             }
 
             $nick = $incoming->sender->name if $nick eq 'me';
