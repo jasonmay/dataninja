@@ -71,6 +71,8 @@ command remind => sub {
                 $time =~ s/\ban?\b/1/g;
             }
 
+            $time =~ s/\bnoon\b/12pm/g;
+
             $nick = $incoming->sender->name if $nick eq 'me';
             my $reminder = $storage->resultset('Reminder');
 
