@@ -17,10 +17,11 @@ use Module::Pluggable
 use Scalar::Util qw(weaken);
 
 has _container => (
-    is  => 'rw',
-    isa => 'Bread::Board::Container',
+    is      => 'rw',
+    isa     => 'Bread::Board::Container',
     builder => '_build__container',
     handles => ['fetch'],
+    lazy    => 1,
 );
 
 has profile => (
