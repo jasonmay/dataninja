@@ -1,35 +1,21 @@
 package App::Dataninja::Schema::Message;
-use strict;
-use warnings;
-use base qw/DBIx::Class::Schema/;
-use DateTime::Format::Pg;
+use KiokuDB::Class;
+use DateTime;
 
-__PACKAGE__->load_components(qw/PK::Auto InflateColumn Core/);
-__PACKAGE__->table('messages');
-__PACKAGE__->add_columns(
-    id            => {data_type => 'integer', is_auto_increment => 1},
-    network       => {data_type => 'varchar(256)'},
-    message       => {data_type => 'text'},
-    moment        => {data_type => 'timestamp'},
-    channel       => {data_type => 'varchar(64)'},
-    nick          => {data_type => 'varchar(64)'},
-    stats_updated => {data_type => 'integer', default_value => 0},
-    emotion       => {data_type => 'integer', default_value => 0},
+with 'App::Dataninja::Schema::Entry';
+
+has nick => (
+    is       => 'ro',
+    isa      => 'App::Dataninja::Schema::Nick',
+    required => 1,
 );
 
-sub parse_or_format {
-    my ($which, $value, $obj) = @_;
-    my $which_datetime = "${which}_datetime";
-    return DateTime::Format::Pg->$which_datetime($value);
-}
-
-__PACKAGE__->inflate_column(
-    moment => {
-        inflate => sub { parse_or_format('parse', @_);  },
-        deflate => sub { parse_or_format('format', @_); }
-    }
+has said_at => (
+    is      => 'ro',
+    isa     => 'DateTime',
+    default => sub { DateTime->now },
 );
 
-__PACKAGE__->set_primary_key(qw/id/);
+no KiokuDB::Class;
 
 1;

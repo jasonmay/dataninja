@@ -1,15 +1,23 @@
 package App::Dataninja::Schema::Nick;
-use strict;
-use warnings;
-use base qw/DBIx::Class::Schema/;
+use KiokuDB::Class;
 
-__PACKAGE__->load_components(qw/PK::Auto Core/);
-__PACKAGE__->table('nicks');
-__PACKAGE__->add_columns(
-    id          => {is_auto_increment => 1, data_type => 'bigint'},
-    name        => {data_type => 'varchar(64)'},
-    network     => {data_type => 'varchar(256)'},
+has name => (
+    is       => 'rw',
+    isa      => 'Str',
+    required => 1,
 );
-__PACKAGE__->set_primary_key(qw/id/);
+
+has network => (
+    is       => 'ro',
+    isa      => 'App::Dataninja::Schema::Network',
+    required => 1,
+);
+
+has location => (
+    is  => 'rw',
+    isa => 'Str',
+);
+
+no KiokuDB::Class;
 
 1;
