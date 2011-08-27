@@ -1,5 +1,11 @@
 package App::Dataninja::Schema::Nick;
 use KiokuDB::Class;
+with 'App::Dataninja::Schema::ID';
+
+sub id {
+    my $self = shift;
+    return sprintf('nick:%s:%s', $self->network->name, $self->name);
+}
 
 has name => (
     is       => 'rw',

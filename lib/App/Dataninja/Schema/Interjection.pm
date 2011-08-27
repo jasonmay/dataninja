@@ -1,6 +1,6 @@
 package App::Dataninja::Schema::Interjection;
 use KiokuDB::Class;
-with 'App::Dataninja::Schema::Interjection';
+with 'App::Dataninja::Schema::Entry';
 
 has interjected => (
     is      => 'rw',
