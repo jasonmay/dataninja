@@ -12,6 +12,18 @@ has component => (
     isa => 'Object|Undef',
 );
 
+has model => (
+    is       => 'ro',
+    isa      => 'App::Dataninja::Model',
+    required => 1,
+);
+
+has hook_manager => (
+    is       => 'ro',
+    isa      => 'App::Dataninja::HookManager',
+    required => 1,
+);
+
 watches poco_watcher => (
     role => 'poco',
     isa  => 'Reflex::POE::Session',
@@ -56,7 +68,20 @@ sub BUILD {
             $self->component->yield(register => "all");
             $self->component->yield(connect  => {});
         }
-    )
+    );
+
+    $self->_register_default_hooks;
+}
+
+sub _register_default_hooks {
+    my $self = shift;
+
+    $self->hook_manager->add_hook(
+        'public', '_default', sub {
+            my ($nick, $channel, $body) = @_;
+            warn "<$nick> $body\n";
+        }
+    );
 }
 
 sub on_poco_irc_001 {
@@ -97,7 +122,7 @@ sub on_poco_irc_public {
     my $nick = (split /!/, $who)[0];
     my $channel = $where->[0];
 
-    warn "<$nick> $what\n";
+    $self->hook_manager->invoke_hooks('public', $nick, $channel, $what);
 }
 
 # TODO have dataninja return reminders privately

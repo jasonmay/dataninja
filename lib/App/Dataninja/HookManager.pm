@@ -21,6 +21,17 @@ sub add_hook {
     $self->_hook_lookup->{$register}->{$name} = $callback;
 }
 
+sub invoke_hooks {
+    my $self = shift;
+    my ($register, @hook_args) = @_;
+
+    my @hooks = values %{ $self->_hook_lookup->{$register} };
+
+    foreach my $hook (@hooks) {
+        $hook->(@hook_args);
+    }
+}
+
 sub remove_hook {
     my $self = shift;
     my ($register, $name) = @_;

@@ -2,6 +2,10 @@ package App::Dataninja::Model;
 use Moose;
 extends 'KiokuX::Model';
 
+has '+dsn' => (
+    default => 'dbi:SQLite:dbname=dataninja',
+);
+
 sub lookup_network {
     my $self = shift;
     my $name = shift;
