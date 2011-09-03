@@ -7,8 +7,11 @@
 !doc/site/css/main.css
 /MANIFEST
 /MANIFEST.SKIP
+/META.yml
 /blib
 /pm_to_blib
 /inc
 /Makefile
 /Makefile.old
+/config.ini
+/plugin
