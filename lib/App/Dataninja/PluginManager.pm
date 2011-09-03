@@ -39,6 +39,11 @@ sub setup {
 
         my $plugin_class = "App::Dataninja::Plugin::$plugin";
         Class::MOP::load_class($plugin_class);
+
+        local $App::Dataninja::Plugin::_COMMAND_SUB = sub {
+            $self->add_command(@_);
+        };
+
         $plugin_class->setup($self);
     }
 }
