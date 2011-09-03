@@ -177,7 +177,7 @@ sub on_poco_irc_msg {
     warn "<$nick> $what\n";
 }
 
-sub on_clock_tick { 1 }
+sub on_clock_tick { shift->hook_manager->invoke_hooks('tick') }
 
 no Moose;
 
