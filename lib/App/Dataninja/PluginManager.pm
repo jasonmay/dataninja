@@ -47,6 +47,9 @@ sub setup {
         local $App::Dataninja::Plugin::_COMMAND = sub {
             $self->add_command(@_);
         };
+        local $App::Dataninja::Plugin::_ADD_HOOK = sub {
+            $self->hook_manager->add_hook(@_);
+        };
 
         $plugin_class->setup($self);
     }
