@@ -30,6 +30,7 @@ has network => (
 
 sub setup {
     my $self = shift;
+    my ($component) = @_;
 
     # read the plugins from the config and set them up
     foreach my $plugin (keys %{$self->config->{Plugins} || {}}) {
@@ -40,7 +41,10 @@ sub setup {
         my $plugin_class = "App::Dataninja::Plugin::$plugin";
         Class::MOP::load_class($plugin_class);
 
-        local $App::Dataninja::Plugin::_COMMAND_SUB = sub {
+        local $App::Dataninja::Plugin::_SEND_MESSAGE = sub {
+            $component->yield('privmsg', @_);
+        };
+        local $App::Dataninja::Plugin::_COMMAND = sub {
             $self->add_command(@_);
         };
 

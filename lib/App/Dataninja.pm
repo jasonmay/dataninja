@@ -51,7 +51,7 @@ has config => (
 
 sub BUILD {
     my $self = shift;
-    $self->plugin_manager->setup();
+    $self->plugin_manager->setup($self->client->component);
 }
 
 sub run {

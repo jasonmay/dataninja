@@ -157,8 +157,8 @@ sub on_poco_irc_public {
     for my $command ($self->command_manager->commands) {
         # TODO custom prefixes
         if ($what =~ /^\.$command\b/) {
-            my $message = $self->command_manager->invoke($command, $channel, $message);
-            $self->_respond($channel, $message);
+            my $response = $self->command_manager->invoke($command, $channel, $what);
+            $self->_respond($channel, $response);
             last;
         }
     }
