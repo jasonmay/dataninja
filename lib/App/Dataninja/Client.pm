@@ -24,6 +24,24 @@ has hook_manager => (
     required => 1,
 );
 
+has plugin_manager => (
+    is       => 'ro',
+    isa      => 'App::Dataninja::PluginManager',
+    required => 1,
+);
+
+has command_manager => (
+    is       => 'ro',
+    isa      => 'App::Dataninja::CommandManager',
+    required => 1,
+);
+
+has network => (
+    is       => 'ro',
+    isa      => 'Str',
+    required => 1,
+);
+
 watches poco_watcher => (
     role => 'poco',
     isa  => 'Reflex::POE::Session',
@@ -41,8 +59,6 @@ watches clock => (
 sub BUILD {
     my $self = shift;
 
-    # This is only really necessary because we're using
-    # POE::Component::IRC's OO interface.
     $self->component(
         POE::Component::IRC->spawn(
             nick    => "dataninja",
@@ -51,20 +67,14 @@ sub BUILD {
         ) || die "Drat: $!"
     );
 
-    # Start a Reflex::POE::Session that will
-    # subscribe to the IRC component.
     $self->poco_watcher(
         Reflex::POE::Session->new(
-            sid => $self->component->session_id,
+            sid => $self->component->session_id
         )
     );
 
-    # run_within_session() allows the component
-    # to receive the correct $_[SENDER].
     $self->run_within_session(
         sub {
-            # The following two lines work because
-            # PoCo::IRC implements a yield() method.
             $self->component->yield(register => "all");
             $self->component->yield(connect  => {});
         }
@@ -79,7 +89,14 @@ sub _register_default_hooks {
     $self->hook_manager->add_hook(
         'public', '_default', sub {
             my ($nick, $channel, $body) = @_;
-            warn "<$nick> $body\n";
+
+            my $scope = $self->model->new_scope;
+            my $id = $self->model->insert_message(
+                network => $self->network,
+                nick    => $nick,
+                channel => $channel,
+                body    => $body,
+            );
         }
     );
 }
@@ -113,6 +130,19 @@ sub on_poco_irc_quit {
     warn "$nick quits $channel\n";
 }
 
+sub _respond {
+    my $self    = shift;
+    my ($channel, $message) = @_;
+
+    # Hope your IRC client supports unicode!
+    $message =~ s/\n/\N{U+2424}/g;
+    $message =~ s/\r/\N{U+240D}/g;
+
+    $message = substr($message, 0, 512) if length($message) > 512;
+
+    $self->component->yield(privmsg => $channel => $message);
+}
+
 sub on_poco_irc_public {
     my $self = shift;
     my ($args) = @_;
@@ -123,6 +153,15 @@ sub on_poco_irc_public {
     my $channel = $where->[0];
 
     $self->hook_manager->invoke_hooks('public', $nick, $channel, $what);
+
+    for my $command ($self->command_manager->commands) {
+        # TODO custom prefixes
+        if ($what =~ /^\.$command\b/) {
+            my $message = $self->command_manager->invoke($command, $channel, $message);
+            $self->_respond($channel, $message);
+            last;
+        }
+    }
 }
 
 # TODO have dataninja return reminders privately
@@ -138,7 +177,7 @@ sub on_poco_irc_msg {
     warn "<$nick> $what\n";
 }
 
-sub on_clock_tick { warn "test" }
+sub on_clock_tick { 1 }
 
 no Moose;
 

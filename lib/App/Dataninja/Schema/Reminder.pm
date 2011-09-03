@@ -9,12 +9,6 @@ has remindee => (
     required => 1,
 );
 
-has maker => (
-    is       => 'ro',
-    isa      => 'App::Dataninja::Schema::Nick',
-    required => 1,
-);
-
 has triggered_by => (
     is       => 'ro',
     isa      => 'App::Dataninja::Schema::Message',

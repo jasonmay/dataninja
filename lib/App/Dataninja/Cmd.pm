@@ -13,10 +13,11 @@ has network => (
 has bot => (
     is      => 'ro',
     isa     => 'App::Dataninja',
+    lazy    => 1,
     traits  => ['NoGetopt'],
     handles => ['run'],
 
-    default => sub { App::Dataninja->new },
+    default => sub { App::Dataninja->new(network => shift->network) },
 );
 
 __PACKAGE__->meta->make_immutable;
