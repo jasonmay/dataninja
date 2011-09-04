@@ -41,13 +41,13 @@ sub setup {
         my $plugin_class = "App::Dataninja::Plugin::$plugin";
         Class::MOP::load_class($plugin_class);
 
-        local $App::Dataninja::Plugin::_SEND_MESSAGE = sub {
+        local $App::Dataninja::Plugin::PLUGINSUB{send_message} = sub {
             $component->yield('privmsg', @_);
         };
-        local $App::Dataninja::Plugin::_COMMAND = sub {
+        local $App::Dataninja::Plugin::PLUGINSUB{command} = sub {
             $self->add_command(@_);
         };
-        local $App::Dataninja::Plugin::_ADD_HOOK = sub {
+        local $App::Dataninja::Plugin::PLUGINSUB{add_hook} = sub {
             $self->hook_manager->add_hook(@_);
         };
 

@@ -1,16 +1,27 @@
 package App::Dataninja::Plugin;
+use strict;
+use warnings;
+
 use Exporter;
-our @ISA = qw(Exporter);
-our @EXPORT = qw(command send_message add_hook);
+BEGIN {
+    our @ISA = qw(Exporter);
+    our %PLUGINSUB;
+    my @subs = qw(
+        command
+        send_message
+        add_hook
+    );
+    our @EXPORT = @subs;
+    my $override_this_sub = sub {
+        die "Must be used in a plugin's setup() method";
+    };
 
-my $override_this_sub = sub { die "Must be used in a plugin's setup() method" };
+    for my $sub (@subs) {
+        no strict 'refs';
+        $PLUGINSUB{$sub} = $override_this_sub;
+        *$sub = sub { $PLUGINSUB{$sub}->(@_) };
+    }
+}
 
-our $_COMMAND      = $override_this_sub;
-our $_SEND_MESSAGE = $override_this_sub;
-our $_ADD_HOOK     = $override_this_sub;
-
-sub command      { $_COMMAND->(@_) }
-sub send_message { $_SEND_MESSAGE->(@_) }
-sub add_hook     { $_ADD_HOOK->(@_) }
 
 1;
