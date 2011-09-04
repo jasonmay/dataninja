@@ -17,6 +17,12 @@ has command_manager => (
     required => 1,
 );
 
+has model => (
+    is       => 'ro',
+    isa      => 'App::Dataninja::Model',
+    required => 1,
+);
+
 has config => (
     is       => 'ro',
     required => 1,

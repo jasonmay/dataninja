@@ -32,7 +32,7 @@ has command_manager => (
 has plugin_manager => (
     is           => 'ro',
     isa          => 'App::Dataninja::PluginManager',
-    dependencies => ['hook_manager', 'command_manager', 'config', 'network'],
+    dependencies => ['hook_manager', 'command_manager', 'config', 'network', 'model'],
     lifecycle    => 'Singleton',
 );
 
