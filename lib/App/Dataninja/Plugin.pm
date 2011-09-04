@@ -8,7 +8,6 @@ BEGIN {
     our %PLUGINSUB;
     my @subs = qw(
         command
-        send_message
         add_hook
     );
     our @EXPORT = @subs;

@@ -28,9 +28,12 @@ has network => (
     required => 1,
 );
 
+has component => (is  => 'rw');
+
 sub setup {
     my $self = shift;
     my ($component) = @_;
+    $self->component($component);
 
     # read the plugins from the config and set them up
     foreach my $plugin (keys %{$self->config->{Plugins} || {}}) {
@@ -41,9 +44,6 @@ sub setup {
         my $plugin_class = "App::Dataninja::Plugin::$plugin";
         Class::MOP::load_class($plugin_class);
 
-        local $App::Dataninja::Plugin::PLUGINSUB{send_message} = sub {
-            $component->yield('privmsg', @_);
-        };
         local $App::Dataninja::Plugin::PLUGINSUB{command} = sub {
             $self->add_command(@_);
         };
@@ -54,6 +54,8 @@ sub setup {
         $plugin_class->setup($self);
     }
 }
+
+sub send_message { shift->component->yield('privmsg', @_) }
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
